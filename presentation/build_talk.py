@@ -127,11 +127,13 @@ def fig_height(path):
     fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.6), dpi=200, sharey=True); fig.patch.set_facecolor("#FAF9F6")
     for ax, axis, xl in ((axs[0], "yaw", "camera turned (°)"), (axs[1], "height", "camera raised (m)")):
         ax.set_facecolor("#FAF9F6")
-        for m in ms:
+        for j, m in enumerate(ms):
             g = F[(F.axis == axis) & (F.method == m)].sort_values("level")
-            ax.plot(g.level, g.value, color=COL[m], lw=2.5, marker="o", ms=6, mec="#FAF9F6", mew=1.5, label=NAME[m], zorder=3)
+            dx = (j - 1.5) * (0.5 if axis == "yaw" else 0.035)   # dodge so the 95% intervals stay visible
+            ax.errorbar(g.level + dx, g.value, yerr=[g.value - g.lo, g.hi - g.value], color=COL[m], lw=2.2, marker="o", ms=5,
+                        mec="#FAF9F6", mew=1.2, capsize=2.5, elinewidth=1.4, label=NAME[m], zorder=3)
         ax.set_xlabel(xl, fontsize=15, color=FINK2); style(ax); ax.set_ylim(0, 1.02)
-    axs[0].set_ylabel("Lane F1 vs. real photo", fontsize=15, color=FINK2)
+    axs[0].set_ylabel("Lane F1 vs. real photo (95% CI)", fontsize=15, color=FINK2)
     h, l = axs[0].get_legend_handles_labels()
     fig.legend(h, l, frameon=False, fontsize=13, ncol=2, loc="upper center", bbox_to_anchor=(0.55, 1.0), labelcolor=FINK)
     fig.tight_layout(rect=(0, 0, 1, 0.86)); fig.savefig(path, facecolor=fig.get_facecolor()); plt.close(fig)
@@ -380,10 +382,12 @@ HS = pd.read_csv(os.path.join(HERE, "..", "results", "heading", "summary.csv"))
 HS = HS[(HS.axis == "height") & (HS.level.abs() == 1.0)]
 hraw = {lv: HS[(HS.level == lv) & (HS.method == "raw")].lane_f1.iloc[0] for lv in (1.0, -1.0)}
 hbest = {lv: HS[(HS.level == lv) & (HS.method != "raw")].lane_f1.max() for lv in (1.0, -1.0)}
+hci = lambda lv, best: (lambda r: f"[{r.lane_f1_clo:.2f}, {r.lane_f1_chi:.2f}]")(
+    HS[(HS.level == lv) & (HS.method != "raw")].sort_values("lane_f1").iloc[-1] if best else HS[(HS.level == lv) & (HS.method == "raw")].iloc[0])
 hname = {lv: NAME[HS[(HS.level == lv) & (HS.method != "raw")].sort_values("lane_f1").method.iloc[-1]] for lv in (1.0, -1.0)}
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Turning ±15° ({nh} roads): raw lane F1 {K['heading_raw_lane_f1']['0']:.2f} → {K['heading_raw_lane_f1']['15']:.2f}.",
-    f"Raising it 1 m: raw {hraw[1.0]:.2f}, best {hbest[1.0]:.2f} ({hname[1.0][0].lower() + hname[1.0][1:]}).",
+    f"Raising it 1 m: raw {hraw[1.0]:.2f} {hci(1.0, False)}, best {hbest[1.0]:.2f} {hci(1.0, True)} ({hname[1.0][0].lower() + hname[1.0][1:]}): the intervals overlap.",
     [(f"Lowering it 1 m: raw {hraw[-1.0]:.2f}, best {hbest[-1.0]:.2f}; only a thin strip of road is comparable there.", {"color": ACC})]], size=19)
 footer(s, 9)
 notes(s, "Turning the camera by fifteen degrees barely changes lane agreement. Changing its height does, and fixers help "
