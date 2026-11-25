@@ -295,7 +295,7 @@ cols = [("Image fixers", ["Released Difix, Difix-ref and NVIDIA Fixer (trained o
                           "Small U-Net from scratch"]),
         ("Fix the 3D scene", ["Progressive update: repaired views added back into the splat (Difix3D+), with flat or FaithFusion weights",
                               "Road-surface prior from LiDAR (no generation)"]),
-        ("Built and validated", ["Our Difix trainer vs. the official one at an equal short budget (DL3DV, 3 scenes): LPIPS 0.218 vs. 0.237, with different numeric precision; neither beats the raw render there",
+        ("Built and checked", ["Our Difix trainer vs. the official one at an equal short budget (DL3DV, 3 scenes): LPIPS 0.218 vs. 0.237, with different numeric precision; neither beats the raw render there",
                                  "Our own splat projection matches gsplat to 90.8 dB (results use gsplat)"])]
 cx, cw = int(0.6 * IN), int(3.95 * IN)
 for i, (h, items) in enumerate(cols):
@@ -434,7 +434,7 @@ T4 = {(r.fixer, str(r.seeds)): r for r in pd.read_csv(f"{RES}/table4_closed_loop
 U = T4[("ours_best", "0")]   # our small U-Net, seed 0 only (it already broke the policy there)
 rows = [("HUGSIM, closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
        [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx] + \
-       [("Our U-Net (1 seed)", f"{U.hdscore:.3f}", mn(f"{U.d_hd:+.3f} [{U.d_lo:+.3f}, {U.d_hi:+.3f}]"))]
+       [("Our U-Net (1 seed, 23 runs)", f"{U.hdscore:.3f}", mn(f"{U.d_hd:+.3f} [{U.d_lo:+.3f}, {U.d_hi:+.3f}]"))]
 RH = int(0.46 * IN)
 table(s, rows, int(0.6 * IN), int(1.8 * IN), (2.8, 1.4, 3.3), RH, size=16)
 text(s, int(0.6 * IN), int(2.05 * IN) + RH * len(rows), int(7.5 * IN), int(0.9 * IN),
