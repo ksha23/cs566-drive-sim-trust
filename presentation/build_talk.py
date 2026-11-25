@@ -1,7 +1,7 @@
 """Build the 5-minute CS 566 talk as a self-contained PPTX (images and the video clip embedded). Run from this folder.
 Numbers come from results/final/key_numbers.json (src/eval/key_numbers.py), the two talk figures are drawn here from
-results/final/*.csv, and the clip is the first seconds of results/videos/paralane_straight_3m_scene16.mp4
-(img/talk_clip_3m.mp4, made with: ffmpeg -i <video> -t 12 -c:v libx264 -crf 22 -pix_fmt yuv420p -an img/talk_clip_3m.mp4).
+results/final/*.csv, and the clip is the first seconds of results/videos/paralane_straight_3m_scene16.mp4 with larger
+panel labels (img/talk_clip_3m.mp4, made by make_talk_clip.py).
 Speaker notes are about 600 words, about 4.5 minutes at 140 words per minute."""
 import json, os
 import matplotlib
@@ -58,6 +58,7 @@ def fig_offset(path):
         ax.plot(list(xs.values()), y, color=COL[m], lw=2.5, marker="o", ms=8, mec="#FAF9F6", mew=2, zorder=3)
         ends.append([y[-1], m])
     ends.sort()
+    ends[0][0] = max(ends[0][0], 0.06)                              # off the x axis
     for i in range(1, len(ends)):                                   # keep end labels at least 0.075 apart
         ends[i][0] = max(ends[i][0], ends[i - 1][0] + 0.075)
     for y, m in ends:
@@ -87,6 +88,52 @@ def fig_roads(path):
     return F.pivot(index="road", columns="method", values="lane_f1")
 
 
+def fig_ff(path):
+    """AUROC of three per-pixel maps for invented lane paint one lane over, per fixer (results/faithfusion/halluc_auroc.md)."""
+    rows = {}
+    for l in open(os.path.join(HERE, "..", "results", "faithfusion", "halluc_auroc.md")):
+        c = [x.strip() for x in l.strip().strip("|").split("|")]
+        if len(c) > 7 and c[0] == "paint" and c[2] == "~3m":
+            e = [float(v) for v in c[5].replace("[", "").replace("]", "").replace(",", "").split()]
+            rows[c[1]] = dict(eig=e[0], lo=e[1], hi=e[2], rep=float(c[6].split()[0]), cov=float(c[7]), pos=float(c[4]))
+    order = ["difix", "difix_ref", "nv_fixer", "difix_ft", "difix_reimpl_ref"]
+    fig, ax = plt.subplots(figsize=(7.4, 4.6), dpi=200); fig.patch.set_facecolor("#FAF9F6"); ax.set_facecolor("#FAF9F6")
+    ax.axvline(0.5, color=FINK2, lw=1, ls=(0, (4, 3)), zorder=1)
+    ax.text(0.505, -0.5, "chance", color=FINK2, fontsize=13, ha="left")
+    for i, m in enumerate(order):
+        r = rows[m]; y = len(order) - 1 - i
+        ax.plot([r["cov"], r["rep"], r["eig"]], [y] * 3, color=FGRID, lw=2, zorder=2)
+        ax.plot(r["cov"], y, "o", color="#9a988f", ms=10, mec="#FAF9F6", mew=1.5, zorder=3, label="coverage" if i == 0 else None)
+        ax.plot(r["rep"], y, "s", color=FINK2, ms=9, mec="#FAF9F6", mew=1.5, zorder=3, label="reprojection" if i == 0 else None)
+        ax.errorbar(r["eig"], y, xerr=[[r["eig"] - r["lo"]], [r["hi"] - r["eig"]]], fmt="D", color="#d96c1e", ms=10, mec="#FAF9F6",
+                    mew=1.5, capsize=3, lw=2, zorder=4, label="information gain" if i == 0 else None)
+    ax.set_yticks(range(len(order)), [NAME[m] for m in reversed(order)], fontsize=15, color=FINK)
+    ax.set_xlim(0.2, 0.85); ax.set_ylim(-0.6, len(order) - 0.1)
+    ax.set_xlabel("AUROC for invented lane paint (one lane over)", fontsize=15, color=FINK2)
+    ax.legend(frameon=False, fontsize=14, ncol=3, loc="lower center", bbox_to_anchor=(0.42, 1.0), labelcolor=FINK,
+              handletextpad=0.3, columnspacing=1.2)
+    style(ax); ax.yaxis.grid(False); ax.xaxis.grid(True, color=FGRID, lw=1)
+    fig.tight_layout(); fig.savefig(path, facecolor=fig.get_facecolor()); plt.close(fig)
+    return rows
+
+
+def fig_height(path):
+    """Lane F1 against camera yaw and against camera height change: raw render and three fixers (fig3_heading_height.csv)."""
+    F = pd.read_csv(f"{RES}/fig3_heading_height.csv"); F = F[F.metric == "lane_f1"]
+    ms = ["raw", "nv_fixer", "difix_ft", "difix_reimpl_ref"]
+    fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.6), dpi=200, sharey=True); fig.patch.set_facecolor("#FAF9F6")
+    for ax, axis, xl in ((axs[0], "yaw", "camera turned (°)"), (axs[1], "height", "camera raised (m)")):
+        ax.set_facecolor("#FAF9F6")
+        for m in ms:
+            g = F[(F.axis == axis) & (F.method == m)].sort_values("level")
+            ax.plot(g.level, g.value, color=COL[m], lw=2.5, marker="o", ms=6, mec="#FAF9F6", mew=1.5, label=NAME[m], zorder=3)
+        ax.set_xlabel(xl, fontsize=15, color=FINK2); style(ax); ax.set_ylim(0, 1.02)
+    axs[0].set_ylabel("Lane F1 vs. real photo", fontsize=15, color=FINK2)
+    h, l = axs[0].get_legend_handles_labels()
+    fig.legend(h, l, frameon=False, fontsize=13, ncol=2, loc="upper center", bbox_to_anchor=(0.55, 1.0), labelcolor=FINK)
+    fig.tight_layout(rect=(0, 0, 1, 0.86)); fig.savefig(path, facecolor=fig.get_facecolor()); plt.close(fig)
+
+
 def hallucination_pair(path):
     """Real image and our re-implementation, cropped from the report's 2 x 3 figure (src/viz/qualitative.py layout)."""
     im = Image.open(f"{RES}/qual_hallucination.jpg")
@@ -98,12 +145,14 @@ os.makedirs(f"{HERE}/img", exist_ok=True)
 hallucination_pair(f"{HERE}/img/talk_hallucination.jpg")
 fig_offset(f"{HERE}/img/talk_offset.png")
 ROADS = fig_roads(f"{HERE}/img/talk_roads.png")
+AUC = fig_ff(f"{HERE}/img/talk_faithfusion.png")
+fig_height(f"{HERE}/img/talk_height.png")
 
 # --- slide helpers ------------------------------------------------------------------------------------------------
 prs = Presentation()
 prs.slide_width, prs.slide_height = W, H
 BLANK = prs.slide_layouts[6]
-TOTAL = 10
+TOTAL = 12
 
 
 def bg(s, color):
@@ -267,7 +316,7 @@ text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
 footer(s, 5)
 notes(s, f"Lane agreement with the real photo falls from {L['raw']['0m']:.2f} on the path to {L['raw']['~3m']:.2f} one lane "
          f"over and almost zero two lanes over. Released Difix recovers to {L['difix']['~3m']:.2f}, NVIDIA Fixer to "
-         f"{L['nv_fixer']['~3m']:.2f}, and the two fixers trained on our lane pairs to about {L['difix_ft']['~3m']:.2f}. On the "
+         f"{L['nv_fixer']['~3m']:.2f}, and the two fixers trained on our lane pairs to {L['difix_reimpl_ref']['~3m']:.2f} and {L['difix_ft']['~3m']:.2f}. On the "
          f"same frames Difix-FT is ahead of NVIDIA Fixer on {ROADS_POS} roads. Two lanes over, even the best fixer reaches "
          f"only about {L['difix_ft']['~6m']:.1f}.")
 
@@ -277,8 +326,9 @@ title(s, "Better-looking is not the same as correct", "RESULT 2")
 picture(s, "img/talk_hallucination.jpg", int(0.6 * IN), int(1.55 * IN), int(12.1 * IN), int(3.45 * IN))
 nsp = int(min(SP[3], SPR[3])); spw = "every road" if nsp == K["roads"] else f"at least {nsp} of {K['roads']} roads"
 text(s, int(0.6 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
-    "Left: real photo, one lane over. Right: our re-implementation paints a wide stripe that is not on the road "
-    "(orange): paint precision 0.13 (raw render 0.95), while its lane F1 stays at 0.86."], size=17)
+    "Left: real photo, one lane over. Right: our re-implementation paints a stripe that is not on the road (orange): "
+    "paint precision 0.13 (raw render 0.95), lane F1 still 0.86. Selected frame; drops this large occur on "
+    f"{K['paint_drop_share']['difix_reimpl_ref@~3m']:.0%} of its frames."], size=17)
 text(s, int(6.8 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
     f"Over all frames, both fixers that copy from a reference view add vehicles on {spw} (ours +{SP[0]:.3f}, "
     f"released Difix-ref +{SPR[0]:.3f} per image); Difix-FT does not.",
@@ -291,47 +341,75 @@ notes(s, "Lane agreement alone hides errors. Orange marks lane paint the fixer i
 # 7. Clip -------------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
 title(s, "One lane over, frame by frame", "EXAMPLE")
-cw_, ch_ = int(12.1 * IN), int(12.1 * IN * 432 / 1280)
-s.shapes.add_movie("img/talk_clip_3m.mp4", Emu(int(0.6 * IN)), Emu(int(1.6 * IN)), Emu(cw_), Emu(ch_),
+cw_, ch_ = int(11.5 * IN), int(11.5 * IN * 482 / 1280)   # the clip's own aspect (1280 x 482)
+s.shapes.add_movie("img/talk_clip_3m.mp4", Emu((prs.slide_width - cw_) // 2), Emu(int(1.6 * IN)), Emu(cw_), Emu(ch_),
                    poster_frame_image="img/talk_clip_3m_poster.jpg", mime_type="video/mp4")
-text(s, int(0.6 * IN), int(1.75 * IN) + ch_, int(12.1 * IN), int(0.8 * IN),
-     "Real photo, raw render and four fixers; marks are computed per frame with the same rules as the metrics. "
-     "Orange: invented paint · blue: erased paint · red box: vehicle with no counterpart in the real photo.", size=16, color=SOFT)
+text(s, (prs.slide_width - cw_) // 2, int(1.72 * IN) + ch_, cw_, int(0.8 * IN),
+     "Marks follow the metrics' rules, frame by frame. Orange: invented paint · blue: erased paint · "
+     "red box: vehicle with no counterpart in the real photo.", size=16, color=SOFT)
 footer(s, 7, credit=PARALANE)
 notes(s, "This clip from our webpage shows the real photo one lane over, the raw render and four fixers. The marks are "
          "computed per frame with the same rules as the metrics. The raw render loses the crossing stripes; the fixers "
          "restore them to different degrees, and some shift or invent stripes along the way.")
 
-# 8. Roads, heading and height -------------------------------------------------------------------------------------
+# 8. Roads -------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
-title(s, "Results vary by road and by camera height", "RESULT 3")
+title(s, "Results vary strongly by road", "RESULT 3")
 picture(s, "img/talk_roads.png", int(0.4 * IN), int(1.55 * IN), int(7.6 * IN), int(5.3 * IN))
-BEST = ROADS[[m for m in ROADS.columns if m != "raw"]].max(axis=1)
-best_hi, best_lo = BEST.max(), BEST.min()
-lo_road = "under an elevated highway" if BEST.idxmin() == "scene_15" else f"on road {BEST.idxmin().split('_')[1]}"
-nh = len(K["heading_roads"])
-F3 = pd.read_csv(f"{RES}/fig3_heading_height.csv")
-F3 = F3[(F3.metric == "d_road_psnr") & (F3.level.abs() == 1.0) & (F3.method != "raw")]
-fx_lo, fx_hi = -F3.value.max(), -F3.value.min()   # dB lost by the repaired renders at +-1 m
+FT = ROADS["difix_ft"]; RW = ROADS["raw"]
+ORDER_OK = bool(((RW < ROADS["nv_fixer"]) & (ROADS["nv_fixer"] < FT)).all())
+print("road order raw < NVIDIA Fixer < Difix-FT on all roads:", ORDER_OK)
+hi_road = FT.idxmax().split("_")[1]
+lo_road = "under an elevated highway" if FT.idxmin() == "scene_15" else f"on road {FT.idxmin().split('_')[1]}"
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
-    f"Best fixer per road: from {best_hi:.2f} down to {best_lo:.2f} {lo_road}.",
-    f"Turning the camera ±15° barely matters ({nh} roads; raw lane F1 {K['heading_raw_lane_f1']['0']:.2f} → {K['heading_raw_lane_f1']['15']:.2f}).",
-    [(f"Raising the camera 1 m costs the raw render {-Hh['+1']['raw_d_road_psnr']:.1f} dB on the road, lowering it "
-      f"{-Hh['-1']['raw_d_road_psnr']:.1f} dB; repaired renders still lose {fx_lo:.0f}–{fx_hi:.0f} dB.", {"color": ACC})]], size=19)
+    f"Difix-FT one lane over: {FT.max():.2f} on road {hi_road}, but {FT.min():.2f} {lo_road}.",
+    f"The raw render stays between {RW.min():.2f} and {RW.max():.2f} on every road.",
+    [(f"On every road the order is the same: raw render < NVIDIA Fixer < Difix-FT.", {"color": ACC})] if ORDER_OK else ""], size=19)
 footer(s, 8)
-notes(s, f"The level depends strongly on the road: the best fixer reaches {best_hi:.2f} on one road, but at most "
-         f"{best_lo:.2f} {lo_road}. Over the {nh} roads, turning the camera by fifteen degrees barely matters. "
-         f"Changing its height does: raising it by one meter costs the raw render {-Hh['+1']['raw_d_road_psnr']:.1f} decibels "
-         f"on the road surface, and the repaired renders still lose {fx_lo:.0f} to {fx_hi:.0f} decibels.")
+notes(s, f"The level depends strongly on the road. One lane over, Difix-FT reaches {FT.max():.2f} on one boulevard but only "
+         f"{FT.min():.2f} {lo_road}, while the raw render stays between {RW.min():.2f} and {RW.max():.2f} everywhere.")
 
-# 9. Beyond Para-Lane ----------------------------------------------------------------------------------------------
+# 9. Heading and height --------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
-title(s, "No consistent gain in driving, other cities or with FaithFusion", "RESULT 4")
+title(s, "Camera heading barely matters; height does", "RESULT 4")
+picture(s, "img/talk_height.png", int(0.4 * IN), int(1.6 * IN), int(7.6 * IN), int(4.73 * IN))
+nh = len(K["heading_roads"])
+HS = pd.read_csv(os.path.join(HERE, "..", "results", "heading", "summary.csv"))
+HS = HS[(HS.axis == "height") & (HS.level.abs() == 1.0)]
+hraw = {lv: HS[(HS.level == lv) & (HS.method == "raw")].lane_f1.iloc[0] for lv in (1.0, -1.0)}
+hbest = {lv: HS[(HS.level == lv) & (HS.method != "raw")].lane_f1.max() for lv in (1.0, -1.0)}
+text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
+    f"Turning ±15° ({nh} roads): raw lane F1 {K['heading_raw_lane_f1']['0']:.2f} → {K['heading_raw_lane_f1']['15']:.2f}.",
+    f"Raising it 1 m: raw {hraw[1.0]:.2f}, best fixer {hbest[1.0]:.2f}.",
+    [(f"Lowering it 1 m: raw {hraw[-1.0]:.2f}, best fixer {hbest[-1.0]:.2f} (only a thin strip of road is comparable).", {"color": ACC})]], size=19)
+footer(s, 9)
+notes(s, "Turning the camera by fifteen degrees barely changes lane agreement. Changing its height does, and fixers help "
+         f"little there: one meter up, lane agreement is {hraw[1.0]:.2f} raw and {hbest[1.0]:.2f} at best; one meter down, it "
+         "nearly vanishes.")
+
+# 10. FaithFusion ---------------------------------------------------------------------------------------------------
+s = prs.slides.add_slide(BLANK); bg(s, BG)
+title(s, "FaithFusion: a useful map, unhelpful weights", "RESULT 5")
+picture(s, "img/talk_faithfusion.png", int(0.4 * IN), int(1.6 * IN), int(7.6 * IN), int(4.73 * IN))
+eig = [r["eig"] for r in AUC.values()]; cov = [r["cov"] for r in AUC.values()]; pos = [r["pos"] for r in AUC.values()]
+text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
+    f"Its information-gain map flags invented lane paint one lane over: AUROC {min(eig):.2f}–{max(eig):.2f} across five "
+    f"fixers, against {min(cov):.2f}–{max(cov):.2f} for splat coverage alone ({min(pos):.0%}–{max(pos):.0%} of pixels are invented paint).",
+    [("Used as weights in the 3D update, it slightly lowers lane F1 one lane over: " + mn(f"{FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}]")
+      + f" ({FF[3]} roads).", {"color": ACC})]], size=19)
+footer(s, 10)
+notes(s, "FaithFusion weights each repaired pixel by how much new information it adds to the splat. Its map does flag "
+         "where fixers invent lane paint, far better than splat coverage alone. But used as weights in the 3D update, it "
+         f"slightly lowers lane agreement one lane over, on {FF[3]} roads.")
+
+# 11. Beyond Para-Lane ---------------------------------------------------------------------------------------------
+s = prs.slides.add_slide(BLANK); bg(s, BG)
+title(s, "Gains do not carry into driving or to other cities", "RESULT 6")
 fx = [f for f in ("difix", "difix_ft", "nv_fixer", "difix_reimpl") if f in CL]
 rows = [("HUGSIM closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
        [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx]
 RH = int(0.46 * IN)
-tb = s.shapes.add_table(len(rows), 3, Emu(int(0.6 * IN)), Emu(int(2.15 * IN)), Emu(int(7.3 * IN)), Emu(RH * len(rows))).table
+tb = s.shapes.add_table(len(rows), 3, Emu(int(0.6 * IN)), Emu(int(1.8 * IN)), Emu(int(7.3 * IN)), Emu(RH * len(rows))).table
 for j, wd in enumerate((2.9, 1.3, 3.1)):
     tb.columns[j].width = Emu(int(wd * IN))
 for i, row in enumerate(rows):
@@ -342,28 +420,20 @@ for i, row in enumerate(rows):
         p = c.text_frame.paragraphs[0]; p.alignment = PP_ALIGN.LEFT if j == 0 else PP_ALIGN.RIGHT
         for r in p.runs:
             r.font.name = FONT; r.font.size = Pt(15); r.font.color.rgb = INK; r.font.bold = (i == 0)
-text(s, int(0.6 * IN), int(2.35 * IN) + RH * len(rows), int(7.3 * IN), int(0.9 * IN),
+text(s, int(0.6 * IN), int(2.0 * IN) + RH * len(rows), int(7.3 * IN), int(0.9 * IN),
      f"Released LTF policy, {CL['none']['runs'] // 3} scenarios × 3 seeds; paired 95% intervals. "
      "The spread between seeds (0.31–0.46) exceeds every fixer effect.", size=15, color=SOFT)
 T3 = pd.read_csv(f"{RES}/table3_cross_dataset.csv"); e = T3[T3.condition.str.startswith("EUVS L3")].set_index("method")
-ff_txt = ("FaithFusion's information-gain weights: no measurable change in lane F1 "
-          f"({FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}], {FF[3]} roads)." if FF and FF[1] <= 0 <= FF[2] else
-          "FaithFusion's information-gain weights slightly lower lane F1 one lane over: "
-          + mn(f"{FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}]") + f" ({FF[3]} roads)." if FF else "")
-text(s, int(8.3 * IN), int(2.15 * IN), int(4.4 * IN), int(4.6 * IN), [
+text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
+    "Closed-loop driving: no fixer raises the driving score; only NVIDIA Fixer's change excludes zero, and it is negative.",
     f"Other cities (EUVS, US): the generic Difix-ref helps most (LPIPS {e.loc['raw', 'lpips']:.2f} → {e.loc['difix_ref', 'lpips']:.2f}); "
-    f"Difix-FT, trained on our roads, gets worse ({e.loc['difix_ft', 'lpips']:.2f}).",
-    ff_txt], size=18)
-footer(s, 9)
+    f"Difix-FT, trained on our roads, gets worse ({e.loc['difix_ft', 'lpips']:.2f})."], size=18)
+footer(s, 11)
 notes(s, f"In closed-loop driving in the HUGSIM simulator, with a released policy over {CL['none']['runs'] // 3} scenarios and "
          "three seeds, no fixer improves the driving score, our re-implementation included; the spread between seeds is "
-         "larger than any fixer effect. Fixers trained on our roads transfer only partly to other cities. "
-         + (f"And weighting the 3D update with FaithFusion's information gain made no measurable difference over {FF[3]} roads."
-            if FF and FF[1] <= 0 <= FF[2] else
-            f"And weighting the 3D update with FaithFusion's information gain slightly lowered lane agreement one lane over, on {FF[3]} roads."
-            if FF else ""))
+         "larger than any fixer effect. Fixers trained on our roads also transfer only partly to other cities.")
 
-# 10. Takeaways ------------------------------------------------------------------------------------------------------
+# 12. Takeaways ------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG2)
 text(s, int(0.8 * IN), int(0.7 * IN), int(11.5 * IN), int(0.5 * IN), "TAKEAWAYS", size=16, color=ACC, bold=True)
 text(s, int(0.8 * IN), int(1.3 * IN), int(11.7 * IN), int(5.0 * IN), [
@@ -373,10 +443,11 @@ text(s, int(0.8 * IN), int(1.3 * IN), int(11.7 * IN), int(5.0 * IN), [
     "4. Gains depend on the road, shrink with camera height and other cities, and do not raise closed-loop driving scores."],
     size=24, color=BG)
 text(s, int(0.8 * IN), int(5.8 * IN), int(11.7 * IN), int(0.9 * IN), [f"Project page, videos and results: {URL}", f"Code: {CODE_URL}"], size=20, color=MUTED)
-footer(s, 10, dark=True)
+footer(s, 12, dark=True)
 notes(s, "To summarize: trust drops quickly off the recorded path; fixers trained on matching data recover much of it one "
          "lane over but far less beyond; they trade correctness for realism in ways we can measure; and the gains are "
-         "road-specific and do not show up in closed-loop driving. Code, videos and results are on our webpage. Thank you.")
+         "road-specific and do not show up in closed-loop driving. The code is on GitHub, and the videos and results are on our "
+         "webpage. Thank you.")
 
 prs.save("cs566_drive_sim_talk.pptx")
 words = sum(len(sl.notes_slide.notes_text_frame.text.split()) for sl in prs.slides)

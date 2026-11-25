@@ -15,7 +15,7 @@ Nothing below is in the repository; paths are relative to `CS566D_DATA` (default
 | HUGSIM released scenes (nuScenes 0064, 0071, 0167, 0383, 0661), scenarios, map cache, 3DRealCar assets | HF `XDimLab/HUGSIM` | MIT (nuScenes-derived: nuScenes terms) | `DATA/hugsim` 18 GB |
 | LTF policy (NAVSIM) | github.com/hyzhou404/NAVSIM @ ca0ca7e, weights autonomousvision/navsim_baselines | Apache-2.0 | `DATA/hugsim/navsim_client`, `ltf_dl` |
 | Difix3D code | github.com/nv-tlabs/Difix3D @ c76edc5 | NVIDIA | `SMOKE/Difix3D` |
-| DL3DV-10K-Sample, 11 scenes (COLMAP + images_4; Difix reimplementation check) | HF `DL3DV/DL3DV-10K-Sample` (gated; access granted to the student's account; Benchmark / ALL-960P not authorised) | DL3DV terms of use (non-commercial research) | `DATA/dl3dv` 3 GB |
+| DL3DV-10K-Sample, 11 scenes (COLMAP + images_4; Difix reimplementation check) | HF `DL3DV/DL3DV-10K-Sample` (gated; access granted to the student's account; Benchmark / ALL-960P not authorized) | DL3DV terms of use (non-commercial research) | `DATA/dl3dv` 3 GB |
 | MV2 car front camera + scooter, 50 sequences | HF `sanjay810/mv2-dataset` | academic research use | `DATA/mv2/raw` |
 
 The repo keeps only small result files and a few figures/frames derived from the data (for the report).

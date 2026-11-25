@@ -134,7 +134,7 @@
    "dataset": "Para-Lane",
    "scene": "scene_17",
    "shown": "real far-lane frame | raw splat | released Difix | our Difix reimplementation (ref) | our U-Net | NVIDIA Fixer",
-   "caption": "At 7.7 m the splat has never seen most of the road surface. Every fixer produces a cleaner-looking image, but none recovers the real lane geometry reliably; lane agreement stays low (RESULTS section 5). Marks (same rules as the metrics): orange = invented lane paint, blue = erased lane paint, red box = spurious vehicle.",
+   "caption": "About 7.8 m from the recorded lane, the splat has never seen most of the road surface. Every fixer produces a cleaner-looking image, but none recovers the real lane geometry reliably; lane agreement stays low (RESULTS section 5). Marks (same rules as the metrics): orange = invented lane paint, blue = erased lane paint, red box = spurious vehicle.",
    "offset_m": 7.76,
    "real_ground_truth": true,
    "attribution": "Data: Para-Lane (Ni et al., 3DV 2025), CC BY-NC 4.0. Renders/fixes: CS 566 course project, non-commercial.",

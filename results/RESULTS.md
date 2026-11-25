@@ -157,16 +157,17 @@ seed):
 | fixer in the loop | runs | HD-Score↑ [CI] | route compl.↑ | complete / collision / off-route | Δ HD-Score vs no fixer [CI] |
 |---|---|---|---|---|---|
 | none | 75 | 0.408 [0.326, 0.486] | 0.635 | 23 / 46 / 6 | – |
-| released Difix | 75 | 0.392 [0.312, 0.474] | 0.619 | 24 / 47 / 4 | −0.015 [−0.064, +0.034] |
-| Difix-FT (Para-Lane) | 75 | 0.403 [0.319, 0.488] | 0.606 | 23 / 43 / 9 | −0.005 [−0.054, +0.048] |
-| NVIDIA Fixer [4] | 75 | 0.356 [0.287, 0.429] | 0.577 | 13 / 51 / 11 | **−0.051 [−0.101, −0.004]** |
-| our U-Net (base_s0, seed 0 only) | 23 | 0.254 [0.159, 0.365] | 0.464 | 0 / 19 / 4 | −0.205 [−0.353, −0.069] |
+| released Difix | 75 | 0.392 [0.312, 0.472] | 0.619 | 24 / 47 / 4 | −0.015 [−0.062, +0.034] |
+| Difix-FT (Para-Lane) | 75 | 0.403 [0.319, 0.484] | 0.606 | 23 / 43 / 9 | −0.005 [−0.054, +0.046] |
+| NVIDIA Fixer [4] | 75 | 0.356 [0.286, 0.427] | 0.577 | 13 / 51 / 11 | −0.051 [−0.099, −0.003] |
+| our Difix re-implementation (ref view) | 75 | 0.385 [0.302, 0.467] | 0.619 | 24 / 43 / 8 | −0.023 [−0.074, +0.028] |
+| our U-Net (base_s0, seed 0 only) | 23 | 0.254 [0.159, 0.361] | 0.464 | 0 / 19 / 4 | −0.205 [−0.350, −0.065] |
 
 No fixer changes LTF's driving score measurably except for the worse: Difix and Difix-FT are within ±0.02 of no fixer
 (CIs ±0.05), NVIDIA Fixer lowers HD-Score by 0.05 (CI just clear of 0; driven by seed 0, −0.15, while seeds 1/2 are
 +0.01 / −0.01), and our U-Net clearly breaks the policy. The seed-to-seed spread of the policy itself (no fixer:
 0.457 / 0.306 / 0.460) is larger than any fixer effect. With seed 0 alone Difix-FT looked better (+0.046, 25 runs) —
-a seed artefact that disappears with 3 seeds. Fixer cost per step (3 cameras): 1.4 s Difix / Difix-FT, 0.47 s NVIDIA
+a seed artifact that disappears with 3 seeds. Fixer cost per step (3 cameras): 1.4 s Difix / Difix-FT, 0.47 s NVIDIA
 Fixer. UniAD/VAD were not run (legacy CUDA-11.1 stack; see CLOSED_LOOP.md).
 
 **Reproduction check vs. the HUGSIM paper** (`hugsim/reproduction_ltf.md`, paper Table 13, LTF, nuScenes rows):
@@ -478,22 +479,24 @@ Pooled (`eval_more/summary_pooled.csv`, `final/pooled_all_metrics.csv`; [95% CI 
 
 | offset | method | LPIPS↓ [CI] | paint F1↑ | NTL-IoU↑ | lane F1↑ [CI] | fake veh./img↓ |
 |---|---|---|---|---|---|---|
-| ~3 m | raw splat | 0.486 [0.464, 0.509] | 0.49 | 0.15 | 0.18 [0.13, 0.24] | 0.064 |
-| ~3 m | released Difix | 0.388 [0.365, 0.412] | 0.54 | 0.46 | 0.57 [0.47, 0.66] | 0.093 |
-| ~3 m | NVIDIA Fixer | 0.452 [0.434, 0.472] | 0.58 | 0.57 | 0.69 [0.59, 0.77] | 0.099 |
-| ~3 m | Difix-FT | 0.294 [0.266, 0.325] | **0.61** | **0.65** | **0.79** [0.70, 0.87] | 0.030 |
-| ~3 m | our Difix-ref reimpl. | **0.277** [0.252, 0.304] | 0.56 | **0.65** | 0.77 [0.68, 0.85] | 0.148 |
-| ~3 m | our U-Net | 0.418 [0.377, 0.464] | 0.43 | 0.20 | 0.25 [0.18, 0.31] | 0.042 |
-| ~3 m | progressive w/ our reimpl. (splat only) | 0.487 [0.467, 0.510] | 0.53 | 0.38 | 0.46 [0.36, 0.56] | **0.011** |
-| ~3 m | road-prior splat (no fixer) | 0.467 [0.445, 0.491] | 0.55 | 0.28 | 0.34 [0.27, 0.41] | 0.061 |
-| ~6 m | raw splat | 0.599 [0.566, 0.635] | 0.23 | 0.01 | 0.01 [0.00, 0.03] | 0.055 |
-| ~6 m | released Difix | 0.494 [0.456, 0.533] | 0.24 | 0.16 | 0.21 [0.13, 0.29] | 0.069 |
-| ~6 m | NVIDIA Fixer | 0.536 [0.503, 0.569] | 0.20 | 0.37 | 0.41 [0.27, 0.55] | 0.097 |
-| ~6 m | Difix-FT | 0.381 [0.335, 0.429] | 0.27 | 0.46 | 0.52 [0.37, 0.68] | **0.019** |
-| ~6 m | our Difix-ref reimpl. | **0.366** [0.322, 0.418] | **0.30** | **0.47** | **0.53** [0.37, 0.66] | 0.128 |
-| ~6 m | our U-Net | 0.514 [0.457, 0.578] | 0.18 | 0.01 | 0.01 [0.00, 0.03] | 0.057 |
-| ~6 m | progressive w/ our reimpl. (splat only) | 0.583 [0.547, 0.617] | 0.24 | 0.08 | 0.09 [0.05, 0.15] | 0.022 |
-| ~6 m | road-prior splat (no fixer) | 0.577 [0.539, 0.616] | 0.26 | 0.05 | 0.05 [0.03, 0.08] | 0.053 |
+| ~3 m | raw splat | 0.486 [0.464, 0.510] | 0.49 | 0.15 | 0.18 [0.13, 0.24] | 0.064 |
+| ~3 m | released Difix | 0.388 [0.366, 0.412] | 0.54 | 0.46 | 0.57 [0.47, 0.67] | 0.093 |
+| ~3 m | released Difix-ref | 0.302 [0.280, 0.329] | 0.51 | 0.53 | 0.64 [0.54, 0.74] | 0.203 |
+| ~3 m | NVIDIA Fixer | 0.452 [0.433, 0.473] | 0.58 | 0.57 | 0.69 [0.59, 0.77] | 0.099 |
+| ~3 m | Difix-FT | 0.294 [0.268, 0.325] | 0.61 | 0.65 | 0.79 [0.70, 0.87] | 0.030 |
+| ~3 m | our Difix-ref reimpl. | 0.277 [0.253, 0.306] | 0.56 | 0.65 | 0.77 [0.68, 0.85] | 0.148 |
+| ~3 m | our U-Net | 0.418 [0.379, 0.461] | 0.43 | 0.20 | 0.25 [0.18, 0.31] | 0.042 |
+| ~3 m | progressive w/ our reimpl. (splat only) | 0.487 [0.466, 0.509] | 0.53 | 0.38 | 0.46 [0.36, 0.55] | 0.011 |
+| ~3 m | road-prior splat (no fixer) | 0.467 [0.443, 0.491] | 0.55 | 0.28 | 0.34 [0.27, 0.41] | 0.061 |
+| ~6 m | raw splat | 0.599 [0.565, 0.636] | 0.23 | 0.01 | 0.01 [0.00, 0.03] | 0.055 |
+| ~6 m | released Difix | 0.494 [0.459, 0.533] | 0.24 | 0.16 | 0.21 [0.13, 0.29] | 0.069 |
+| ~6 m | released Difix-ref | 0.414 [0.372, 0.462] | 0.18 | 0.31 | 0.34 [0.21, 0.45] | 0.200 |
+| ~6 m | NVIDIA Fixer | 0.536 [0.504, 0.567] | 0.20 | 0.37 | 0.41 [0.26, 0.54] | 0.097 |
+| ~6 m | Difix-FT | 0.381 [0.337, 0.431] | 0.27 | 0.46 | 0.52 [0.35, 0.67] | 0.019 |
+| ~6 m | our Difix-ref reimpl. | 0.366 [0.322, 0.416] | 0.30 | 0.47 | 0.53 [0.38, 0.66] | 0.128 |
+| ~6 m | our U-Net | 0.514 [0.458, 0.574] | 0.18 | 0.01 | 0.01 [0.00, 0.03] | 0.057 |
+| ~6 m | progressive w/ our reimpl. (splat only) | 0.583 [0.548, 0.619] | 0.24 | 0.08 | 0.09 [0.05, 0.15] | 0.022 |
+| ~6 m | road-prior splat (no fixer) | 0.577 [0.540, 0.616] | 0.26 | 0.05 | 0.05 [0.02, 0.08] | 0.053 |
 
 Lane F1 at ~3 m per road (`eval_more/summary_<scene>.csv`; bar chart with CIs: `final/fig2_lane_f1_per_road_3m.png`):
 
@@ -514,19 +517,20 @@ Scene-level variance: per-road paired change vs. the raw splat on the same image
 | arm | Δ lane F1 at ~3 m | Δ lane F1 at ~6 m | Δ LPIPS at ~3 m | Δ fake veh./img at ~3 m |
 |---|---|---|---|---|
 | released Difix | +0.38 [+0.26, +0.49] (+0.12 … +0.61) | +0.19 (+0.00 … +0.35) | −0.099 | +0.028 [+0.007, +0.046] |
-| NVIDIA Fixer | +0.49 [+0.39, +0.59] (+0.23 … +0.71) | +0.41 (+0.01 … +0.67) | −0.036 | +0.030 [−0.001, +0.068] |
+| released Difix-ref | +0.46 [+0.33, +0.57] (+0.10 … +0.69) | +0.34 (+0.01 … +0.54) | −0.188 | +0.125 [+0.069, +0.185] |
+| NVIDIA Fixer | +0.49 [+0.39, +0.59] (+0.23 … +0.71) | +0.41 (+0.01 … +0.67) | −0.036 | +0.030 [−0.001, +0.070] |
 | Difix-FT | +0.62 [+0.52, +0.72] (+0.30 … +0.80) | +0.54 (+0.05 … +0.82) | −0.198 | −0.028 [−0.066, +0.001] |
-| our Difix-ref reimpl. | +0.61 [+0.51, +0.69] (+0.32 … +0.76) | +0.54 (+0.08 … +0.77) | −0.216 | **+0.089 [+0.062, +0.117]** |
-| our U-Net | +0.07 [+0.03, +0.11] (−0.03 … +0.16) | +0.00 | −0.077 | −0.015 |
-| **progressive w/ our reimpl.** | +0.33 [+0.19, +0.49] (**+0.06 … +0.73**) | +0.12 (+0.00 … +0.43) | −0.003 | −0.049 [−0.093, −0.017] |
-| **road prior** | +0.18 [+0.12, +0.25] (+0.08 … +0.35) | +0.04 (+0.00 … +0.08) | −0.020 | −0.004 [−0.016, +0.007] |
+| our Difix-ref reimpl. | +0.61 [+0.51, +0.70] (+0.32 … +0.76) | +0.54 (+0.08 … +0.77) | −0.216 | +0.089 [+0.063, +0.115] |
+| our U-Net | +0.07 [+0.03, +0.11] (−0.03 … +0.16) | +0.00 (−0.01 … +0.04) | −0.077 | −0.015 [−0.052, +0.018] |
+| progressive w/ our reimpl. (splat only) | +0.33 [+0.18, +0.49] (+0.06 … +0.73) | +0.12 (+0.00 … +0.43) | −0.003 | −0.049 [−0.091, −0.017] |
+| road-prior splat (no fixer) | +0.18 [+0.12, +0.25] (+0.08 … +0.35) | +0.04 (+0.00 … +0.08) | −0.020 | −0.004 [−0.016, +0.007] |
 
 Findings:
 * **The progressive gain is very scene-dependent, but scene_16 is no longer the only large one.** On the three new
   boulevards it is large for scene_3 and scene_4 (lane F1 at ~3 m 0.24 → 0.80 and 0.26 → 0.78) and moderate for
-  scene_11 (0.17 → 0.48); on scene_17, 15, 10 and 14 it stays at +0.06 to +0.20. Across 8 roads: +0.33 [+0.19, +0.49]
+  scene_11 (0.17 → 0.48); on scene_17, 15, 10 and 14 it stays at +0.06 to +0.20. Across 8 roads: +0.33 [+0.18, +0.49]
   at ~3 m and only +0.12 at ~6 m (≤ +0.21 except scene_16). It costs on-path LPIPS on every road (+0.05 pooled) and
-  invents no vehicles (fewest of all arms: a 3D model cannot invent a per-frame car).
+  invents almost no vehicles (0.011 per image at ~3 m, the fewest of all arms: a 3D model cannot invent a per-frame car).
 * **Per-frame fixers trained on driving pairs are the most consistent**: Difix-FT and our reimpl. improve lane F1 at
   ~3 m on all 8 roads by +0.30 to +0.80, and reach 0.93–0.99 on the three new boulevards. scene_15 (highway shade,
   traffic) stays hard for every arm (best 0.39 at ~3 m, ≤ 0.08 at ~6 m).
@@ -541,7 +545,7 @@ Findings:
 * Pooled ~3 m ranking by lane F1 over 8 roads: Difix-FT ≈ our reimpl. > NVIDIA Fixer > released Difix > progressive
   > road prior > U-Net ≈ raw, the same as with 2 and 5 roads.
 * **Metric caveat found while making the qualitative grids** (`final/qual_*.jpg`): the color/contrast paint mask
-  also fires on hard sun/shadow boundaries (scene_15) and on bright kerb strips at the road edge (scene_3/4/11), so
+  also fires on hard sun/shadow boundaries (scene_15) and on bright curb strips at the road edge (scene_3/4/11), so
   paint precision/recall are noisier there than CLRNet lane F1. The lane-F1 conclusions do not depend on it.
 
 ## 16. Demo videos for the project webpage — `videos/index.json`, `../scripts/20_videos.sh`, `../src/viz/`

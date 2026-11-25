@@ -36,7 +36,7 @@ upstream project before redistributing anything.
 | LTF (NAVSIM) | HF `autonomousvision/navsim_baselines` | Apache-2.0 |
 | CLRNet CULane DLA34 | CLRNet GitHub releases | Apache-2.0 |
 | YOLO11m | Ultralytics | AGPL-3.0 |
-| Our trained checkpoints (U-Net, Difix-FT, Difix reimplementation) | not released | fine-tunes of NVIDIA / Stability weights inherit their licenses; the team has not decided on a release |
+| Our trained checkpoints (U-Net, Difix-FT, Difix reimplementation) | not released | fine-tunes of NVIDIA / Stability weights inherit their licenses; without them, the fixers must be retrained (README, stages 4–5b), and only the quick check runs as shipped |
 
 ## Datasets (downloaded by the user, never committed)
 

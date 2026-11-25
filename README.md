@@ -8,7 +8,7 @@ figures, tables and CSVs). Implementation notes and paper-vs-ours decisions: [`d
 A driving simulator built from a recorded drive reconstructs the road as a 3D Gaussian splat and renders what the car's
 cameras would see if it drove *differently*. We measure how fast that rendering stops being trustworthy as the camera
 moves sideways, turns or changes height, against **real** images: Para-Lane scans the same roads in three parallel
-lanes (about 3 m and 6–7.7 m apart), so a splat built from one lane can be checked against the real images of the
+lanes (about 3 m and 6–8 m apart), so a splat built from one lane can be checked against the real images of the
 other lanes. We compare generative "fixers" (released Difix, NVIDIA Fixer, our reimplementation of the Difix training
 recipe, a fine-tune of the released Difix, a small U-Net), the Difix3D+ progressive 3D update and a LiDAR road-surface
 prior, and we count hallucinations (invented or erased lane paint, fake vehicles), not only image similarity.
@@ -22,6 +22,7 @@ prior, and we count hallucinations (invented or erased lane paint, fake vehicles
 | [5] | ReconDreamer (CVPR 2025) | NTA-IoU / NTL-IoU metrics (re-implemented) |
 
 ## Quick check (no GPU, no datasets; a few minutes)
+Trained checkpoints are not released (`THIRD_PARTY.md`); everything beyond this check needs the datasets and retraining.
 The per-image results of every experiment ship in `results/`, so the final tables can be rebuilt on any machine, and
 one bundled Para-Lane frame (`examples/scene_17_frame`) can be scored with the same metrics:
 ```bash

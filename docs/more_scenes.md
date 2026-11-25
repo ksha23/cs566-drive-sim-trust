@@ -58,7 +58,7 @@ progressive 15 min, road prior 26–30 min):
   [+0.19, +0.49] at ~3 m, +0.12 at ~6 m. It costs about +0.05 LPIPS on-path.
 * The road prior helps on all eight roads (lane F1 +0.08 to +0.35 at ~3 m), invents nothing, adds little at ~6 m.
 * Our Difix-ref reimpl. adds fake vehicles on every road (+0.089 per image at ~3 m [+0.062, +0.117]); Difix-FT does not.
-* The paint-mask metric misfires on hard shadows and bright kerb strips (scene_15, scene_3/4/11); lane F1 does not.
+* The paint-mask metric misfires on hard shadows and bright curb strips (scene_15, scene_3/4/11); lane F1 does not.
 
 ## Problems met
 * `src/splats/render_method.py` reloaded all images of the target clip for every rendered frame
