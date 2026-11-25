@@ -95,7 +95,8 @@ def fig_ff(path):
         c = [x.strip() for x in l.strip().strip("|").split("|")]
         if len(c) > 7 and c[0] == "paint" and c[2] == "~3m":
             e = [float(v) for v in c[5].replace("[", "").replace("]", "").replace(",", "").split()]
-            rows[c[1]] = dict(eig=e[0], lo=e[1], hi=e[2], rep=float(c[6].split()[0]), cov=float(c[7]), pos=float(c[4]))
+            rows[c[1]] = dict(eig=e[0], lo=e[1], hi=e[2], rep=float(c[6].split()[0]), cov=float(c[7]), pos=float(c[4]),
+                             auprc=float(c[8].split("/")[0]))
     order = ["difix", "difix_ref", "nv_fixer", "difix_ft", "difix_reimpl_ref"]
     fig, ax = plt.subplots(figsize=(7.4, 4.6), dpi=200); fig.patch.set_facecolor("#FAF9F6"); ax.set_facecolor("#FAF9F6")
     ax.axvline(0.5, color=FINK2, lw=1, ls=(0, (4, 3)), zorder=1)
@@ -254,7 +255,7 @@ text(s, int(0.6 * IN), int(5.8 * IN), int(12.1 * IN), int(1.0 * IN), [
      ("We measure whether they also make them correct.", {"color": ACC})]], size=21)
 footer(s, 2, credit=PARALANE)
 notes(s, "The recorded video becomes a 3D Gaussian splat, millions of small colored ellipsoids that can be rendered from "
-         "any camera position. Near the recorded path the render is accurate. Here it is rendered three meters to the side: "
+         "any camera position. Here it is rendered three meters to the side: "
          "the road texture smears and the lane lines break up. Fixers such as NVIDIA's Difix clean up such renders. Looking "
          "better is not the same as being right.")
 
@@ -334,9 +335,9 @@ text(s, int(6.8 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
     f"released Difix-ref +{SPR[0]:.3f} per image); Difix-FT does not.",
     f"Repairing the 3D scene invents the fewest vehicles ({K['spurious_3m']['prog_difix_reimpl']:.2f} per image)."], size=17)
 footer(s, 6, credit=PARALANE)
-notes(s, "Lane agreement alone hides errors. Orange marks lane paint the fixer invented, blue marks real paint it erased. "
-         "Our re-implementation restores the lanes, but here it paints a wide stripe that is not on the road, and over all "
-         f"frames both fixers that copy from a reference view, ours and NVIDIA's Difix-ref, add vehicles on {spw}. Repairing the 3D scene invents the fewest vehicles, but it helps less two lanes over.")
+notes(s, "Lane agreement alone hides errors. Orange marks invented lane paint, blue erased paint. Our re-implementation "
+         "restores the lanes but here paints a stripe that is not on the road; over all frames, both fixers that copy from a "
+         f"reference view add vehicles on {spw}. Repairing the 3D scene invents the fewest vehicles, but helps less two lanes over.")
 
 # 7. Clip -------------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
@@ -348,9 +349,8 @@ text(s, (prs.slide_width - cw_) // 2, int(1.72 * IN) + ch_, cw_, int(0.8 * IN),
      "Video, 10 s (one frame shown when not playing). Marks follow the metrics' rules, frame by frame. Orange: invented paint · blue: erased paint · "
      "red box: vehicle with no counterpart in the real photo.", size=16, color=SOFT)
 footer(s, 7, credit=PARALANE)
-notes(s, "This clip from our webpage shows the real photo one lane over, the raw render and four fixers. The marks are "
-         "computed per frame with the same rules as the metrics. The raw render loses the crossing stripes; the fixers "
-         "restore them to different degrees, and some shift or invent stripes along the way.")
+notes(s, "This clip shows the real photo one lane over, the raw render and four fixers, marked with the same rules as the "
+         "metrics. The fixers restore the lane lines to different degrees, and some invent paint or vehicles along the way.")
 
 # 8. Roads -------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
@@ -397,7 +397,8 @@ text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Its information-gain map partly flags invented lane paint one lane over: AUROC {min(eig):.2f}–{max(eig):.2f} across five "
     f"fixers, against {min(cov):.2f}–{max(cov):.2f} for splat coverage alone (invented paint: {min(pos):.0%}–{max(pos):.0%} of road pixels).",
     [("Used as weights in the 3D update, it slightly lowers lane F1 one lane over: " + mn(f"{FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}]")
-      + f" ({FF[3]} roads).", {"color": ACC})]], size=19)
+      + f" ({FF[3]} roads).", {"color": ACC})],
+    [(f"Precision stays low: AUPRC {min(r['auprc'] for r in AUC.values()):.3f}–{max(r['auprc'] for r in AUC.values()):.3f}.", {"color": SOFT})]], size=19)
 footer(s, 10)
 notes(s, "FaithFusion weights each repaired pixel by how much new information it adds to the splat. Its map does flag "
          "where fixers invent lane paint, better than splat coverage alone, though far from reliably. But used as weights in the 3D update, it "
@@ -434,12 +435,13 @@ erows = [("EUVS (US)", "new route", "turned 60°")] + \
         [(NAME[m], f"{eu['EUVS L3'][m]:.2f}", f"{eu['EUVS rot60'][m]:.2f}") for m in ("raw", "difix_ref", "difix_ft")]
 table(s, erows, int(7.75 * IN), int(1.8 * IN), (2.3, 1.38, 1.38), RH, size=14)
 text(s, int(7.75 * IN), int(2.05 * IN) + RH * len(erows), int(5.0 * IN), int(1.6 * IN),
-     "LPIPS, lower is better. The generic Difix-ref helps most; Difix-FT, trained on our roads, is worse than the raw render.",
+     "LPIPS, lower is better; fixers applied without retraining. The generic Difix-ref helps most; Difix-FT, trained on our "
+     "roads, is worse on the new route and no better than the raw render at the 60° turn (95% intervals overlap).",
      size=16, color=SOFT)
 footer(s, 11)
-notes(s, f"In closed-loop driving in the HUGSIM simulator, with a released policy over {CL['none']['runs'] // 3} scenarios and "
-         "three seeds, no fixer improves the driving score, our re-implementation included; the spread between seeds is "
-         "larger than any fixer effect. Fixers trained on our roads also transfer only partly to other cities.")
+notes(s, f"In closed-loop driving in HUGSIM, with a released policy over {CL['none']['runs'] // 3} scenarios and three seeds, no "
+         "fixer improves the driving score; the spread between seeds exceeds any fixer effect. In a US city, the generic "
+         "Difix-ref helps most, while Difix-FT is worse on a new route and no better at a sixty-degree turn.")
 
 # 12. Takeaways ------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG2)

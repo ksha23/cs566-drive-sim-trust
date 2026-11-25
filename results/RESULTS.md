@@ -530,7 +530,7 @@ Findings:
   boulevards it is large for scene_3 and scene_4 (lane F1 at ~3 m 0.24 → 0.80 and 0.26 → 0.78) and moderate for
   scene_11 (0.17 → 0.48); on scene_17, 15, 10 and 14 it stays at +0.06 to +0.20. Across 8 roads: +0.33 [+0.18, +0.49]
   at ~3 m and only +0.12 at ~6 m (≤ +0.21 except scene_16). It costs on-path LPIPS on every road (+0.05 pooled) and
-  invents almost no vehicles (0.011 per image at ~3 m, the fewest of all arms: a 3D model cannot invent a per-frame car).
+  invents almost no vehicles (0.011 per image at ~3 m, the fewest of all arms).
 * **Per-frame fixers trained on driving pairs are the most consistent**: Difix-FT and our reimpl. improve lane F1 at
   ~3 m on all 8 roads by +0.30 to +0.80, and reach 0.93–0.99 on the three new boulevards. scene_15 (highway shade,
   traffic) stays hard for every arm (best 0.39 at ~3 m, ≤ 0.08 at ~6 m).
