@@ -8,7 +8,7 @@ figures, tables and CSVs). Implementation notes and paper-vs-ours decisions: [`d
 A driving simulator built from a recorded drive reconstructs the road as a 3D Gaussian splat and renders what the car's
 cameras would see if it drove *differently*. We measure how fast that rendering stops being trustworthy as the camera
 moves sideways, turns or changes height, against **real** images: Para-Lane scans the same roads in three parallel
-lanes (2.3–4.1 m to the neighboring lane, 5.6–7.7 m to the far one), so a splat built from one lane can be checked against the real images of the
+lanes (median lateral offset per lane pair 2.3–4.1 m to the neighboring lane, 5.3–7.8 m to the far one), so a splat built from one lane can be checked against the real images of the
 other lanes. We compare generative "fixers" (released Difix, NVIDIA Fixer, our reimplementation of the Difix training
 recipe, a fine-tune of the released Difix, a small U-Net), the Difix3D+ progressive 3D update and a LiDAR road-surface
 prior, and we count hallucinations (invented or erased lane paint, fake vehicles), not only image similarity.
@@ -30,8 +30,8 @@ python3 -m venv .venv && .venv/bin/pip install torch torchvision --index-url htt
 .venv/bin/pip install -r requirements-cpu.txt
 PYTHON=.venv/bin/python bash scripts/quick_check.sh
 ```
-Step 1 regenerates `results/final/` (tables, robustness checks) and reports whether every table and CSV matches the
-shipped one; step 2 prints PSNR, LPIPS, lane-paint precision and recall and the spurious-vehicle count for the raw
+Step 1 regenerates `results/final/` (tables, robustness checks) and reports whether every table, CSV and the headline numbers
+(`key_numbers.json`) match the shipped ones; step 2 prints PSNR, LPIPS, lane-paint precision and recall and the spurious-vehicle count for the raw
 render and two repaired versions of the example frame (our re-implementation invents a marking there: paint
 precision 0.13 against 0.95 for the raw render). Tested on a clean Ubuntu 24.04 machine with Python 3.12
 (`requirements-cpu.txt` lists the versions). The installation takes a few minutes; the first run downloads the

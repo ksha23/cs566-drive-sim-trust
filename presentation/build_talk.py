@@ -366,7 +366,7 @@ lo_road = "under an elevated highway" if FT.idxmin() == "scene_15" else f"on roa
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Difix-FT one lane over: {FT.max():.2f} on road {hi_road}, but {FT.min():.2f} {lo_road}.",
     f"The raw render stays between {RW.min():.2f} and {RW.max():.2f} on every road.",
-    [(f"On every road the order is the same: raw render < NVIDIA Fixer < Difix-FT.", {"color": ACC})] if ORDER_OK else ""], size=19)
+    [(f"On every road the point estimates order raw render < NVIDIA Fixer < Difix-FT.", {"color": ACC})] if ORDER_OK else ""], size=19)
 footer(s, 8)
 notes(s, f"The level depends strongly on the road. One lane over, Difix-FT reaches {FT.max():.2f} on one boulevard but only "
          f"{FT.min():.2f} {lo_road}, while the raw render stays between {RW.min():.2f} and {RW.max():.2f} everywhere.")

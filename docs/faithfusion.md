@@ -95,7 +95,7 @@ scene_17 only.
 
 Caveats:
 - **Different schedule.** The stage-7 rows use a ±3/±6 m schedule, not ±2/±4/±6.
-- **One scene.** Only scene_16 was run, because of GPU time.
+- **One scene.** Only scene_16 was run at first, because of GPU time (superseded by the eight-road update above).
 - **Restorer.** EIG is paired with Difix rather than their EIGent, which also *consumes* the EIG map as a spatial prior; EIGent weights are not released.
 
 ## 3. Does the map predict where fixers hallucinate?
