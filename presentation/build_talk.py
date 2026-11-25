@@ -401,7 +401,7 @@ text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     [(f"Precision stays low: AUPRC {min(r['auprc'] for r in AUC.values()):.3f}–{max(r['auprc'] for r in AUC.values()):.3f}.", {"color": SOFT})]], size=19)
 footer(s, 10)
 notes(s, "FaithFusion weights each repaired pixel by how much new information it adds to the splat. Its map does flag "
-         "where fixers invent lane paint, better than splat coverage alone, though far from reliably. But used as weights in the 3D update, it "
+         "where fixers invent lane paint, better than splat coverage alone, though far from reliably: its precision stays low. But used as weights in the 3D update, it "
          f"slightly lowers lane agreement one lane over, on {FF[3]} roads.")
 
 # 11. Beyond Para-Lane ---------------------------------------------------------------------------------------------
