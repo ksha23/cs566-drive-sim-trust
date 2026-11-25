@@ -4,12 +4,12 @@
 #SBATCH -c 8
 #SBATCH --mem=32G
 #SBATCH -t 03:00:00
-#SBATCH -o /srv/home/kasha2/cs566/D/logs/env_%j.log
+#SBATCH -o logs/env_%j.log
 # Optional: the environments for running part of stage 22 on a Slurm cluster (here UW-Madison Euler), CPU only.
 # Project env (Python 3.10 via uv, envs/difix_env.txt), our Difix re-implementation venv, FaithFusion's rasterizer,
 # Difix3D's code, and the public Hugging Face weights. Paths: R below; the scripts read CS566D_DATA / CS566D_SMOKE.
 set -euo pipefail
-R=${CS566D_ROOT:-/srv/home/kasha2/cs566/D}; S=$R/smoke; D=$R/data; REPO=$R/repo
+R=${CS566D_ROOT:-$HOME/cs566/D}; S=$R/smoke; D=$R/data; REPO=$R/repo
 module load gcc/12.2.0 nvidia/cuda/12.1.0
 export CUDA_HOME=${CUDA_HOME:-$(dirname "$(dirname "$(which nvcc)")")}
 export HF_HOME=$S/hf UV_CACHE_DIR=$S/uv_cache PIP_CACHE_DIR=$S/pip_cache UV_PYTHON_INSTALL_DIR=$S/uv_python

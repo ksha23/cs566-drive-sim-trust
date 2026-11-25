@@ -22,7 +22,8 @@ ATTR = {
 NAMES = {"raw": "raw splat", "difix": "released Difix", "difix_ref": "released Difix-ref", "nv_fixer": "NVIDIA Fixer",
          "difix_ft": "Difix-FT (ours, fine-tuned)", "difix_reimpl_ref": "our Difix (reimpl., ref)",
          "ours_hfgan_s0": "our small U-Net", "prog_difix_reimpl": "progressive (our Difix)",
-         "road_prior": "road-prior splat (no fixer)", "prog_difix_ft": "progressive (Difix-FT)"}
+         "road_prior": "road-prior splat (no fixer)", "prog_difix_ft": "progressive (Difix-FT)",
+         "prog_none": "refined without fixer (control)"}
 INDEX = f"{OUT}/index.json"
 
 
@@ -112,9 +113,10 @@ def r_progressive():
                    ["raw", "prog_none", "prog_difix_ft", "prog_difix_reimpl"],
                    "Para-Lane scene_16: progressive 3D update, before / after ({off})", "progressive update",
                    "real | original splat | refined without fixer (control) | progressive with Difix-FT | progressive with our Difix",
-                   "The splat itself is refined with fixed pseudo-views at +-3 m and +-6 m (Difix3D+ progressive update), then "
-                   "rendered WITHOUT any fixer. On scene_16 the lane lines come back in 3D (lane F1 0.18 -> 0.90 at ~3 m); on "
-                   "scene_17 the same procedure helps far less, so this gain is scene-dependent.",
+                   "The splat itself is refined with repaired pseudo-views at ±3 m and ±6 m (a simplified Difix3D+ progressive "
+                   "update) and then rendered without any fixer. On scene_16 the lane lines return in 3D (lane F1 at ~3 m: 0.18 "
+                   "for the raw render, 0.91 with our re-implementation, 0.90 with Difix-FT); on scene_17 the same procedure "
+                   "helps far less, so this gain depends on the road.",
                    extra_note="All four renders are plain splat renders (no 2D fixer at test time). The control runs the same "
                               "refinement with raw renders as pseudo-views.")
 

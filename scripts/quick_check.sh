@@ -1,7 +1,7 @@
 #!/bin/bash
 # Quick check without datasets or a GPU (README, "Quick check"; a few minutes on a laptop CPU):
-#   1. regenerate the final tables and robustness checks in results/final/ from the per-image result files that ship
-#      in results/, and compare every CSV and tables.md with the shipped copy (numbers to a relative 1e-9; CSV float
+#   1. regenerate the final tables, robustness checks and headline numbers (key_numbers.json) in results/final/ from the
+#      per-image result files that ship in results/, and compare every CSV, tables.md and key_numbers.json with the shipped copy (numbers to a relative 1e-9; CSV float
 #      formatting differs between pandas versions; the PNG figures are not compared)
 #   2. score the bundled example frame (examples/scene_17_frame, Figure 2 of the report) with the metrics of the results
 # usage: bash scripts/quick_check.sh        (PYTHON=... to choose the interpreter; requirements-cpu.txt)
@@ -10,9 +10,10 @@ cd "$(dirname "$0")/.."
 export PYTHONPATH=$PWD/src${PYTHONPATH:+:$PYTHONPATH} CUDA_VISIBLE_DEVICES=
 PY=${PYTHON:-python3}
 echo "== 1. tables and checks from results/ (results/final/)"
-T=$(mktemp -d); cp results/final/*.csv results/final/tables.md "$T"/
+T=$(mktemp -d); cp results/final/*.csv results/final/tables.md results/final/key_numbers.json "$T"/
 $PY src/eval/final_report.py > /dev/null
 $PY src/eval/midterm_checks.py > /dev/null
+$PY src/eval/key_numbers.py > /dev/null
 $PY - "$T" <<'PY'
 import glob, os, sys
 import numpy as np, pandas as pd
@@ -21,6 +22,14 @@ for f in fs:
     g = os.path.join("results/final", os.path.basename(f))
     if f.endswith(".md"):
         same = open(f).read() == open(g).read()
+    elif f.endswith(".json"):  # the headline numbers quoted on the webpage and in the talk
+        import json
+        flat = lambda x, p="": ([(p, x)] if not isinstance(x, (dict, list)) else
+                                sum((flat(v, f"{p}/{k}") for k, v in (x.items() if isinstance(x, dict) else enumerate(x))), []))
+        a, b = dict(flat(json.load(open(f)))), dict(flat(json.load(open(g))))
+        same = a.keys() == b.keys() and all(
+            np.isclose(a[k], b[k], rtol=1e-9, atol=1e-12) if isinstance(a[k], (int, float)) and isinstance(b[k], (int, float))
+            else a[k] == b[k] for k in a)
     else:
         a, b = pd.read_csv(f), pd.read_csv(g)
         same = a.shape == b.shape and list(a.columns) == list(b.columns) and all(
@@ -29,7 +38,7 @@ for f in fs:
             else a[c].astype(str).equals(b[c].astype(str)) for c in a.columns)
     if not same:
         bad.append(os.path.basename(f))
-print(f"results/final: {len(fs) - len(bad)} of {len(fs)} tables and CSVs reproduced"
+print(f"results/final: {len(fs) - len(bad)} of {len(fs)} tables, CSVs and key_numbers.json reproduced"
       + (f"; DIFFERENT: {', '.join(bad)}" if bad else ""))
 PY
 rm -rf "$T"

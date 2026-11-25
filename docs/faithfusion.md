@@ -87,6 +87,12 @@ their Difix path** on real adjacent-lane frames. Both arms clearly beat the no-f
 0.47–0.48 vs 0.16 at ~3 m). Both are below our progressive loop with the fine-tuned Difix. The restorer matters far more
 than the per-pixel weighting.
 
+**Update (final round, all eight roads; RESULTS §19).** The scene_16 verdict above does not hold with more roads: over
+eight roads the EIG weighting slightly lowers lane F1 at ~3 m (−0.026 [−0.038, −0.015], lower on 7 of 8 roads) and raises
+LPIPS (+0.0035). With all eight roads and five fixers (`results/faithfusion/halluc_auroc.md`), the EIG map's AUROC for
+invented paint at ~3 m is 0.67–0.75 (released Difix-ref 0.70); section 3 below is the earlier analysis of scene_16 and
+scene_17 only.
+
 Caveats:
 - **Different schedule.** The stage-7 rows use a ±3/±6 m schedule, not ±2/±4/±6.
 - **One scene.** Only scene_16 was run, because of GPU time.

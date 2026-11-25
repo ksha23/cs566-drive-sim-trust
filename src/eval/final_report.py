@@ -82,7 +82,7 @@ def fig1(S, roads):
         if yl:
             ax.set_ylim(*yl)
     h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc="lower center", ncol=4, frameon=False, bbox_to_anchor=(0.5, -0.13))
+    fig.legend(h, l, loc="upper center", ncol=4, frameon=False, bbox_to_anchor=(0.5, 0.0))   # below the axis label
     fig.suptitle(f"Trust vs. lateral offset, pooled over {len(roads)} held-out Para-Lane test roads "
                  f"(95% bootstrap CI over lane-pair sequences)", x=0.01, ha="left", fontsize=15, fontweight="bold")
     fig.savefig(f"{OUT}/fig1_trust_vs_offset.png"); plt.close(fig)

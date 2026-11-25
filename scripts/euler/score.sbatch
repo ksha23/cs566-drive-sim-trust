@@ -8,13 +8,13 @@
 #SBATCH --mem=48G
 #SBATCH -t 03:00:00
 #SBATCH --requeue
-#SBATCH -o /srv/home/kasha2/cs566/D/logs/score_%A_%a.log
+#SBATCH -o logs/score_%A_%a.log
 # Stage 22 'collect' on a Slurm cluster: the same metric and CLRNet-lane commands as scripts/22_final_runs.sh collect,
 # for outputs computed on the cluster. Tasks 0-3: FaithFusion updates on one road (ff_eval); tasks 4-6: heading /
 # camera height on one road (the 0-deviation frames and NVIDIA Fixer's outputs copied from the main machine).
 # Resumable after requeue: lane detections and heading rows skip finished methods. Results are copied back to the
 # main machine before stage 23.
-source /srv/home/kasha2/cs566/D/repo/scripts/euler/env.sh
+source "${CS566D_ROOT:-$HOME/cs566/D}/repo/scripts/euler/env.sh"
 T=(ff:scene_10 ff:scene_3 ff:scene_11 ff:scene_4 hd:scene_3 hd:scene_11 hd:scene_4)
 k=${T[$SLURM_ARRAY_TASK_ID]}; s=${k#*:}
 echo "$(hostname) $(nvidia-smi --query-gpu=name --format=csv,noheader) $k"

@@ -8,11 +8,11 @@
 #SBATCH --mem=48G
 #SBATCH -t 02:00:00
 #SBATCH --requeue
-#SBATCH -o /srv/home/kasha2/cs566/D/logs/hd_%A_%a.log
+#SBATCH -o logs/hd_%A_%a.log
 # Stage 22 'heading' on a Slurm cluster: one fixer on one road's heading / height renders per array task (the renders
 # come from the main machine). The 0-deviation frames are left out: on the main machine they are links to the lateral
 # outputs (scripts/15_heading_height.sh, link_zero). NVIDIA Fixer, lanes and metrics run on the main machine.
-source /srv/home/kasha2/cs566/D/repo/scripts/euler/env.sh
+source "${CS566D_ROOT:-$HOME/cs566/D}/repo/scripts/euler/env.sh"
 SC=(scene_3 scene_11 scene_4); ME=(difix difix_ref difix_ft difix_reimpl_ref ours_hfgan_s0)
 i=$SLURM_ARRAY_TASK_ID; s=${SC[i / 5]}; m=${ME[i % 5]}
 echo "$(hostname) $(nvidia-smi --query-gpu=name --format=csv,noheader) $s $m"

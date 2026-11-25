@@ -52,10 +52,12 @@ def fig_offset(path):
     xs = {"0m": 0.0, "~3m": K["median_offset_m"]["~3m"], "~6m": K["median_offset_m"]["~6m"]}
     fig, ax = plt.subplots(figsize=(7.4, 4.6), dpi=200); fig.patch.set_facecolor("#FAF9F6"); ax.set_facecolor("#FAF9F6")
     ends = []
-    for m in ["raw", "difix", "nv_fixer", "difix_reimpl_ref", "difix_ft"]:
+    for j, m in enumerate(["raw", "difix", "nv_fixer", "difix_reimpl_ref", "difix_ft"]):
         d = P[P.method == m].set_index("bin")
         y = [d.loc[b, "lane_f1"] for b in xs]
-        ax.plot(list(xs.values()), y, color=COL[m], lw=2.5, marker="o", ms=8, mec="#FAF9F6", mew=2, zorder=3)
+        lo = [d.loc[b, "lane_f1"] - d.loc[b, "lane_f1_lo"] for b in xs]; hi = [d.loc[b, "lane_f1_hi"] - d.loc[b, "lane_f1"] for b in xs]
+        xx = [x + (j - 2) * 0.09 for x in xs.values()]   # dodge so that overlapping lines and intervals stay visible
+        ax.errorbar(xx, y, yerr=[lo, hi], color=COL[m], lw=2.5, marker="o", ms=8, mec="#FAF9F6", mew=2, capsize=3, zorder=3)
         ends.append([y[-1], m])
     ends.sort()
     ends[0][0] = max(ends[0][0], 0.06)                              # off the x axis
@@ -65,7 +67,7 @@ def fig_offset(path):
         ax.text(xs["~6m"] + 0.25, y, NAME[m], color=FINK, fontsize=14, va="center")
     ax.set_xticks(list(xs.values()), ["on the path", f"one lane over\n({xs['~3m']:.1f} m)", f"two lanes over\n({xs['~6m']:.1f} m)"])
     ax.set_xlim(-0.4, xs["~6m"] + 2.9); ax.set_ylim(0, 1.02)
-    ax.set_ylabel("Lane F1 vs. real photo", fontsize=15, color=FINK2)
+    ax.set_ylabel("Lane F1 vs. real photo (95% CI)", fontsize=15, color=FINK2)
     style(ax); fig.tight_layout(); fig.savefig(path, facecolor=fig.get_facecolor()); plt.close(fig)
 
 
@@ -153,7 +155,7 @@ fig_height(f"{HERE}/img/talk_height.png")
 prs = Presentation()
 prs.slide_width, prs.slide_height = W, H
 BLANK = prs.slide_layouts[6]
-TOTAL = 12
+TOTAL = 13
 
 
 def bg(s, color):
@@ -285,14 +287,13 @@ notes(s, "The Para-Lane dataset makes this measurable: it drives the same roads 
 # 4. Methods -------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
 title(s, "What we compare, and what we built", "METHODS")
-cols = [("Image fixers", ["Released Difix and Difix-ref (NVIDIA)", "NVIDIA Fixer (trained on driving data)",
-                          "Difix training, re-implemented by us from the paper", "Released Difix fine-tuned on our pairs (Difix-FT)",
+cols = [("Image fixers", ["Released Difix, Difix-ref and NVIDIA Fixer (trained on driving data)",
+                          "Our re-implementation of Difix training", "Released Difix fine-tuned on our pairs (Difix-FT)",
                           "Small U-Net from scratch"]),
-        ("Fix the 3D scene", ["Progressive update: repaired views added back into the splat (Difix3D+)",
-                              "The same with FaithFusion's information-gain weights",
+        ("Fix the 3D scene", ["Progressive update: repaired views added back into the splat (Difix3D+), with flat or FaithFusion weights",
                               "Road-surface prior from LiDAR (no generation)"]),
-        ("Built and validated", ["Our Difix trainer beats the official one at equal budget (DL3DV, 3 scenes, single view: LPIPS 0.218 vs. 0.237)",
-                                 "Our own splat projection: matches gsplat to 90.8 dB"])]
+        ("Built and validated", ["Our Difix trainer scores better than the official one at an equal short budget (DL3DV, 3 scenes, single view: LPIPS 0.218 vs. 0.237)",
+                                 "Our own splat projection matches gsplat to 90.8 dB (results use gsplat)"])]
 cx, cw = int(0.6 * IN), int(3.95 * IN)
 for i, (h, items) in enumerate(cols):
     x = cx + i * (cw + int(0.15 * IN))
@@ -327,13 +328,14 @@ title(s, "Better-looking is not the same as correct", "RESULT 2")
 picture(s, "img/talk_hallucination.jpg", int(0.6 * IN), int(1.55 * IN), int(12.1 * IN), int(3.45 * IN))
 nsp = int(min(SP[3], SPR[3])); spw = "every road" if nsp == K["roads"] else f"at least {nsp} of {K['roads']} roads"
 text(s, int(0.6 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
-    "Left: real photo, one lane over. Right: our re-implementation paints a stripe that is not on the road (orange): "
-    "paint precision 0.13 (raw render 0.95), lane F1 still 0.86. Selected frame; drops this large occur on "
-    f"{K['paint_drop_share']['difix_reimpl_ref@~3m']:.0%} of its frames."], size=17)
+    "Left: real photo, one lane over. Right: our re-implementation paints a stripe that is not on the road (orange; "
+    "blue box: erased paint): "
+    "paint precision 0.13 (raw 0.95), lane F1 0.86. Selected frame; such drops occur on "
+    f"{K['paint_drop_share']['difix_reimpl_ref@~3m']:.0%} of its frames."], size=16)
 text(s, int(6.8 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
-    f"Over all frames, both fixers that copy from a reference view add vehicles on {spw} (ours +{SP[0]:.3f}, "
+    f"Both fixers that copy from a reference view add vehicles on {spw} (mean per-road change: ours +{SP[0]:.3f}, "
     f"released Difix-ref +{SPR[0]:.3f} per image); Difix-FT does not.",
-    f"Repairing the 3D scene invents the fewest vehicles ({K['spurious_3m']['prog_difix_reimpl']:.2f} per image)."], size=17)
+    f"Repairing the 3D scene invents the fewest vehicles ({K['spurious_3m']['prog_difix_reimpl']:.2f} per image)."], size=16)
 footer(s, 6, credit=PARALANE)
 notes(s, "Lane agreement alone hides errors. Orange marks invented lane paint, blue erased paint. Our re-implementation "
          "restores the lanes but here paints a stripe that is not on the road; over all frames, both fixers that copy from a "
@@ -397,20 +399,13 @@ text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Its information-gain map partly flags invented lane paint one lane over: AUROC {min(eig):.2f}–{max(eig):.2f} across five "
     f"fixers, against {min(cov):.2f}–{max(cov):.2f} for splat coverage alone (invented paint: {min(pos):.0%}–{max(pos):.0%} of road pixels).",
     [("Used as weights in the 3D update, it slightly lowers lane F1 one lane over: " + mn(f"{FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}]")
-      + f" ({FF[3]} roads).", {"color": ACC})],
+      + f" (mean over {FF[3]} roads).", {"color": ACC})],
     [(f"Precision stays low: AUPRC {min(r['auprc'] for r in AUC.values()):.3f}–{max(r['auprc'] for r in AUC.values()):.3f}.", {"color": SOFT})]], size=19)
 footer(s, 10)
 notes(s, "FaithFusion weights each repaired pixel by how much new information it adds to the splat. Its map does flag "
          "where fixers invent lane paint, better than splat coverage alone, though far from reliably: its precision stays low. But used as weights in the 3D update, it "
          f"slightly lowers lane agreement one lane over, on {FF[3]} roads.")
 
-# 11. Beyond Para-Lane ---------------------------------------------------------------------------------------------
-s = prs.slides.add_slide(BLANK); bg(s, BG)
-title(s, "Gains do not carry into driving or to other cities", "RESULT 6")
-fx = [f for f in ("difix", "difix_ft", "nv_fixer", "difix_reimpl") if f in CL]
-rows = [("Closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
-       [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx]
-RH = int(0.46 * IN)
 def table(s, rows, x, y, widths, rh, size=15):
     tb = s.shapes.add_table(len(rows), len(widths), Emu(x), Emu(y), Emu(int(sum(widths) * IN)), Emu(rh * len(rows))).table
     for j, wd in enumerate(widths):
@@ -425,25 +420,44 @@ def table(s, rows, x, y, widths, rh, size=15):
                 r.font.name = FONT; r.font.size = Pt(size); r.font.color.rgb = INK; r.font.bold = (i == 0)
 
 
-table(s, rows, int(0.6 * IN), int(1.8 * IN), (2.4, 1.4, 3.0), RH)
-text(s, int(0.6 * IN), int(2.05 * IN) + RH * len(rows), int(6.8 * IN), int(0.9 * IN),
-     f"Closed loop in HUGSIM: released LTF policy, {CL['none']['runs'] // 3} scenarios × 3 seeds; paired 95% intervals. No fixer raises "
-     "the score; the spread between seeds (0.31–0.46) exceeds every fixer effect.", size=16, color=SOFT)
-T3 = pd.read_csv(f"{RES}/table3_cross_dataset.csv")
-eu = {k: T3[T3.condition.str.startswith(k)].set_index("method").lpips for k in ("EUVS L3", "EUVS rot60")}
-erows = [("EUVS (US)", "new route", "turned 60°")] + \
-        [(NAME[m], f"{eu['EUVS L3'][m]:.2f}", f"{eu['EUVS rot60'][m]:.2f}") for m in ("raw", "difix_ref", "difix_ft")]
-table(s, erows, int(7.75 * IN), int(1.8 * IN), (2.3, 1.38, 1.38), RH, size=14)
-text(s, int(7.75 * IN), int(2.05 * IN) + RH * len(erows), int(5.0 * IN), int(1.6 * IN),
-     "LPIPS, lower is better; fixers applied without retraining. The generic Difix-ref helps most; Difix-FT, trained on our "
-     "roads, is worse on the new route and no better than the raw render at the 60° turn (95% intervals overlap).",
-     size=16, color=SOFT)
+# 11. Closed loop --------------------------------------------------------------------------------------------------
+s = prs.slides.add_slide(BLANK); bg(s, BG)
+title(s, "No fixer raises closed-loop driving scores", "RESULT 6")
+fx = [f for f in ("difix", "difix_ft", "nv_fixer", "difix_reimpl") if f in CL]
+rows = [("HUGSIM, closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
+       [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx]
+RH = int(0.5 * IN)
+table(s, rows, int(0.6 * IN), int(1.8 * IN), (2.8, 1.4, 3.3), RH, size=16)
+text(s, int(0.6 * IN), int(2.05 * IN) + RH * len(rows), int(7.5 * IN), int(0.9 * IN),
+     f"Released LTF policy, {CL['none']['runs'] // 3} scenarios × 3 seeds on nuScenes scenes; paired 95% intervals.", size=16, color=SOFT)
+text(s, int(8.5 * IN), int(1.9 * IN), int(4.2 * IN), int(4.9 * IN), [
+    "No fixer raises the driving score, our re-implementation included.",
+    "NVIDIA Fixer lowers it, mostly through one of the three policy seeds.",
+    [("The spread between seeds (0.31–0.46) exceeds every fixer effect.", {"color": ACC})]], size=19)
 footer(s, 11)
 notes(s, f"In closed-loop driving in HUGSIM, with a released policy over {CL['none']['runs'] // 3} scenarios and three seeds, no "
-         "fixer improves the driving score; the spread between seeds exceeds any fixer effect. In a US city, the generic "
-         "Difix-ref helps most, while Difix-FT is worse on a new route and no better at a sixty-degree turn.")
+         "fixer raises the driving score, our re-implementation included; NVIDIA Fixer lowers it slightly, mostly through one "
+         "seed. The spread between seeds exceeds any fixer effect.")
 
-# 12. Takeaways ------------------------------------------------------------------------------------------------------
+# 12. Other cities -------------------------------------------------------------------------------------------------
+s = prs.slides.add_slide(BLANK); bg(s, BG)
+title(s, "Gains shrink in another city", "RESULT 7")
+T3 = pd.read_csv(f"{RES}/table3_cross_dataset.csv")
+eu = {k: T3[T3.condition.str.startswith(k)].set_index("method") for k in ("EUVS L3", "EUVS rot60")}
+ci = lambda d, m: f"{d.loc[m, 'lpips']:.2f} [{d.loc[m, 'lpips_clo']:.2f}, {d.loc[m, 'lpips_chi']:.2f}]"
+erows = [("EUVS (US), LPIPS ↓", "new route", "turned 60°")] + \
+        [(NAME[m], ci(eu["EUVS L3"], m), ci(eu["EUVS rot60"], m)) for m in ("raw", "difix_ref", "difix_ft")]
+table(s, erows, int(0.6 * IN), int(1.8 * IN), (2.8, 2.35, 2.35), RH, size=16)
+text(s, int(0.6 * IN), int(2.05 * IN) + RH * len(erows), int(7.5 * IN), int(0.9 * IN),
+     "Fixers applied without retraining; 95% intervals over (scene, camera) sequences.", size=16, color=SOFT)
+text(s, int(8.5 * IN), int(1.9 * IN), int(4.2 * IN), int(4.9 * IN), [
+    "The generic released Difix-ref helps most in both settings.",
+    [("Difix-FT, trained on our roads, is worse on the new route and no better than the raw render at the 60° turn.", {"color": ACC})]], size=19)
+footer(s, 12)
+notes(s, "In a US city the generic Difix-ref helps most, while Difix-FT, trained on our roads, is worse on a new route and no "
+         "better at a sixty-degree turn. Fixers trained on matching data do not carry their advantage to other places.")
+
+# 13. Takeaways ------------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG2)
 text(s, int(0.8 * IN), int(0.7 * IN), int(11.5 * IN), int(0.5 * IN), "TAKEAWAYS", size=16, color=ACC, bold=True)
 text(s, int(0.8 * IN), int(1.3 * IN), int(11.7 * IN), int(5.0 * IN), [
@@ -453,11 +467,10 @@ text(s, int(0.8 * IN), int(1.3 * IN), int(11.7 * IN), int(5.0 * IN), [
     "4. Gains depend on the road, shrink with camera height and other cities, and do not raise closed-loop driving scores."],
     size=24, color=BG)
 text(s, int(0.8 * IN), int(5.8 * IN), int(11.7 * IN), int(0.9 * IN), [f"Project page, videos and results: {URL}", f"Code: {CODE_URL}"], size=20, color=MUTED)
-footer(s, 12, dark=True)
-notes(s, "To summarize: trust drops quickly off the recorded path; fixers trained on matching data recover much of it one "
-         "lane over but far less beyond; they trade correctness for realism in ways we can measure; and the gains are "
-         "road-specific and do not show up in closed-loop driving. The code is on GitHub, and the videos and results are on our "
-         "webpage. Thank you.")
+footer(s, 13, dark=True)
+notes(s, "To summarize: trust drops quickly off the recorded path; trained fixers recover much of it one lane over but far "
+         "less beyond; realism and correctness diverge; and the gains depend on the road and do not show up in closed-loop "
+         "driving. Code, videos and results are linked from our webpage. Thank you.")
 
 prs.save("cs566_drive_sim_talk.pptx")
 words = sum(len(sl.notes_slide.notes_text_frame.text.split()) for sl in prs.slides)

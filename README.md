@@ -8,7 +8,7 @@ figures, tables and CSVs). Implementation notes and paper-vs-ours decisions: [`d
 A driving simulator built from a recorded drive reconstructs the road as a 3D Gaussian splat and renders what the car's
 cameras would see if it drove *differently*. We measure how fast that rendering stops being trustworthy as the camera
 moves sideways, turns or changes height, against **real** images: Para-Lane scans the same roads in three parallel
-lanes (about 3 m and 6–8 m apart), so a splat built from one lane can be checked against the real images of the
+lanes (2.3–4.1 m to the neighboring lane, 5.6–7.7 m to the far one), so a splat built from one lane can be checked against the real images of the
 other lanes. We compare generative "fixers" (released Difix, NVIDIA Fixer, our reimplementation of the Difix training
 recipe, a fine-tune of the released Difix, a small U-Net), the Difix3D+ progressive 3D update and a LiDAR road-surface
 prior, and we count hallucinations (invented or erased lane paint, fake vehicles), not only image similarity.
@@ -38,7 +38,7 @@ precision 0.13 against 0.95 for the raw render). Tested on a clean Ubuntu 24.04 
 LPIPS (AlexNet) and YOLO11m weights, about 0.3 GB, and the check itself then runs in under a minute.
 
 ## Hardware used
-Everything except part of stage 22 ran on one workstation: 1x NVIDIA RTX 3090 (24 GB, driver 595, CUDA 12.x runtime), AMD Ryzen 7 9700X
+Everything except part of stage 22 ran on one workstation (called sbel in logs and notes): 1x NVIDIA RTX 3090 (24 GB, driver 595, CUDA 12.x runtime), AMD Ryzen 7 9700X
 (8 cores / 16 threads), 32 GB RAM, Ubuntu 22.04, ~0.5 TB of disk for data and outputs. The GPU was shared with other
 projects through a lock wrapper (`CS566D_GPUJOB`, default `~/cs566/gpujob.sh`, which waits until the GPU has no
 compute processes and then runs the command); every GPU stage below is written as `$GJ <command>`. If that file does
@@ -144,7 +144,7 @@ finished outputs). Data products go to `$CS566D_DATA`; the small result files go
 | 15 heading / height | `scripts/15_heading_height.sh render`; `... fixall`; `... lanes|eval <scene>`; `... summary` | ~3 h | `results/heading` |
 | 16 EUVS | `scripts/16_euvs.sh download`; `... fitall`; `... fixall`; `... lanes|eval L3|rot60`; `... summary` | ~3 h | `results/euvs` |
 | 17 MV2 | `scripts/17_mv2.sh download`; `... masks|geom <seqs>`; `... fitall`; `... fixall`; `... lanes|eval <dir>`; `... summary` | ~4 h | `results/mv2` |
-| 18 more test roads | `scripts/18_more_scenes.sh screen <scenes>`; for each new scene `... fit|fix|eval|prog|road <scene>`; `... summary` | ~2–2.5 h per scene | `results/eval_more` |
+| 18 more test roads | `scripts/18_more_scenes.sh screen <scenes>`; for each new scene `... fit|fix|eval|prog|road <scene>`; `... summary` | ~1.5–2.5 h per scene | `results/eval_more` |
 | 19 DL3DV validation | `scripts/19_dl3dv.sh download`; `... fit 30|60`; `... json`; `... ours448|official448|oursref`; `... eval released|trained|metrics` | ~4 h | `results/dl3dv` |
 | 20 videos | `$GJ scripts/20_videos.sh sweeps`; `scripts/20_videos.sh make` | ~1 h GPU + minutes | `results/videos` (index.json) |
 | 21 our own renderer | `$GJ scripts/21_own_renderer.sh check|shortfit|refit|render|eval` (hybrid renderer vs gsplat, refit of scene_16/clip_0; `docs/own_renderer.md`) | ~1.5 h GPU | `results/own_renderer` |

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Stage 4: our fixer (smaller version, from scratch) = compact residual U-Net, 1800 steps each:
-# {base (L1+LPIPS), +HF (Sobel high-frequency loss)} x seeds {0,1}; +HF+GAN was implemented but not trained (time).
+# {base (L1+LPIPS), +HF (Sobel high-frequency loss)} x seeds {0,1}; +HF+GAN is stage 4b (scripts/04b_train_unet_gan.sh).
 # Grouped into two GPU jobs (<= 60 min); running two concurrently OOMs the 24 GB card.
 source "$(dirname "$0")/lib/env.sh"; cd "$REPO"
 TRAIN=scene_20,scene_21,scene_22,scene_23,scene_24; VAL=scene_19; STEPS=${STEPS:-1800}

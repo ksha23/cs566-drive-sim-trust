@@ -218,12 +218,14 @@ Difix 0.69–0.70 s/img, Difix-ref 1.42 s/img, Difix-FT 0.69 s/img, NVIDIA Fixer
   0.50 → 0.53). The progressive gain is scene-dependent: over eight test roads it is large on three of them
   (+0.73 lane F1 at ~3 m on scene_16, +0.52 to +0.56 on scene_3 and scene_4, +0.06 to +0.31 on the other five; §15). Per-frame fixers trained on driving pairs help consistently
   (+0.30 to +0.80 on all eight).
-* **HUGSIM [3]**: LTF scores reproduce in trend and, for hard/extreme, in value; fixers do not measurably change policy
-  scores (Difix, Difix-FT; 75 paired runs each) or hurt them (NVIDIA Fixer −0.05, our U-Net −0.21).
+* **HUGSIM [3]**: LTF scores reproduce in trend and, for hard/extreme, in value; no fixer raises policy scores (Difix,
+  Difix-FT, our re-implementation; 75 paired runs each); NVIDIA Fixer lowers them (−0.05, mostly from one policy seed) and
+  our U-Net more (−0.21).
 * **ReconDreamer [5]** metrics: detector agreement decays with offset (NTA-IoU −16% at 3 m); lane agreement (NTL-IoU)
   decays much faster on Para-Lane.
 * **FaithFusion [2]**: EIG maps are computable with their code and partially predict invented lane paint near the
-  path, but EIG loss weighting does not change the refined splat measurably in our setting.
+  path, but EIG loss weighting does not help: over all eight roads it slightly lowers lane F1 at ~3 m
+  (−0.026 [−0.038, −0.015], §19).
 * **NVIDIA Fixer [4]**: driving-trained restoration transfers well across datasets (best NTA-IoU on nuScenes, good
   zero-shot lane recovery on Para-Lane, best PSNR on EUVS and MV2), but on MV2 it invents the most vehicles (§14);
   fine-tuning it fits on 24 GB.

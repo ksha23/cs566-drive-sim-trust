@@ -30,9 +30,10 @@ Train counts: 11,900 pairs (full 3,320, identity 1,600, under-fit 5,150, cycle 1
 
 ## Our fixer, smaller version from scratch (`src/fixers/unet/`)
 Residual U-Net (base 48, 4 levels, GroupNorm+SiLU ResBlocks, zero-initialized output conv → identity at init), 15.2M
-params. L1 + 0.2·LPIPS-VGG, optional Sobel high-frequency loss (w 0.5) and PatchGAN hinge term (implemented, not
-trained for lack of GPU time). 512² crops, batch 6, AdamW 2e-4, cosine schedule, 1,800 steps; checkpoint selected by
-val LPIPS on scene_19; config selected by mean val LPIPS over seeds (base, `results/training/selected_ours.txt`).
+params. L1 + 0.2·LPIPS-VGG, optional Sobel high-frequency loss (w 0.5) and PatchGAN hinge term (w 0.05 from step 1,000;
+stage 4b, `scripts/04b_train_unet_gan.sh`). 512² crops, batch 6, AdamW 2e-4, cosine schedule, 1,800 steps; checkpoint selected by
+val LPIPS on scene_19; config selected by mean val LPIPS over seeds: +HF +GAN (`hfgan_s0`, `results/training/selected_ours.txt`), the U-Net in
+every reported result.
 
 ## Difix fine-tune from released weights (`src/fixers/difix_ft/`)
 Not the reimplementation: starts from `nvidia/difix`, full U-Net fine-tune (VAE and its skip-LoRA frozen) with fp32
