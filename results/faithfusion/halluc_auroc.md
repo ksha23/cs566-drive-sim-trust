@@ -1,4 +1,4 @@
-| label | method | offset | images | positive rate | AUROC EIG [95% CI] | AUROC reproj. [95% CI] | AUROC 1-alpha | AUPRC EIG / reproj. / 1-alpha |
+| label | method | offset | images | positive rate (share of road-region pixels) | AUROC EIG [95% CI] | AUROC reproj. [95% CI] | AUROC 1-alpha | AUPRC EIG / reproj. / 1-alpha |
 |---|---|---|---|---|---|---|---|---|
 | change | difix | ~3m | 2825 | 0.004 | 0.719 [0.710, 0.730] | 0.703 [0.696, 0.711] | 0.742 | 0.011 / 0.006 / 0.013 |
 | paint | difix | ~3m | 2825 | 0.015 | 0.712 [0.695, 0.731] | 0.579 [0.564, 0.589] | 0.461 | 0.036 / 0.015 / 0.031 |

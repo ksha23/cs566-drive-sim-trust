@@ -115,7 +115,7 @@ def main():
         rows.append(r); print(json.dumps({k: (round(v, 3) if isinstance(v, float) else v) for k, v in r.items()}), flush=True)
     json.dump(rows, open(f"{a.out}/halluc_auroc.json", "w"), indent=1)
     with open(f"{a.out}/halluc_auroc.md", "w") as f:
-        f.write("| label | method | offset | images | positive rate | AUROC EIG [95% CI] | AUROC reproj. [95% CI] | AUROC 1-alpha | AUPRC EIG / reproj. / 1-alpha |\n|---|---|---|---|---|---|---|---|---|\n")
+        f.write("| label | method | offset | images | positive rate (share of road-region pixels) | AUROC EIG [95% CI] | AUROC reproj. [95% CI] | AUROC 1-alpha | AUPRC EIG / reproj. / 1-alpha |\n|---|---|---|---|---|---|---|---|---|\n")
         for r in rows:
             f.write(f"| {r['label']} | {r['method']} | {r['bin']} | {r['n_images']} | {r['pos_rate']:.3f} | "
                     f"{r['auroc_gain']:.3f} [{r['auroc_gain_lo']:.3f}, {r['auroc_gain_hi']:.3f}] | "

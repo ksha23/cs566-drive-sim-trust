@@ -199,8 +199,8 @@ def title(s, t, eyebrow):
 
 def footer(s, n, dark=False, credit=None):
     c = MUTED if dark else SOFT
-    text(s, int(0.6 * IN), int(7.0 * IN), int(9 * IN), int(0.3 * IN), credit or "Kyle Sha, Allen Xia · CS 566, Fall 2026", size=11, color=c)
-    text(s, int(11.9 * IN), int(7.0 * IN), int(0.8 * IN), int(0.3 * IN), f"{n} / {TOTAL}", size=11, color=c, align=PP_ALIGN.RIGHT)
+    text(s, int(0.6 * IN), int(7.0 * IN), int(9 * IN), int(0.3 * IN), credit or "Kyle Sha, Allen Xia · CS 566, Fall 2026", size=12, color=c)
+    text(s, int(11.9 * IN), int(7.0 * IN), int(0.8 * IN), int(0.3 * IN), f"{n} / {TOTAL}", size=12, color=c, align=PP_ALIGN.RIGHT)
 
 
 def notes(s, t):
@@ -311,7 +311,7 @@ c3 = K["lane_f1_ci_3m"]
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Raw render: {L['raw']['0m']:.2f} on the path, {L['raw']['~3m']:.2f} one lane over, {L['raw']['~6m']:.2f} two lanes over.",
     f"Best one lane over: Difix-FT {L['difix_ft']['~3m']:.2f} [{c3['difix_ft'][0]:.2f}, {c3['difix_ft'][1]:.2f}].",
-    [(f"Difix-FT is ahead of NVIDIA Fixer on {ROADS_POS} roads (+{V[0]:.2f} on the same frames).", {"color": ACC})],
+    [(f"Difix-FT is ahead of NVIDIA Fixer on {ROADS_POS} roads (+{V[0]:.2f} [+{V[1]:.2f}, +{V[2]:.2f}] on the same frames).", {"color": ACC})],
     f"Two lanes over, the best fixer reaches {max(L[m]['~6m'] for m in ('difix_ft', 'difix_reimpl_ref')):.2f}."], size=19)
 footer(s, 5)
 notes(s, f"Lane agreement with the real photo falls from {L['raw']['0m']:.2f} on the path to {L['raw']['~3m']:.2f} one lane "
@@ -345,7 +345,7 @@ cw_, ch_ = int(11.5 * IN), int(11.5 * IN * 482 / 1280)   # the clip's own aspect
 s.shapes.add_movie("img/talk_clip_3m.mp4", Emu((prs.slide_width - cw_) // 2), Emu(int(1.6 * IN)), Emu(cw_), Emu(ch_),
                    poster_frame_image="img/talk_clip_3m_poster.jpg", mime_type="video/mp4")
 text(s, (prs.slide_width - cw_) // 2, int(1.72 * IN) + ch_, cw_, int(0.8 * IN),
-     "Marks follow the metrics' rules, frame by frame. Orange: invented paint · blue: erased paint · "
+     "Video, 10 s (one frame shown when not playing). Marks follow the metrics' rules, frame by frame. Orange: invented paint · blue: erased paint · "
      "red box: vehicle with no counterpart in the real photo.", size=16, color=SOFT)
 footer(s, 7, credit=PARALANE)
 notes(s, "This clip from our webpage shows the real photo one lane over, the raw render and four fixers. The marks are "
@@ -378,10 +378,11 @@ HS = pd.read_csv(os.path.join(HERE, "..", "results", "heading", "summary.csv"))
 HS = HS[(HS.axis == "height") & (HS.level.abs() == 1.0)]
 hraw = {lv: HS[(HS.level == lv) & (HS.method == "raw")].lane_f1.iloc[0] for lv in (1.0, -1.0)}
 hbest = {lv: HS[(HS.level == lv) & (HS.method != "raw")].lane_f1.max() for lv in (1.0, -1.0)}
+hname = {lv: NAME[HS[(HS.level == lv) & (HS.method != "raw")].sort_values("lane_f1").method.iloc[-1]] for lv in (1.0, -1.0)}
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Turning ±15° ({nh} roads): raw lane F1 {K['heading_raw_lane_f1']['0']:.2f} → {K['heading_raw_lane_f1']['15']:.2f}.",
-    f"Raising it 1 m: raw {hraw[1.0]:.2f}, best fixer {hbest[1.0]:.2f}.",
-    [(f"Lowering it 1 m: raw {hraw[-1.0]:.2f}, best fixer {hbest[-1.0]:.2f} (only a thin strip of road is comparable).", {"color": ACC})]], size=19)
+    f"Raising it 1 m: raw {hraw[1.0]:.2f}, best {hbest[1.0]:.2f} ({hname[1.0][0].lower() + hname[1.0][1:]}).",
+    [(f"Lowering it 1 m: raw {hraw[-1.0]:.2f}, best {hbest[-1.0]:.2f}; only a thin strip of road is comparable there.", {"color": ACC})]], size=19)
 footer(s, 9)
 notes(s, "Turning the camera by fifteen degrees barely changes lane agreement. Changing its height does, and fixers help "
          f"little there: one meter up, lane agreement is {hraw[1.0]:.2f} raw and {hbest[1.0]:.2f} at best; one meter down, it "
@@ -389,45 +390,52 @@ notes(s, "Turning the camera by fifteen degrees barely changes lane agreement. C
 
 # 10. FaithFusion ---------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
-title(s, "FaithFusion: a useful map, unhelpful weights", "RESULT 5")
+title(s, "FaithFusion: a modest map, unhelpful weights", "RESULT 5")
 picture(s, "img/talk_faithfusion.png", int(0.4 * IN), int(1.6 * IN), int(7.6 * IN), int(4.73 * IN))
 eig = [r["eig"] for r in AUC.values()]; cov = [r["cov"] for r in AUC.values()]; pos = [r["pos"] for r in AUC.values()]
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
-    f"Its information-gain map flags invented lane paint one lane over: AUROC {min(eig):.2f}–{max(eig):.2f} across five "
-    f"fixers, against {min(cov):.2f}–{max(cov):.2f} for splat coverage alone ({min(pos):.0%}–{max(pos):.0%} of pixels are invented paint).",
+    f"Its information-gain map partly flags invented lane paint one lane over: AUROC {min(eig):.2f}–{max(eig):.2f} across five "
+    f"fixers, against {min(cov):.2f}–{max(cov):.2f} for splat coverage alone (invented paint: {min(pos):.0%}–{max(pos):.0%} of road pixels).",
     [("Used as weights in the 3D update, it slightly lowers lane F1 one lane over: " + mn(f"{FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}]")
       + f" ({FF[3]} roads).", {"color": ACC})]], size=19)
 footer(s, 10)
 notes(s, "FaithFusion weights each repaired pixel by how much new information it adds to the splat. Its map does flag "
-         "where fixers invent lane paint, far better than splat coverage alone. But used as weights in the 3D update, it "
+         "where fixers invent lane paint, better than splat coverage alone, though far from reliably. But used as weights in the 3D update, it "
          f"slightly lowers lane agreement one lane over, on {FF[3]} roads.")
 
 # 11. Beyond Para-Lane ---------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
 title(s, "Gains do not carry into driving or to other cities", "RESULT 6")
 fx = [f for f in ("difix", "difix_ft", "nv_fixer", "difix_reimpl") if f in CL]
-rows = [("HUGSIM closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
+rows = [("Closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
        [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx]
 RH = int(0.46 * IN)
-tb = s.shapes.add_table(len(rows), 3, Emu(int(0.6 * IN)), Emu(int(1.8 * IN)), Emu(int(7.3 * IN)), Emu(RH * len(rows))).table
-for j, wd in enumerate((2.9, 1.3, 3.1)):
-    tb.columns[j].width = Emu(int(wd * IN))
-for i, row in enumerate(rows):
-    tb.rows[i].height = Emu(RH)
-    for j, v in enumerate(row):
-        c = tb.cell(i, j); c.text = v
-        c.fill.solid(); c.fill.fore_color.rgb = LIGHT if i == 0 else RGBColor(0xFF, 0xFF, 0xFF)
-        p = c.text_frame.paragraphs[0]; p.alignment = PP_ALIGN.LEFT if j == 0 else PP_ALIGN.RIGHT
-        for r in p.runs:
-            r.font.name = FONT; r.font.size = Pt(15); r.font.color.rgb = INK; r.font.bold = (i == 0)
-text(s, int(0.6 * IN), int(2.0 * IN) + RH * len(rows), int(7.3 * IN), int(0.9 * IN),
-     f"Released LTF policy, {CL['none']['runs'] // 3} scenarios × 3 seeds; paired 95% intervals. "
-     "The spread between seeds (0.31–0.46) exceeds every fixer effect.", size=15, color=SOFT)
-T3 = pd.read_csv(f"{RES}/table3_cross_dataset.csv"); e = T3[T3.condition.str.startswith("EUVS L3")].set_index("method")
-text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
-    "Closed-loop driving: no fixer raises the driving score; only NVIDIA Fixer's change excludes zero, and it is negative.",
-    f"Other cities (EUVS, US): the generic Difix-ref helps most (LPIPS {e.loc['raw', 'lpips']:.2f} → {e.loc['difix_ref', 'lpips']:.2f}); "
-    f"Difix-FT, trained on our roads, gets worse ({e.loc['difix_ft', 'lpips']:.2f})."], size=18)
+def table(s, rows, x, y, widths, rh, size=15):
+    tb = s.shapes.add_table(len(rows), len(widths), Emu(x), Emu(y), Emu(int(sum(widths) * IN)), Emu(rh * len(rows))).table
+    for j, wd in enumerate(widths):
+        tb.columns[j].width = Emu(int(wd * IN))
+    for i, row in enumerate(rows):
+        tb.rows[i].height = Emu(rh)
+        for j, v in enumerate(row):
+            c = tb.cell(i, j); c.text = v
+            c.fill.solid(); c.fill.fore_color.rgb = LIGHT if i == 0 else RGBColor(0xFF, 0xFF, 0xFF)
+            p = c.text_frame.paragraphs[0]; p.alignment = PP_ALIGN.LEFT if j == 0 else PP_ALIGN.RIGHT
+            for r in p.runs:
+                r.font.name = FONT; r.font.size = Pt(size); r.font.color.rgb = INK; r.font.bold = (i == 0)
+
+
+table(s, rows, int(0.6 * IN), int(1.8 * IN), (2.4, 1.4, 3.0), RH)
+text(s, int(0.6 * IN), int(2.05 * IN) + RH * len(rows), int(6.8 * IN), int(0.9 * IN),
+     f"Closed loop in HUGSIM: released LTF policy, {CL['none']['runs'] // 3} scenarios × 3 seeds; paired 95% intervals. No fixer raises "
+     "the score; the spread between seeds (0.31–0.46) exceeds every fixer effect.", size=16, color=SOFT)
+T3 = pd.read_csv(f"{RES}/table3_cross_dataset.csv")
+eu = {k: T3[T3.condition.str.startswith(k)].set_index("method").lpips for k in ("EUVS L3", "EUVS rot60")}
+erows = [("EUVS (US)", "new route", "turned 60°")] + \
+        [(NAME[m], f"{eu['EUVS L3'][m]:.2f}", f"{eu['EUVS rot60'][m]:.2f}") for m in ("raw", "difix_ref", "difix_ft")]
+table(s, erows, int(7.75 * IN), int(1.8 * IN), (2.3, 1.38, 1.38), RH, size=14)
+text(s, int(7.75 * IN), int(2.05 * IN) + RH * len(erows), int(5.0 * IN), int(1.6 * IN),
+     "LPIPS, lower is better. The generic Difix-ref helps most; Difix-FT, trained on our roads, is worse than the raw render.",
+     size=16, color=SOFT)
 footer(s, 11)
 notes(s, f"In closed-loop driving in the HUGSIM simulator, with a released policy over {CL['none']['runs'] // 3} scenarios and "
          "three seeds, no fixer improves the driving score, our re-implementation included; the spread between seeds is "

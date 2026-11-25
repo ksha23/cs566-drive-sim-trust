@@ -42,8 +42,8 @@ scene_3 / 11 / 4 likewise). Round 2 took about 1.5 GPU-h per road (fit 22–27 m
 progressive 15 min, road prior 26–30 min):
 * 3 lane splats (12k iterations) + eval pairs;
 * fixers: released Difix, NVIDIA Fixer, Difix-FT, our Difix-ref reimplementation (`difix_reimpl_ref`), our U-Net
-  (`hfgan_s0`); released Difix-ref on scene_14 and scene_15 only (1.4 s/img; not one of the key comparisons, skipped
-  on scene_10, scene_3, scene_11 and scene_4 for GPU time);
+  (`hfgan_s0`); released Difix-ref on scene_14 and scene_15 (1.4 s/img; first skipped on scene_10, scene_3, scene_11 and
+  scene_4 for GPU time, then run there in the final round, RESULTS §19);
 * progressive update with our Difix-ref reimplementation (`prog_difix_reimpl`, same schedule as stage 7d);
 * road-surface prior refit (`road_prior`), on the new scenes and on scene_17 (scene_16 had it already);
 * metrics: image / paint / YOLO (`src/eval/evaluate.py`) and CLRNet lanes.
@@ -55,9 +55,10 @@ progressive 15 min, road prior 26–30 min):
   (0.93–0.99 for both).
 * The progressive update's gain is scene-dependent: large on scene_16, scene_3 and scene_4 (+0.52 to +0.73 lane F1
   at ~3 m), moderate on scene_11 (+0.31), small on the other four (+0.06 to +0.20). Across 8 roads: +0.33
-  [+0.19, +0.49] at ~3 m, +0.12 at ~6 m. It costs about +0.05 LPIPS on-path.
-* The road prior helps on all eight roads (lane F1 +0.08 to +0.35 at ~3 m), invents nothing, adds little at ~6 m.
-* Our Difix-ref reimpl. adds fake vehicles on every road (+0.089 per image at ~3 m [+0.062, +0.117]); Difix-FT does not.
+  [+0.18, +0.49] at ~3 m, +0.12 at ~6 m. It costs about +0.05 LPIPS on-path.
+* The road prior helps on all eight roads (lane F1 +0.08 to +0.35 at ~3 m) without an image generator (its
+  spurious-vehicle rate stays at the raw render's), and adds little at ~6 m.
+* Our Difix-ref reimpl. adds fake vehicles on every road (+0.089 per image at ~3 m [+0.063, +0.115]); Difix-FT does not.
 * The paint-mask metric misfires on hard shadows and bright curb strips (scene_15, scene_3/4/11); lane F1 does not.
 
 ## Problems met
