@@ -3,7 +3,7 @@
 Round r (offsets d_r = 3, then 6 m): take every 3rd training pose of lane A, shift it d_r to the left or right
 (alternating; the procedure does not know where the other lanes are), render with the current splat, restore the
 render with the fixer, and add it as a pseudo-view. As in DriveRestorer, the pseudo-view loss is masked to the
-reliable region: no sky (sky-coloured or empty pixels in the upper half) and no far region (rendered depth
+reliable region: no sky (sky-colored or empty pixels in the upper half) and no far region (rendered depth
 > 40 m); empty pixels in the lower half (road holes at large offsets) are kept, since the fixer fills them. The splat is then refined on real views + all pseudo-views so far (src/splats/fit_splat.py --init_splat
 --pseudo, 2k iters), and the next round starts from the refined splat. The final splat is rendered at the other
 lanes' REAL poses (no post-fix) and written like a fixer output, method name prog_<fixer>, so evaluate.py scores it.
@@ -48,7 +48,7 @@ def main():
                 bl, rd = x[..., 2], x[..., 0]
                 rows = torch.arange(x.shape[0], device="cuda")[:, None].expand_as(alpha)
                 upper = rows < x.shape[0] * 0.5
-                # sky: sky-coloured or empty (alpha < 0.5) in the upper half; far: rendered depth > 40 m.
+                # sky: sky-colored or empty (alpha < 0.5) in the upper half; far: rendered depth > 40 m.
                 # Empty regions in the LOWER half (holes in the road/sidewalk at large offsets) are kept: that is
                 # exactly where the fixer's restoration should be distilled back into the splat.
                 skym = upper & (((bl > 0.45) & (bl > rd + 0.05)) | (alpha < 0.5))

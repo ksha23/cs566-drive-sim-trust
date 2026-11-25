@@ -39,7 +39,8 @@ Each fixer ran on the same 25 scenarios with the same 3 LTF checkpoints (seeds 0
 | our U-Net v0 | 0 | 25 | 0.114 [0.055, 0.186] | 0.285 | 0.341 | 0 / 19 / 6 | −0.343 [−0.481, −0.211] | 191 |
 
 Per LTF seed (HD-Score, 25 runs each): none 0.457 / 0.306 / 0.460; Difix 0.453 / 0.285 / 0.439; Difix-FT 0.504 / 0.317 /
-0.389; NVIDIA Fixer 0.306 / 0.316 / 0.447. The spread across LTF seeds is larger than any fixer effect. With seed 0
+0.389; NVIDIA Fixer 0.306 / 0.316 / 0.447. The spread across LTF seeds is larger than the effect of any fixer run with all three seeds (our U-Nets, run with
+seed 0 only, are the exception). With seed 0
 only, Difix-FT looked better (+0.046) and NVIDIA Fixer much worse (−0.151); with 3 seeds Difix and Difix-FT are
 indistinguishable from no fixer and NVIDIA Fixer is slightly worse (CI just clear of 0). NVIDIA Fixer's outputs look
 clean in the policy videos (`<run>/policy_view.mp4`); we did not find a cause for the drop beyond seed 0.

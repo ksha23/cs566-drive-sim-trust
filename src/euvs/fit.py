@@ -7,7 +7,7 @@ Protocols (both use EUVS Setting3 MARS scenes; images are only shipped for Setti
            traversals) applied to MARS: train on the front camera (channel 2) of every traversal, test on the +-60 deg
            cameras (channels 1, 3) of the EUVS test traversal. Camera baseline ~0.7 m.
 Splat: same model as the Para-Lane fits (gsplat, SH3, sky environment map, movable-object-masked 0.8 L1 + 0.2 D-SSIM,
-scale-anisotropy regulariser, DefaultStrategy densification) but initialized from the EUVS SfM points (no LiDAR, so no
+scale-anisotropy regularizer, DefaultStrategy densification) but initialized from the EUVS SfM points (no LiDAR, so no
 depth loss and no LiDAR sky mask), 15k iterations. Scene aligned to meters, z up (src/euvs/data.py:align_metric).
 
 Outputs ($CS566D_DATA/euvs/out/<proto>/<scene>/): splat.pt, raw/<name>.png, real/<name>.png, fg/<name>.png,

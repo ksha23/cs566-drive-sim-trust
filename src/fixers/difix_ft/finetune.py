@@ -15,7 +15,7 @@ import lpips
 from common.config import DIFIX3D_SRC
 from fixers.unet.train import Pairs, val_items
 
-sys.path.insert(0, DIFIX3D_SRC)  # released Difix pipeline code (initialisation from nvidia/difix)
+sys.path.insert(0, DIFIX3D_SRC)  # released Difix pipeline code (initialization from nvidia/difix)
 
 
 def difix_forward(pipe, x, emb, t):

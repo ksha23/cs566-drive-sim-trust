@@ -1,4 +1,4 @@
-"""Summarise per-image eval rows (evaluate.py output, optionally merged with NTL-IoU rows) into a table of
+"""Summarize per-image eval rows (evaluate.py output, optionally merged with NTL-IoU rows) into a table of
 mean and 95% bootstrap CI per (offset bin, method). Two bootstraps: over frames (default), and over
 (scene, src->dst) sequences ("cluster" CI, more honest because neighboring frames are correlated).
 

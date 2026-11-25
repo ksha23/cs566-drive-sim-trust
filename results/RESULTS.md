@@ -82,7 +82,7 @@ Findings:
   render on-path and recover almost no lanes off-path (CLRNet lane F1 ≤ 0.12 at ~3 m). The GAN term raises paint
   precision on-path (0.97) but also the fake-vehicle rate at ~6 m. Seeds differ a lot (on-path PSNR 18.8–22.3 dB across
   runs), so the small model is also unstable. Verdict: it does not invent lanes, but it removes true structure rather
-  than restoring it, and does not generalise across scenes with 5 training scenes.
+  than restoring it, and does not generalize across scenes with 5 training scenes.
 * **Difix-ref fairness** (`eval/tables.md`): with the reference ≥ 2 s away instead of the nearest source-lane frame,
   Difix-ref loses most of its on-path advantage (LPIPS 0.140 → 0.192) and some off-path (0.340 → 0.363 at ~3 m). Its
   near-reference on-path numbers are therefore optimistic (the reference is 0.1 s from the target).
@@ -166,7 +166,8 @@ seed):
 No fixer changes LTF's driving score measurably except for the worse: Difix and Difix-FT are within ±0.02 of no fixer
 (CIs ±0.05), NVIDIA Fixer lowers HD-Score by 0.05 (CI just clear of 0; driven by seed 0, −0.15, while seeds 1/2 are
 +0.01 / −0.01), and our U-Net clearly breaks the policy. The seed-to-seed spread of the policy itself (no fixer:
-0.457 / 0.306 / 0.460) is larger than any fixer effect. With seed 0 alone Difix-FT looked better (+0.046, 25 runs) —
+0.457 / 0.306 / 0.460) is larger than the effect of any fixer run with all three seeds (our U-Net, run with seed 0
+only, is the exception). With seed 0 alone Difix-FT looked better (+0.046, 25 runs) —
 a seed artifact that disappears with 3 seeds. Fixer cost per step (3 cameras): 1.4 s Difix / Difix-FT, 0.47 s NVIDIA
 Fixer. UniAD/VAD were not run (legacy CUDA-11.1 stack; see CLOSED_LOOP.md).
 
@@ -342,7 +343,7 @@ Findings:
 * **Heading is not what breaks a street splat — position is.** Turning the camera up to ±15° about its own center
   costs every arm ≤ 0.35 dB against an exact ground truth on the same content, lane agreement stays ≥ 0.91, and CLRNet
   finds the same lanes as at 0° (stability ≥ 0.94). The raw splat is the most self-consistent (self-LPIPS ≤ 0.012):
-  it re-renders the same 3D content. Fixers re-synthesise it slightly differently per view (self-LPIPS 0.02–0.09;
+  it re-renders the same 3D content. Fixers re-synthesize it slightly differently per view (self-LPIPS 0.02–0.09;
   NVIDIA Fixer is the most stable, our U-Net the least). The largest yaw loss is our Difix-ref reimplementation
   (−0.34 dB at 15°, CI clear of 0), plausibly because its reference view stays at the recorded heading.
   Caveat: a real vehicle turns about its rear axle, which adds a lateral shift. Our lateral + yaw condition shows that
@@ -401,7 +402,7 @@ Findings:
   levels (0.589 / 0.797 vs. 0.522 on L3), over-sharpening the road (texture 2.3–3.0× the real frame). Our Difix-ref
   reimplementation roughly ties the raw splat on LPIPS (0.511 vs. 0.522 on L3) and has the highest fake-vehicle rate
   (0.56 per image at rot60): with the reference 60° away it pastes reference content. The small-data, in-domain
-  training that made them the best arms on Para-Lane (§5, §11) is exactly what fails to generalise.
+  training that made them the best arms on Para-Lane (§5, §11) is exactly what fails to generalize.
 * **CLRNet lane agreement is not measurable on EUVS.** CLRNet finds lanes on only 4 % of the *real* MARS front views,
   so lane F1 is defined on only 7–11 frames per method (`euvs/rows_L3.json`). Lane paint P/R/F1 is the road-marking
   metric here.
@@ -706,11 +707,15 @@ bootstrap over lane-pair sequences, or over roads where marked.
   weighting (−0.026 [−0.038, −0.015] over roads; lower on 7 of 8 roads), raises LPIPS slightly (+0.0035
   [+0.0026, +0.0046]) and leaves paint F1 (+0.002 [−0.010, +0.019]) and spurious vehicles unchanged. The EIG map
   predicts invented lane paint at ~3 m with AUROC 0.67–0.75 across the five fixers, against 0.53–0.64 for the
-  reprojection-consistency map and 0.31–0.48 for splat coverage (1 − alpha); at ~6 m 0.55–0.69.
+  reprojection-consistency map and 0.52–0.69 for splat coverage used in whichever direction predicts better (raw
+  1 − alpha is below chance, 0.31–0.48); EIG is higher for 4 of 5 fixers (NVIDIA Fixer: coverage 0.69 vs. EIG 0.67); at
+  ~6 m 0.55–0.69. For any change a fixer makes (the mid-term label), coverage does as well as EIG or better for released
+  Difix (0.742 vs. 0.719) and NVIDIA Fixer (0.786 vs. 0.768). The AUROC intervals resample images and are optimistic.
 * Closed loop (§8, Table 4): our Difix re-implementation with a reference view (the recorded frame nearest to the
   vehicle's ground position, `../src/hugsim/render_refs.py`) between simulator and LTF policy, 25 scenarios × 3 seeds:
-  HD-Score 0.385, change vs. no fixer −0.023 [−0.074, +0.028]. No fixer improves the score; only NVIDIA Fixer's change
-  (−0.051 [−0.099, −0.003]) excludes zero.
+  HD-Score 0.385, change vs. no fixer −0.023 [−0.074, +0.028]. No fixer improves the score. Among the fixers run with all
+  three seeds only NVIDIA Fixer's change (−0.051 [−0.099, −0.003]) excludes zero; our small U-Net, run with seed 0 only,
+  lowers it clearly (−0.205 [−0.350, −0.065]).
 * Marked videos (`videos/`, §16): the four Para-Lane clips (`paralane_straight_3m_scene16.mp4`,
   `paralane_far_lane_7m_scene17.mp4`, `paralane_curve_scene14.mp4`, `paralane_under_highway_traffic_scene15.mp4`) mark,
   per frame and with the same rules as the metrics, invented paint, erased paint and vehicles with no counterpart in

@@ -14,7 +14,7 @@ i.e. a diagonal Fisher approximation as in FisherRF. The procedure mirrors their
      not cover (alpha < 0.1) get gain = 100 ("fully generate").
 
 Differences from their pipeline (documented in docs/faithfusion.md): our Gaussians come from gsplat (same
-parameterisation: wxyz quaternions, log-scales, logit-opacities, degree-3 SH; their EIG rasteriser evaluates SH at
+parameterization: wxyz quaternions, log-scales, logit-opacities, degree-3 SH; their EIG rasterizer evaluates SH at
 degree 1 as in their code), the sky mask for step 1 is our splat's alpha < 0.5 (they use a Depth-Anything sky mask),
 and the coverage alpha in step 3 comes from our gsplat render of the same Gaussians.
 """

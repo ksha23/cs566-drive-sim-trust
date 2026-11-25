@@ -191,7 +191,7 @@
    "dataset": "Para-Lane",
    "scene": "scene_16",
    "shown": "real | original splat | refined without fixer (control) | progressive with Difix-FT | progressive with our Difix",
-   "caption": "The splat itself is refined with repaired pseudo-views at ±3 m and ±6 m (a simplified Difix3D+ progressive update) and then rendered without any fixer. On scene_16 the lane lines return in 3D (lane F1 at about 3 m: 0.18 for the raw render, 0.91 with our re-implementation, 0.90 with Difix-FT); on scene_17 the same procedure helps far less, so this gain depends on the road.",
+   "caption": "The splat itself is refined with repaired pseudo-views at ±3 m and ±6 m (a simplified Difix3D+ progressive update) and then rendered without any fixer. On scene_16 the lane lines return in 3D (lane F1 at about 3 m: 0.18 for the raw render, 0.91 with our re-implementation, 0.90 with Difix-FT); on scene_17 the same procedure helps far less, so this gain depends on the road. scene_16 is also the road on which the update's schedule was compared, so its result is not strictly held out.",
    "offset_m": 3.31,
    "real_ground_truth": true,
    "attribution": "Data: Para-Lane (Ni et al., 3DV 2025), CC BY-NC 4.0. Renders/fixes: CS 566 course project, non-commercial.",

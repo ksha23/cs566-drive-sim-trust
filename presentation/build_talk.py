@@ -279,7 +279,7 @@ text(s, int(6.8 * IN), int(1.9 * IN), int(5.9 * IN), int(4.6 * IN), [
     "Para-Lane scans the same roads in three parallel lanes. We build the splat from one lane and render it at the other lanes' recorded poses.",
     "Trust: does a lane detector (CLRNet) find the same lanes in the render as in the real photo? (lane F1)",
     "Hallucination: lane paint or vehicles in the render that the real photo does not have.",
-    [(f"{K['roads']} held-out roads · {K['images']['~3m']:,} images at ≈3 m · {K['images']['~6m']:,} at ≈6 m · 95% bootstrap intervals", {"color": SOFT})]],
+    [(f"{K['roads']} held-out roads · {K['images']['~3m']:,} images at ≈3 m · {K['images']['~6m']:,} at ≈6 m · 95% bootstrap intervals over lane-pair sequences", {"color": SOFT})]],
     size=19)
 footer(s, 3)
 notes(s, "The Para-Lane dataset makes this measurable: it drives the same roads in three parallel lanes. We build the splat "
@@ -295,7 +295,7 @@ cols = [("Image fixers", ["Released Difix, Difix-ref and NVIDIA Fixer (trained o
                           "Small U-Net from scratch"]),
         ("Fix the 3D scene", ["Progressive update: repaired views added back into the splat (Difix3D+), with flat or FaithFusion weights",
                               "Road-surface prior from LiDAR (no generation)"]),
-        ("Built and validated", ["Our Difix trainer vs. the official one at an equal short budget (DL3DV, 3 scenes): LPIPS 0.218 vs. 0.237; neither beats the raw render there",
+        ("Built and validated", ["Our Difix trainer vs. the official one at an equal short budget (DL3DV, 3 scenes): LPIPS 0.218 vs. 0.237, with different numeric precision; neither beats the raw render there",
                                  "Our own splat projection matches gsplat to 90.8 dB (results use gsplat)"])]
 cx, cw = int(0.6 * IN), int(3.95 * IN)
 for i, (h, items) in enumerate(cols):
@@ -304,9 +304,9 @@ for i, (h, items) in enumerate(cols):
     text(s, x + int(0.25 * IN), int(1.95 * IN), cw - int(0.5 * IN), int(0.5 * IN), h, size=22, bold=True, color=ACC if i < 2 else ACC2)
     text(s, x + int(0.25 * IN), int(2.6 * IN), cw - int(0.5 * IN), int(4.0 * IN), ["• " + t for t in items], size=17, color=INK)
 footer(s, 4)
-notes(s, "We compare NVIDIA's released Difix and its driving-trained Fixer with our re-implementation of the Difix training "
-         "procedure, the released Difix fine-tuned on our lane pairs, and a small U-Net. Other methods repair the 3D scene "
-         "itself instead of each image. We validated our trainer against NVIDIA's code and our splat projection against gsplat.")
+notes(s, "We compare NVIDIA's released fixers with our re-implementation of the Difix training procedure, the released Difix "
+         "fine-tuned on our lane pairs, and a small U-Net; other methods repair the 3D scene itself. At an equal short budget "
+         "our trainer scores better than NVIDIA's, though neither beats the raw render there.")
 
 # 5. Trust vs offset -----------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
@@ -316,7 +316,7 @@ c3 = K["lane_f1_ci_3m"]
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Raw render: {L['raw']['0m']:.2f} on the path, {L['raw']['~3m']:.2f} one lane over, {L['raw']['~6m']:.2f} two lanes over.",
     f"Best one lane over: Difix-FT {L['difix_ft']['~3m']:.2f} [{c3['difix_ft'][0]:.2f}, {c3['difix_ft'][1]:.2f}].",
-    [(f"Difix-FT is ahead of NVIDIA Fixer on {ROADS_POS} roads (+{V[0]:.2f} [+{V[1]:.2f}, +{V[2]:.2f}] on the same frames).", {"color": ACC})],
+    [(f"Difix-FT is ahead of NVIDIA Fixer on {ROADS_POS} roads (+{V[0]:.2f} [+{V[1]:.2f}, +{V[2]:.2f}], paired, interval over lane-pair sequences).", {"color": ACC})],
     f"Two lanes over, the best fixer reaches {max(L[m]['~6m'] for m in ('difix_ft', 'difix_reimpl_ref')):.2f}."], size=19)
 footer(s, 5)
 notes(s, f"Lane agreement with the real photo falls from {L['raw']['0m']:.2f} on the path to {L['raw']['~3m']:.2f} one lane "
@@ -471,7 +471,7 @@ s = prs.slides.add_slide(BLANK); bg(s, BG2)
 text(s, int(0.8 * IN), int(0.7 * IN), int(11.5 * IN), int(0.5 * IN), "TAKEAWAYS", size=16, color=ACC, bold=True)
 text(s, int(0.8 * IN), int(1.3 * IN), int(11.7 * IN), int(5.0 * IN), [
     f"1. A splat simulator is trustworthy only near the recorded path: lane F1 falls from {L['raw']['0m']:.2f} to {L['raw']['~3m']:.2f} one lane over.",
-    f"2. Fixers trained on matching data recover most of it at 3 m ({L['difix_reimpl_ref']['~3m']:.2f}–{L['difix_ft']['~3m']:.2f}), much less at 6 m (≈{L['difix_ft']['~6m']:.1f}).",
+    f"2. Fixers trained on matching data recover most of it at 3 m ({L['difix_reimpl_ref']['~3m']:.2f}–{L['difix_ft']['~3m']:.2f}), much less at 6\u00a0m (≈{L['difix_ft']['~6m']:.1f}).",
     "3. Realism and correctness diverge: fixers invent lane paint and vehicles; repairing the 3D scene invents the fewest vehicles one lane over.",
     "4. Gains depend on the road, shrink with camera height and other cities, and do not raise closed-loop driving scores."],
     size=24, color=BG)

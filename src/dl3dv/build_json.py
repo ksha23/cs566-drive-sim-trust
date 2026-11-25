@@ -1,6 +1,6 @@
 """Pairs JSONs for the DL3DV validation of our Difix reimplementation, in the layout both trainers read
 ({"train": {id: {image, target_image, ref_image, prompt, fg}}, "test": {...}}).
-Scene split of the 11 DL3DV-10K-Sample scenes (the only DL3DV repo the account is authorised for): sorted by hash,
+Scene split of the 11 DL3DV-10K-Sample scenes (the only DL3DV repo the account is authorized for): sorted by hash,
 every 3rd scene (index % 3 == 0) except the VAL scene is a held-out TEST scene (3 scenes); VAL = dafa9c7c
 (training-time monitoring / our ref model's checkpoint choice only); the other 6 are TRAIN.
 Two sparsity levels (src/dl3dv/fit_pairs.py): S = 30 and S = 60 (splat trained on every S-th frame).

@@ -1,12 +1,12 @@
 """MV2 [9] loader (HF sanjay810/mv2-dataset): car front camera ("car") and scooter front camera ("scooty") of one
-sequence, time-synchronised, in a METRIC, z-up world frame.
+sequence, time-synchronized, in a METRIC, z-up world frame.
 
 What MV2 ships per view and frame k (checked on the data, see docs/mv2.md):
   images/<cam>_<k:06d>.jpg   1920x1080 (GoPro, 60 FPS video sampled at 2 FPS, 100 frames per sequence)
   poses/<cam>_<k:06d>.npy    4x4 WORLD-TO-CAMERA, OpenCV axes (x right, y down, z forward); one world frame for
                              all vehicles of a sequence (COLMAP registration, nerfstudio-style normalized, z up)
   intrinsics/<cam>_<k>.npy   [fx, fy, cx, cy, W, H] for 960x540  -> we load images at 960x540 and use K as is
-  scale_factor.npy / transform.npy  the normalisation from the COLMAP frame (NOT metric: COLMAP has no scale)
+  scale_factor.npy / transform.npy  the normalization from the COLMAP frame (NOT metric: COLMAP has no scale)
 Time sync: MV2 syncs all vehicles by wall clock and samples every sensor at 2 FPS, so frame k of the car and frame k
 of the scooter are simultaneous (the car->scooter offset is nearly constant over a sequence, std ~ 1-5 % of it).
 
@@ -217,7 +217,7 @@ def prepare(seq, force=False):
         p, c = pts_u[v]
         np.savez_compressed(f"{cache_dir(seq)}/pts_{v}.npz", xyz=(s * p @ Rz.T).astype(np.float32), rgb=c)
         info[f"n_pts_{v}"] = int(len(p))
-    # time-synchronised offsets scooter - car, in the car's heading frame (meters)
+    # time-synchronized offsets scooter - car, in the car's heading frame (meters)
     Cc = to_metric(R["car"]["c2w"], info)[:, :3, 3]; Cs = to_metric(R["scooty"]["c2w"], info)[:, :3, 3]
     ids_c, ids_s = R["car"]["ids"], R["scooty"]["ids"]; common = sorted(set(ids_c) & set(ids_s))
     Tc = to_metric(R["car"]["c2w"], info)

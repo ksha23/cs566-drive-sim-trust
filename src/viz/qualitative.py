@@ -3,7 +3,7 @@ Para-Lane test frame, with the per-image metrics of that frame under each tile. 
 from the per-image metric rows (written to results/final/qual_examples.json), not by hand:
   qual_3m_typical      scene_16, one lane over: the frame whose Difix-FT and raw lane F1 are closest to their pooled means
   qual_6m_typical      scene_17, two lanes over: same rule
-  qual_hallucination   ~3 m, scene_16/17 (the paint mask misfires on shadows and kerbs of the later roads): among the 30
+  qual_hallucination   ~3 m, scene_16/17 (the paint mask misfires on shadows and curbs of the later roads): among the 30
                        frames per fixer with the largest (raw paint precision - fixer paint precision) + fake vehicles for
                        released Difix / our reimpl., the frame with the largest invented marking; invented paint (orange
                        circles), erased paint (blue squares) and fake vehicles (yellow boxes, YOLO11 as in the metric) are
@@ -174,7 +174,7 @@ def main():
                    "Frame chosen by a fixed rule: the raw-splat and Difix-FT lane F1 closest to their pooled means at ~6 m."))
     # hallucination: top-30 frames per fixer by paint-precision drop vs raw (+ fake vehicles), then the frame whose
     # largest invented-paint region is biggest (a whole invented marking rather than speckle)
-    # candidates from the original two test roads only: on the later roads hard shadows (scene_15) and bright kerb
+    # candidates from the original two test roads only: on the later roads hard shadows (scene_15) and bright curb
     # strips (scene_3/4/11) trigger the color-threshold paint mask, so "invented paint" there is often not paint
     c = W[(off > 1.0) & (off <= 4.5) & W.index.get_level_values(0).isin(["scene_16", "scene_17"])].dropna(subset=[("mark_prec", "raw")])
     best = None

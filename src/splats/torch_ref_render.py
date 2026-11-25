@@ -6,7 +6,7 @@ gsplat's isect_tiles) -> one global sort by (tile, depth) -> per-tile padded ind
 compositing in chunks of K Gaussians, all in autograd. Compositing follows gsplat's rasterize_to_pixels exactly:
   sigma = 1/2 d^T Conic d (d = center - pixel center), alpha = min(0.999, o exp(-sigma)),
   skip if sigma < 0 or alpha < 1/255, stop the pixel (exclusive) once T (1 - alpha) <= 1e-4.
-Ported from our proposal-C prototype (src/gslam/torchgs_ref.py), adapted to D's parameterisation and gsplat 1.4.
+Ported from our proposal-C prototype (src/gslam/torchgs_ref.py), adapted to D's parameterization and gsplat 1.4.
 """
 import math
 import torch

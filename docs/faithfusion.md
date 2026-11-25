@@ -143,7 +143,8 @@ AUROC [95% CI]:
 ### Findings
 - **EIG does carry signal for hallucinated lane paint at about 3 m.**
   - AUROC is 0.69 (Difix), 0.76 (Difix-FT) and 0.67 (our U-Net), all with CIs above 0.5.
-  - It beats both the reprojection map and coverage.
+  - It beats the reprojection map and raw coverage (1 − alpha). Raw coverage is below chance here; used in its better
+    direction it comes closer (eight-road numbers in RESULTS §19: EIG higher for 4 of 5 fixers).
   - Lift over chance is modest: AUPRC is about 1.5–2× the positive rate.
 - **At about 6 m the EIG signal fades to near chance** for paint (0.44–0.59). So the map is least informative exactly
   where hallucination matters most.

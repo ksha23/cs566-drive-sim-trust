@@ -1,6 +1,6 @@
 """Our Difix training loop (re-implementation, see model.py / losses.py / data.py).
 
-Optimisation (paper silent -> our choices, see docs/IMPLEMENTATION_NOTES_difix.md): fp32 master weights,
+Optimization (paper silent -> our choices, see docs/IMPLEMENTATION_NOTES_difix.md): fp32 master weights,
 bitsandbytes 8-bit AdamW (lr 2e-5, wd 1e-2), linear warm-up then constant LR, bf16 autocast, U-Net gradient
 checkpointing, batch 1, grad-norm clip 1.0. Time-boxed and resumable (last.pt keeps model + optimizer + step);
 every --val_every steps the model is scored on the JSON's "test" split (LPIPS-Alex, PSNR) and best.pt keeps the best.

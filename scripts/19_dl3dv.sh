@@ -1,6 +1,6 @@
 #!/bin/bash
 # Stage 19: DL3DV validation of our Difix reimplementation [1] against the official trainer and the released weights
-# (docs/difix_reimpl_validation.md). DL3DV is gated; the account is authorised for DL3DV/DL3DV-10K-Sample only.
+# (docs/difix_reimpl_validation.md). DL3DV is gated; the account is authorized for DL3DV/DL3DV-10K-Sample only.
 #   download          11 sample scenes (COLMAP + images_4)                                      (CPU)
 #   fit 30|60         sparse-reconstruction + underfitting pairs at stride S for every scene      (one GPU job per S)
 #   json              pair JSONs + split                                                         (CPU)

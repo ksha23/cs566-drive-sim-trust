@@ -7,7 +7,7 @@ Directions:  car2scooty  train = car front camera, test = scooter front camera (
 Split: training vehicle = all frames except every 8th (k % 8 == 4, held out for the on-path check); test vehicle =
 every 2nd frame (50 of 100; the MV2 paper uses every 5th).
 Splat: the EUVS model unchanged (src/euvs/fit.py: gsplat SH3, sky environment map, masked 0.8 L1 + 0.2 D-SSIM,
-scale-anisotropy regulariser, DefaultStrategy densification, 15k iterations), initialized from points triangulated
+scale-anisotropy regularizer, DefaultStrategy densification, 15k iterations), initialized from points triangulated
 from the TRAINING vehicle's views only (src/mv2/data.py), in the metric z-up frame.
 
 Outputs ($CS566D_DATA/mv2/out/<dir>/<seq>/): splat.pt, raw/ real/ fg/ ref/ <v>_<k>.png, meta.json with, per test view:

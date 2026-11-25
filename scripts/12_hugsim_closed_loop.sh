@@ -1,7 +1,7 @@
 #!/bin/bash
 # Stage 12 (GPU job, <= 60 min): HUGSIM closed loop with the released LTF (NAVSIM) policy on a list of scenarios with
 # one fixer between simulator and policy, for LTF seeds $SEEDS. Skips finished runs (re-queue to resume) and stops
-# starting new runs after $BUDGET_S seconds. Summarise with src/hugsim/summarize_closed_loop.py.
+# starting new runs after $BUDGET_S seconds. Summarize with src/hugsim/summarize_closed_loop.py.
 # usage: SEEDS="0 1 2" $GJ scripts/12_hugsim_closed_loop.sh <none|difix|difix_ft|<unet name>> "<scenario yamls>" [--unet name=ckpt]
 source "$(dirname "$0")/lib/env.sh"
 source $SMOKE/hugsim_env.sh

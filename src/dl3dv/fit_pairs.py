@@ -7,7 +7,7 @@ distances in units of the median training-camera spacing), i.e. what the reconst
 
 Camera: COLMAP OPENCV model at 3840x2160 -> images_4 (960x540) are undistorted to a pinhole K (cv2, alpha 0 crop, same
 size), so the splat renders and the targets share one pinhole camera. Splat model/loss as src/euvs/fit.py (gsplat,
-SH3, env-map background, 0.8 L1 + 0.2 D-SSIM, anisotropy regulariser, DefaultStrategy), SfM-point init, 6k iterations.
+SH3, env-map background, 0.8 L1 + 0.2 D-SSIM, anisotropy regularizer, DefaultStrategy), SfM-point init, 6k iterations.
 DL3DV scenes are static, so there are no movable-object masks (fg = empty).
 
 Outputs ($CS566D_DATA/dl3dv/work/<scene>/): real/<frame>.png (undistorted), fg_empty.png, and per sparsity level

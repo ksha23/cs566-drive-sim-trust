@@ -21,7 +21,7 @@ There is no real image at a deviated pose, so two kinds of reference are used, a
     self_lpips   LPIPS(x, H(x0)) on the valid band (yaw) / road rows (height)
     tex_stab     road texture energy (mean |Laplacian|, road rows, movable objects excluded) of x / of x0 -- a
                  statistic, no warp; tex_ratio = the same vs. the unwarped real frame (as in the lateral table)
-    n_veh        vehicle/person detections; veh_unverif = those centred where the warped real frame is unknown
+    n_veh        vehicle/person detections; veh_unverif = those centered where the warped real frame is unknown
 
 Rows: results/heading/rows_<scene>_<method>.json (one file per method = checkpoint/resume unit).
 

@@ -28,7 +28,7 @@ INDEX = f"{OUT}/index.json"
 
 
 def add_index(entry):
-    if entry["file"].startswith(("mv2", "dl3dv")):  # local-only clips (licences), never listed
+    if entry["file"].startswith(("mv2", "dl3dv")):  # local-only clips (licenses), never listed
         return
     idx = json.load(open(INDEX)) if os.path.exists(INDEX) else {"videos": [], "stills": []}
     idx["about"] = ("Demo clips of the CS 566 (UW-Madison, Fall 2026) course project 'How far off the recorded path can a "
@@ -116,7 +116,8 @@ def r_progressive():
                    "The splat itself is refined with repaired pseudo-views at ±3 m and ±6 m (a simplified Difix3D+ progressive "
                    "update) and then rendered without any fixer. On scene_16 the lane lines return in 3D (lane F1 at ~3 m: 0.18 "
                    "for the raw render, 0.91 with our re-implementation, 0.90 with Difix-FT); on scene_17 the same procedure "
-                   "helps far less, so this gain depends on the road.",
+                   "helps far less, so this gain depends on the road. scene_16 is also the road on which the update's schedule was "
+                   "compared, so its result is not strictly held out.",
                    extra_note="All four renders are plain splat renders (no 2D fixer at test time). The control runs the same "
                               "refinement with raw renders as pseudo-views.")
 
@@ -128,7 +129,7 @@ def r_road():
                    "A height/slope field fitted to LiDAR pulls road Gaussians onto the road plane and flattens them. No "
                    "generative model is involved, so nothing can be invented; lane lines are sharper off-path.",
                    extra_note="Road prior (ViSE-style, our formulation): road Gaussians snapped to a LiDAR height field and "
-                              "flattened along its normal. It cannot hallucinate content; it only regularises geometry.",
+                              "flattened along its normal. It cannot hallucinate content; it only regularizes geometry.",
                    cols=2, tile_w=560)
 
 
