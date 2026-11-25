@@ -1,0 +1,59 @@
+{
+ "scene_20": {
+  "split": "train",
+  "full_onpath_test": 49,
+  "full": 704,
+  "identity": 336,
+  "underfit": 1089,
+  "cycle": 385
+ },
+ "scene_21": {
+  "split": "train",
+  "full_onpath_test": 48,
+  "full": 715,
+  "identity": 339,
+  "underfit": 1102,
+  "cycle": 387
+ },
+ "scene_22": {
+  "split": "train",
+  "full_onpath_test": 49,
+  "full": 704,
+  "identity": 343,
+  "underfit": 1096,
+  "cycle": 392
+ },
+ "scene_23": {
+  "split": "train",
+  "full_onpath_test": 45,
+  "full": 663,
+  "identity": 313,
+  "underfit": 1021,
+  "cycle": 358
+ },
+ "scene_24": {
+  "split": "train",
+  "full_onpath_test": 39,
+  "full": 534,
+  "identity": 269,
+  "underfit": 842,
+  "cycle": 308
+ },
+ "scene_19": {
+  "split": "val",
+  "full_onpath_test": 47,
+  "full": 697
+ },
+ "scene_16": {
+  "split": "test",
+  "full_onpath_test": 38,
+  "full": 575,
+  "underfit_onpath_test": 38,
+  "underfit": 575
+ },
+ "scene_17": {
+  "split": "test",
+  "full_onpath_test": 63,
+  "full": 963
+ }
+}

@@ -1,0 +1,364 @@
+Name                              Version       Build                      Size  Kind   Source
+_openmp_mutex                     4.5           20_gnu                28.27 KiB  conda  https://conda.anaconda.org/conda-forge
+absl_py                           2.5.0                              470.44 KiB  pypi   https://pypi.org/simple
+addict                            2.4.0                                7.69 KiB  pypi   https://pypi.org/simple
+aiofiles                          24.1.0                              47.21 KiB  pypi   https://pypi.org/simple
+annotated_doc                     0.0.5                                9.29 KiB  pypi   https://pypi.org/simple
+annotated_types                   0.8.0                               35.50 KiB  pypi   https://pypi.org/simple
+antlr4_python3_runtime            4.9.3                                          pypi   https://pypi.org/simple
+anyio                             4.15.1                             526.58 KiB  pypi   https://pypi.org/simple
+argon2_cffi                       25.1.0                              33.86 KiB  pypi   https://pypi.org/simple
+argon2_cffi_bindings              26.1.0                              64.07 KiB  pypi   https://pypi.org/simple
+arrow                             1.4.0                              298.43 KiB  pypi   https://pypi.org/simple
+asttokens                         3.0.2                               79.01 KiB  pypi   https://pypi.org/simple
+async_lru                         2.3.0                               22.48 KiB  pypi   https://pypi.org/simple
+attrs                             26.1.0                             228.21 KiB  pypi   https://pypi.org/simple
+babel                             2.18.0                              29.48 MiB  pypi   https://pypi.org/simple
+beautifulsoup4                    4.15.0                             396.96 KiB  pypi   https://pypi.org/simple
+binutils_impl_linux-64            2.40          ha1999f0_7             5.96 MiB  conda  https://conda.anaconda.org/conda-forge
+binutils_linux-64                 2.40          hb3c18ed_4            28.35 KiB  conda  https://conda.anaconda.org/conda-forge
+bleach                            6.4.0                              649.42 KiB  pypi   https://pypi.org/simple
+blessed                           1.50.0                             512.68 KiB  pypi   https://pypi.org/simple
+blinker                           1.9.0                               23.91 KiB  pypi   https://pypi.org/simple
+blosc2                            4.13.1                              17.46 MiB  pypi   https://pypi.org/simple
+bokeh                             3.9.2                               23.86 MiB  pypi   https://pypi.org/simple
+brotli                            1.2.0                                4.94 MiB  pypi   https://pypi.org/simple
+bzip2                             1.0.8         hda65f42_10          251.77 KiB  conda  https://conda.anaconda.org/conda-forge
+ca-certificates                   2026.7.22     hbd8a1cb_0           128.69 KiB  conda  https://conda.anaconda.org/conda-forge
+cachetools                        7.2.0                               67.16 KiB  pypi   https://pypi.org/simple
+certifi                           2026.7.22                          243.09 KiB  pypi   https://pypi.org/simple
+cffi                              1.17.1                               1.38 MiB  pypi   https://pypi.org/simple
+charset_normalizer                3.5.1                              729.05 KiB  pypi   https://pypi.org/simple
+click                             8.5.0                              437.23 KiB  pypi   https://pypi.org/simple
+cloudpickle                       3.1.2                               67.37 KiB  pypi   https://pypi.org/simple
+comm                              0.2.3                               17.32 KiB  pypi   https://pypi.org/simple
+configargparse                    1.7.7                              119.84 KiB  pypi   https://pypi.org/simple
+contourpy                         1.3.3                                1.02 MiB  pypi   https://pypi.org/simple
+coolname                          5.0.0                              122.28 KiB  pypi   https://pypi.org/simple
+cuda-cccl                         11.8.89       0                      1.18 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-command-line-tools           11.8.0        0                      1.47 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-compiler                     11.8.0        0                      1.43 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-cudart                       11.8.89       0                    197.23 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-cudart-dev                   11.8.89       0                      1.08 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-cuobjdump                    11.8.86       0                    228.56 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-cupti                        11.8.87       0                     25.28 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-cuxxfilt                     11.8.86       0                    291.33 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-documentation                11.8.86       0                     88.76 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-driver-dev                   11.8.89       0                     15.90 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-gdb                          11.8.86       0                      4.78 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-libraries                    11.8.0        0                      1.50 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-libraries-dev                11.8.0        0                      1.53 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-memcheck                     11.8.86       0                    167.88 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nsight                       11.8.86       0                    113.62 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nsight-compute               11.8.0        0                      1.41 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvcc                         11.8.89       0                     50.79 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvdisasm                     11.8.86       0                     48.72 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvml-dev                     11.8.86       0                     82.89 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvprof                       11.8.87       0                      4.36 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvprune                      11.8.86       0                     64.58 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvrtc                        11.8.89       0                     19.14 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvrtc-dev                    11.8.89       0                     17.03 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvtx                         11.8.86       0                     57.07 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-nvvp                         11.8.87       0                    114.35 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-profiler-api                 11.8.86       0                     18.41 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-sanitizer-api                11.8.86       0                     16.62 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-toolkit                      11.8.0        0                      1.45 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-tools                        11.8.0        0                      1.42 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cuda-visual-tools                 11.8.0        0                      1.44 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+cycler                            0.12.1                              22.08 KiB  pypi   https://pypi.org/simple
+dash                              4.4.1                               35.75 MiB  pypi   https://pypi.org/simple
+debugpy                           1.8.22                              26.67 MiB  pypi   https://pypi.org/simple
+decorator                         5.3.1                               25.58 KiB  pypi   https://pypi.org/simple
+defusedxml                        0.7.1                               67.04 KiB  pypi   https://pypi.org/simple
+descartes                         1.1.0                               11.55 KiB  pypi   https://pypi.org/simple
+dill                              0.4.1                              363.03 KiB  pypi   https://pypi.org/simple
+dominate                          2.9.1                               80.78 KiB  pypi   https://pypi.org/simple
+donfig                            0.8.1.post1                         58.58 KiB  pypi   https://pypi.org/simple
+einops                            0.8.2                              227.12 KiB  pypi   https://pypi.org/simple
+executing                         2.2.1                               93.21 KiB  pypi   https://pypi.org/simple
+farama_notifications              0.0.6                                3.51 KiB  pypi   https://pypi.org/simple
+fastapi                           0.141.1                            803.21 KiB  pypi   https://pypi.org/simple
+fastjsonschema                    2.22.2                              91.40 KiB  pypi   https://pypi.org/simple
+ffmpy                             1.0.0                               13.36 KiB  pypi   https://pypi.org/simple
+filelock                          4.0.4                              370.48 KiB  pypi   https://pypi.org/simple
+fire                              0.7.1                              370.18 KiB  pypi   https://pypi.org/simple
+flask                             3.1.3                              336.69 KiB  pypi   https://pypi.org/simple
+flow_vis_torch                    0.1                                            pypi   https://pypi.org/simple
+fonttools                         4.66.0                              22.19 MiB  pypi   https://pypi.org/simple
+fqdn                              1.5.1                               23.23 KiB  pypi   https://pypi.org/simple
+fsspec                            2026.9.0                           791.58 KiB  pypi   https://pypi.org/simple
+gcc_impl_linux-64                 11.4.0        h00c12a0_13           52.98 MiB  conda  https://conda.anaconda.org/conda-forge
+gcc_linux-64                      11.4.0        ha077dfb_4            30.53 KiB  conda  https://conda.anaconda.org/conda-forge
+gds-tools                         1.4.0.31      0                      1.64 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+geometry                          0.0.23                             160.16 KiB  pypi   https://pypi.org/simple
+geopandas                         1.1.4                                1.51 MiB  pypi   https://pypi.org/simple
+gitdb                             4.0.12                             176.80 KiB  pypi   https://pypi.org/simple
+gitpython                         3.1.62                             735.46 KiB  pypi   https://pypi.org/simple
+google_crc32c                     1.9.0                               93.98 KiB  pypi   https://pypi.org/simple
+gpustat                           1.1.1                                          pypi   https://pypi.org/simple
+gradio                            5.38.2                             176.07 MiB  pypi   https://pypi.org/simple
+gradio_client                     1.11.0                             941.11 KiB  pypi   https://pypi.org/simple
+groovy                            0.1.2                               42.94 KiB  pypi   https://pypi.org/simple
+grpcio                            1.84.0                              17.09 MiB  pypi   https://pypi.org/simple
+gsplat                            1.2.0                                          pypi   https://pypi.org/simple
+gxx_impl_linux-64                 11.4.0        h634f3ee_13           11.16 MiB  conda  https://conda.anaconda.org/conda-forge
+gxx_linux-64                      11.4.0        h35bfe5d_4            28.89 KiB  conda  https://conda.anaconda.org/conda-forge
+gymnasium                         1.1.1                                2.01 MiB  pypi   https://pypi.org/simple
+h11                               0.16.0                             101.50 KiB  pypi   https://pypi.org/simple
+h2                                4.4.1                              239.16 KiB  pypi   https://pypi.org/simple
+h5py                              3.16.0                              15.00 MiB  pypi   https://pypi.org/simple
+hf_xet                            1.6.0                               11.93 MiB  pypi   https://pypi.org/simple
+hpack                             4.2.0                              215.16 KiB  pypi   https://pypi.org/simple
+httpcore                          1.0.9                              281.27 KiB  pypi   https://pypi.org/simple
+httpx                             0.28.1                             288.38 KiB  pypi   https://pypi.org/simple
+huggingface_hub                   0.32.6                               1.94 MiB  pypi   https://pypi.org/simple
+hugsim_env                                                           272.58 KiB  pypi   ./sim
+hyperframe                        6.1.0                               39.93 KiB  pypi   https://pypi.org/simple
+icu                               78.3          py310h44b86e0_2       13.79 MiB  conda  https://conda.anaconda.org/conda-forge
+idna                              3.20                               334.07 KiB  pypi   https://pypi.org/simple
+imageio                           2.37.4                               1.11 MiB  pypi   https://pypi.org/simple
+imageio_ffmpeg                    0.6.0                               76.17 MiB  pypi   https://pypi.org/simple
+importlib_metadata                9.0.1                               75.67 KiB  pypi   https://pypi.org/simple
+iopath                            0.1.10                                         pypi   https://pypi.org/simple
+ipdb                              0.13.13                             28.56 KiB  pypi   https://pypi.org/simple
+ipykernel                         7.3.0                              358.32 KiB  pypi   https://pypi.org/simple
+ipython                           9.17.1                               1.96 MiB  pypi   https://pypi.org/simple
+ipython_pygments_lexers           1.1.1                               22.58 KiB  pypi   https://pypi.org/simple
+ipywidgets                        8.1.9                              400.34 KiB  pypi   https://pypi.org/simple
+isoduration                       20.11.0                             23.88 KiB  pypi   https://pypi.org/simple
+itsdangerous                      2.2.0                               45.76 KiB  pypi   https://pypi.org/simple
+janus                             2.0.0                               42.68 KiB  pypi   https://pypi.org/simple
+jaxtyping                         0.3.11                             180.71 KiB  pypi   https://pypi.org/simple
+jedi                              0.20.0                              13.90 MiB  pypi   https://pypi.org/simple
+jinja2                            3.1.6                              485.25 KiB  pypi   https://pypi.org/simple
+jinxed                            2.1.0                              293.99 KiB  pypi   https://pypi.org/simple
+joblib                            1.6.0                              900.29 KiB  pypi   https://pypi.org/simple
+json5                             0.15.0                             131.97 KiB  pypi   https://pypi.org/simple
+jsonpointer                       3.1.1                               16.64 KiB  pypi   https://pypi.org/simple
+jsonschema                        4.26.0                             464.92 KiB  pypi   https://pypi.org/simple
+jsonschema_specifications         2025.9.1                            46.15 KiB  pypi   https://pypi.org/simple
+jupyter                           1.1.1                                3.89 KiB  pypi   https://pypi.org/simple
+jupyter_builder                   1.2.3                                2.62 MiB  pypi   https://pypi.org/simple
+jupyter_client                    8.10.0                             353.13 KiB  pypi   https://pypi.org/simple
+jupyter_console                   6.6.3                               64.30 KiB  pypi   https://pypi.org/simple
+jupyter_core                      5.9.1                               88.28 KiB  pypi   https://pypi.org/simple
+jupyter_events                    0.12.1                              46.36 KiB  pypi   https://pypi.org/simple
+jupyter_lsp                       2.3.1                              247.93 KiB  pypi   https://pypi.org/simple
+jupyter_server                    2.21.1                               1.64 MiB  pypi   https://pypi.org/simple
+jupyter_server_terminals          0.5.4                               30.50 KiB  pypi   https://pypi.org/simple
+jupyterlab                        4.6.4                               39.47 MiB  pypi   https://pypi.org/simple
+jupyterlab_pygments               0.3.0                               37.20 KiB  pypi   https://pypi.org/simple
+jupyterlab_server                 2.28.1                             184.17 KiB  pypi   https://pypi.org/simple
+jupyterlab_widgets                3.0.17                             714.82 KiB  pypi   https://pypi.org/simple
+kernel-headers_linux-64           4.18.0        he073ed8_9             1.22 MiB  conda  https://conda.anaconda.org/conda-forge
+kitti360scripts                   1.0.0                                          pypi   https://pypi.org/simple
+kiwisolver                        1.5.1                                5.33 MiB  pypi   https://pypi.org/simple
+kornia                            0.8.3                                3.79 MiB  pypi   https://pypi.org/simple
+kornia_rs                         0.2.0                               14.48 MiB  pypi   https://pypi.org/simple
+lark                              1.3.1                              349.59 KiB  pypi   https://pypi.org/simple
+lazy_loader                       0.6                                 20.76 KiB  pypi   https://pypi.org/simple
+ld_impl_linux-64                  2.40          hf3520f5_7           691.02 KiB  conda  https://conda.anaconda.org/conda-forge
+libcublas                         11.11.3.6     0                    363.96 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcublas-dev                     11.11.3.6     0                    394.11 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcufft                          10.9.0.58     0                    142.81 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcufft-dev                      10.9.0.58     0                    275.84 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcufile                         1.4.0.31      0                    548.25 KiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcufile-dev                     1.4.0.31      0                      1.59 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcurand                         10.3.0.86     0                     53.19 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcurand-dev                     10.3.0.86     0                     53.73 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcusolver                       11.4.1.48     0                     96.46 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcusolver-dev                   11.4.1.48     0                     66.32 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcusparse                       11.7.5.86     0                    176.33 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libcusparse-dev                   11.7.5.86     0                    359.69 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libexpat                          2.8.5         hd2095e1_0            76.07 KiB  conda  https://conda.anaconda.org/conda-forge
+libffi                            3.7.0         h81df57d_1            66.41 KiB  conda  https://conda.anaconda.org/conda-forge
+libgcc                            16.2.0        ha9f2e26_7             1.01 MiB  conda  https://conda.anaconda.org/conda-forge
+libgcc-devel_linux-64             11.4.0        h8f596e0_113           2.34 MiB  conda  https://conda.anaconda.org/conda-forge
+libgcc-ng                         16.2.0        h69a702a_7            27.95 KiB  conda  https://conda.anaconda.org/conda-forge
+libgomp                           16.2.0        he0feb66_7           625.55 KiB  conda  https://conda.anaconda.org/conda-forge
+liblzma                           5.8.3         hb03c661_1           110.35 KiB  conda  https://conda.anaconda.org/conda-forge
+liblzma-devel                     5.8.3         hb03c661_1           480.44 KiB  conda  https://conda.anaconda.org/conda-forge
+libnpp                            11.8.0.86     0                    147.82 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libnpp-dev                        11.8.0.86     0                    144.46 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libnsl                            2.0.1         hb9d3cd8_1            32.94 KiB  conda  https://conda.anaconda.org/conda-forge
+libnvjpeg                         11.9.0.86     0                      2.39 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libnvjpeg-dev                     11.9.0.86     0                      2.07 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+libsanitizer                      11.4.0        h5763a12_13            3.52 MiB  conda  https://conda.anaconda.org/conda-forge
+libsqlite                         3.53.4        h13e7031_1           951.51 KiB  conda  https://conda.anaconda.org/conda-forge
+libstdcxx                         16.2.0        h934c35e_7             6.31 MiB  conda  https://conda.anaconda.org/conda-forge
+libstdcxx-devel_linux-64          11.4.0        h8f596e0_113          11.12 MiB  conda  https://conda.anaconda.org/conda-forge
+libstdcxx-ng                      16.2.0        hdf11a46_7            27.99 KiB  conda  https://conda.anaconda.org/conda-forge
+libuuid                           2.42.4        hcfc3c73_0            33.63 KiB  conda  https://conda.anaconda.org/conda-forge
+libxcrypt                         4.4.38        h280c20c_0            99.57 KiB  conda  https://conda.anaconda.org/conda-forge
+libzlib                           1.3.2         h25fd6f3_3            62.22 KiB  conda  https://conda.anaconda.org/conda-forge
+lightning_utilities               0.15.3                              83.36 KiB  pypi   https://pypi.org/simple
+markdown                          3.11                               339.10 KiB  pypi   https://pypi.org/simple
+markdown_it_py                    4.2.0                              238.95 KiB  pypi   https://pypi.org/simple
+markupsafe                        3.0.3                               65.48 KiB  pypi   https://pypi.org/simple
+matplotlib                        3.11.2                              23.83 MiB  pypi   https://pypi.org/simple
+matplotlib_inline                 0.2.2                               20.87 KiB  pypi   https://pypi.org/simple
+mdurl                             0.1.2                               22.76 KiB  pypi   https://pypi.org/simple
+mediapy                           1.2.7                               88.02 KiB  pypi   https://pypi.org/simple
+mistune                           3.3.4                              196.74 KiB  pypi   https://pypi.org/simple
+moviepy                           2.2.1                              362.69 KiB  pypi   https://pypi.org/simple
+mpmath                            1.3.0                                1.86 MiB  pypi   https://pypi.org/simple
+msgpack                           1.2.2                                1.37 MiB  pypi   https://pypi.org/simple
+narwhals                          2.26.0                               1.93 MiB  pypi   https://pypi.org/simple
+nbclient                          0.11.0                              79.20 KiB  pypi   https://pypi.org/simple
+nbconvert                         7.17.1                             925.00 KiB  pypi   https://pypi.org/simple
+nbformat                          5.11.1                             282.99 KiB  pypi   https://pypi.org/simple
+ncurses                           6.6           hdb14827_1           889.84 KiB  conda  https://conda.anaconda.org/conda-forge
+ndindex                           1.10.1                               1.60 MiB  pypi   https://pypi.org/simple
+nest_asyncio                      1.6.0                               11.93 KiB  pypi   https://pypi.org/simple
+nest_asyncio2                     1.7.3                               23.07 KiB  pypi   https://pypi.org/simple
+networkx                          3.6.1                                6.71 MiB  pypi   https://pypi.org/simple
+ninja                             1.13.2                             389.30 KiB  pypi   https://pypi.org/simple
+nose                              1.3.7                              495.15 KiB  pypi   https://pypi.org/simple
+notebook                          7.6.3                               16.12 MiB  pypi   https://pypi.org/simple
+notebook_shim                     0.2.4                               33.97 KiB  pypi   https://pypi.org/simple
+nsight-compute                    2022.3.0.22   0                    609.97 MiB  conda  https://conda.anaconda.org/nvidia/label/cuda-11.8.0
+numcodecs                         0.16.5                              34.00 MiB  pypi   https://pypi.org/simple
+numexpr                           2.14.2                               1.46 MiB  pypi   https://pypi.org/simple
+numpy                             1.26.4                              61.67 MiB  pypi   https://pypi.org/simple
+nuscenes_devkit                   1.1.11                                         pypi   https://pypi.org/simple
+nvidia_cublas_cu11                11.11.3.6                          639.45 MiB  pypi   https://pypi.org/simple
+nvidia_cuda_cupti_cu11            11.8.87                             39.73 MiB  pypi   https://pypi.org/simple
+nvidia_cuda_nvrtc_cu11            11.8.89                             59.46 MiB  pypi   https://pypi.org/simple
+nvidia_cuda_runtime_cu11          11.8.89                              4.37 MiB  pypi   https://pypi.org/simple
+nvidia_cudnn_cu11                 9.1.0.70                           974.55 MiB  pypi   https://pypi.org/simple
+nvidia_cufft_cu11                 10.9.0.58                          267.88 MiB  pypi   https://pypi.org/simple
+nvidia_curand_cu11                10.3.0.86                           98.71 MiB  pypi   https://pypi.org/simple
+nvidia_cusolver_cu11              11.4.1.48                          468.34 MiB  pypi   https://pypi.org/simple
+nvidia_cusparse_cu11              11.7.5.86                          267.31 MiB  pypi   https://pypi.org/simple
+nvidia_ml_py                      13.615.71                          342.40 KiB  pypi   https://pypi.org/simple
+nvidia_nccl_cu11                  2.20.5                             177.50 MiB  pypi   https://pypi.org/simple
+nvidia_nvtx_cu11                  11.8.86                            406.83 KiB  pypi   https://pypi.org/simple
+omegaconf                         2.3.1                              342.66 KiB  pypi   https://pypi.org/simple
+open3d                            0.18.0                               1.03 GiB  pypi   https://pypi.org/simple
+opencv_python                     4.11.0.86                          168.57 MiB  pypi   https://pypi.org/simple
+openssl                           3.6.4         h781a0a9_0             3.05 MiB  conda  https://conda.anaconda.org/conda-forge
+orjson                            3.12.0                             333.03 KiB  pypi   https://pypi.org/simple
+overrides                         7.7.0                               54.57 KiB  pypi   https://pypi.org/simple
+packaging                         26.3                               487.48 KiB  pypi   https://pypi.org/simple
+pandas                            2.3.3                               41.60 MiB  pypi   https://pypi.org/simple
+pandocfilters                     1.5.1                               19.69 KiB  pypi   https://pypi.org/simple
+parameterized                     0.9.0                               70.10 KiB  pypi   https://pypi.org/simple
+parso                             0.8.7                              346.75 KiB  pypi   https://pypi.org/simple
+pexpect                           4.9.0                              186.87 KiB  pypi   https://pypi.org/simple
+piexif                            1.1.3                               78.69 KiB  pypi   https://pypi.org/simple
+pillow                            11.3.0                              16.71 MiB  pypi   https://pypi.org/simple
+platformdirs                      4.12.0                             150.71 KiB  pypi   https://pypi.org/simple
+plotly                            7.1.0                               38.51 MiB  pypi   https://pypi.org/simple
+plyfile                           1.1.3                              119.20 KiB  pypi   https://pypi.org/simple
+portalocker                       4.4.0                              443.25 KiB  pypi   https://pypi.org/simple
+proglog                           0.1.12                              16.47 KiB  pypi   https://pypi.org/simple
+prometheus_client                 0.26.0                             208.36 KiB  pypi   https://pypi.org/simple
+prompt_toolkit                    3.0.53                               1.33 MiB  pypi   https://pypi.org/simple
+protobuf                          3.20.2                             638.50 KiB  pypi   https://pypi.org/simple
+psutil                            7.2.2                              508.43 KiB  pypi   https://pypi.org/simple
+ptyprocess                        0.7.0                               38.97 KiB  pypi   https://pypi.org/simple
+pure_eval                         0.2.4                               32.27 KiB  pypi   https://pypi.org/simple
+py_cpuinfo                        9.0.0                               85.20 KiB  pypi   https://pypi.org/simple
+pyarrow                           25.0.1                             149.75 MiB  pypi   https://pypi.org/simple
+pycocotools                       2.0.11                               1.66 MiB  pypi   https://pypi.org/simple
+pycparser                         3.0                                198.97 KiB  pypi   https://pypi.org/simple
+pydantic                          2.11.10                              1.69 MiB  pypi   https://pypi.org/simple
+pydantic_core                     2.33.2                               4.74 MiB  pypi   https://pypi.org/simple
+pydub                             0.25.1                             108.68 KiB  pypi   https://pypi.org/simple
+pygments                          2.21.0                               4.41 MiB  pypi   https://pypi.org/simple
+pyogrio                           0.13.0                             100.91 MiB  pypi   https://pypi.org/simple
+pyparsing                         3.3.3                              477.55 KiB  pypi   https://pypi.org/simple
+pyproj                            3.7.2                               31.11 MiB  pypi   https://pypi.org/simple
+pyquaternion                      0.9.9                               46.69 KiB  pypi   https://pypi.org/simple
+python                            3.11.10       hc5c86c4_3_cpython    29.13 MiB  conda  https://conda.anaconda.org/conda-forge
+python_dateutil                   2.9.0.post0                        431.23 KiB  pypi   https://pypi.org/simple
+python_dotenv                     1.2.3                               62.90 KiB  pypi   https://pypi.org/simple
+python_json_logger                4.2.0                               38.81 KiB  pypi   https://pypi.org/simple
+python_multipart                  0.0.32                             101.78 KiB  pypi   https://pypi.org/simple
+pytorch3d                         0.7.8                                          pypi   https://pypi.org/simple
+pytz                              2026.4                             979.79 KiB  pypi   https://pypi.org/simple
+pyyaml                            6.0.3                                2.74 MiB  pypi   https://pypi.org/simple
+pyzmq                             27.2.0                               2.92 MiB  pypi   https://pypi.org/simple
+readline                          8.3           hd6e31c0_1           340.72 KiB  conda  https://conda.anaconda.org/conda-forge
+referencing                       0.37.0                             112.66 KiB  pypi   https://pypi.org/simple
+requests                          2.34.2                             228.90 KiB  pypi   https://pypi.org/simple
+retrying                          1.4.2                               29.18 KiB  pypi   https://pypi.org/simple
+rfc3339_validator                 0.1.4                                4.51 KiB  pypi   https://pypi.org/simple
+rfc3986_validator                 0.1.1                                7.90 KiB  pypi   https://pypi.org/simple
+rfc3987_syntax                    1.1.0                               17.99 KiB  pypi   https://pypi.org/simple
+rich                              15.0.0                               1.19 MiB  pypi   https://pypi.org/simple
+roma                              1.6.1                               84.49 KiB  pypi   https://pypi.org/simple
+rpds_py                           2026.6.3                           988.82 KiB  pypi   https://pypi.org/simple
+ruff                              0.16.9                              23.45 MiB  pypi   https://pypi.org/simple
+runx                              0.0.6                               60.41 KiB  pypi   https://pypi.org/simple
+safehttpx                         0.1.7                               20.91 KiB  pypi   https://pypi.org/simple
+safetensors                       0.8.0                                1.28 MiB  pypi   https://pypi.org/simple
+scikit_image                      0.26.0                              28.28 MiB  pypi   https://pypi.org/simple
+scikit_learn                      1.9.1                               30.00 MiB  pypi   https://pypi.org/simple
+scipy                             1.17.1                             109.01 MiB  pypi   https://pypi.org/simple
+seaborn                           0.13.2                            1018.16 KiB  pypi   https://pypi.org/simple
+semantic_version                  2.10.0                              62.49 KiB  pypi   https://pypi.org/simple
+send2trash                        2.1.0                               33.83 KiB  pypi   https://pypi.org/simple
+sentry_sdk                        2.70.0                               1.99 MiB  pypi   https://pypi.org/simple
+setuptools                        78.1.0        pyhff2d567_0         768.12 KiB  conda  https://conda.anaconda.org/conda-forge
+shapely                           2.1.2                               10.28 MiB  pypi   https://pypi.org/simple
+shellingham                       1.5.4                               18.05 KiB  pypi   https://pypi.org/simple
+simple_knn                                                             5.28 MiB  pypi   ./submodules/simple-knn
+simple_waymo_open_dataset_reader  0.0.0                                          pypi   https://pypi.org/simple
+six                               1.17.0                              37.08 KiB  pypi   https://pypi.org/simple
+smmap                             5.0.3                               67.80 KiB  pypi   https://pypi.org/simple
+soupsieve                         2.10                               144.03 KiB  pypi   https://pypi.org/simple
+stack_data                        0.6.3                               73.54 KiB  pypi   https://pypi.org/simple
+starlette                         0.52.1                             257.55 KiB  pypi   https://pypi.org/simple
+sympy                             1.14.0                              25.60 MiB  pypi   https://pypi.org/simple
+sysroot_linux-64                  2.28          h4ee821c_9            22.90 MiB  conda  https://conda.anaconda.org/conda-forge
+tables                            3.11.1                              24.36 MiB  pypi   https://pypi.org/simple
+tabulate                          0.9.0                              128.39 KiB  pypi   https://pypi.org/simple
+tensorboard                       2.20.0                               8.24 MiB  pypi   https://pypi.org/simple
+tensorboard_data_server           0.7.2                                2.90 KiB  pypi   https://pypi.org/simple
+tensorboardx                      2.6.5                              243.89 KiB  pypi   https://pypi.org/simple
+termcolor                         3.3.0                               18.08 KiB  pypi   https://pypi.org/simple
+terminado                         0.18.1                              32.54 KiB  pypi   https://pypi.org/simple
+threadpoolctl                     3.7.0                               91.56 KiB  pypi   https://pypi.org/simple
+tifffile                          2026.3.3                             1.04 MiB  pypi   https://pypi.org/simple
+timm                              1.0.30                               9.02 MiB  pypi   https://pypi.org/simple
+tinycss2                          1.5.1                              106.57 KiB  pypi   https://pypi.org/simple
+tinycudann                        2.0                                            pypi   https://pypi.org/simple
+tk                                8.6.13        noxft_h1df4ec4_4       3.40 MiB  conda  https://conda.anaconda.org/conda-forge
+tomlkit                           0.13.3                             157.45 KiB  pypi   https://pypi.org/simple
+torch                             2.4.1+cu118                                    pypi   https://download.pytorch.org/whl/cu118
+torch_fidelity                    0.3.0                              116.39 KiB  pypi   https://pypi.org/simple
+torchaudio                        2.11.0                               8.28 MiB  pypi   https://pypi.org/simple
+torchmetrics                      1.9.0                                3.41 MiB  pypi   https://pypi.org/simple
+torchvision                       0.19.1+cu118                                   pypi   https://download.pytorch.org/whl/cu118
+tornado                           6.5.10                               1.65 MiB  pypi   https://pypi.org/simple
+tqdm                              4.70.1                             228.01 KiB  pypi   https://pypi.org/simple
+traitlets                         5.16.1                             312.17 KiB  pypi   https://pypi.org/simple
+trajdata                          1.4.0                                          pypi   https://pypi.org/simple
+trimesh                           4.12.2                               1.94 MiB  pypi   https://pypi.org/simple
+triton                            3.0.0                              553.08 MiB  pypi   https://pypi.org/simple
+typer                             0.27.2                             475.73 KiB  pypi   https://pypi.org/simple
+typing_extensions                 4.16.0                             178.48 KiB  pypi   https://pypi.org/simple
+typing_inspection                 0.4.4                               53.26 KiB  pypi   https://pypi.org/simple
+tzdata                            2026c         h151e31d_0           116.06 KiB  conda  https://conda.anaconda.org/conda-forge
+tzdata                            2026.4                             567.03 KiB  pypi   https://pypi.org/simple
+unidepth                          0.1                                            pypi   https://pypi.org/simple
+uri_template                      1.3.0                               37.14 KiB  pypi   https://pypi.org/simple
+urllib3                           2.8.0                              439.90 KiB  pypi   https://pypi.org/simple
+uvicorn                           0.54.0                             287.28 KiB  pypi   https://pypi.org/simple
+wadler_lindig                     0.1.7                               58.56 KiB  pypi   https://pypi.org/simple
+wandb                             0.25.0                              79.84 MiB  pypi   https://pypi.org/simple
+wcwidth                           0.9.1                                3.38 MiB  pypi   https://pypi.org/simple
+webcolors                         25.10.0                             44.41 KiB  pypi   https://pypi.org/simple
+webencodings                      0.6.1                               27.63 KiB  pypi   https://pypi.org/simple
+websocket_client                  1.9.2                              354.79 KiB  pypi   https://pypi.org/simple
+websockets                        15.0.1                             646.14 KiB  pypi   https://pypi.org/simple
+werkzeug                          3.1.8                              748.35 KiB  pypi   https://pypi.org/simple
+widgetsnbextension                4.0.16                               8.81 MiB  pypi   https://pypi.org/simple
+xformers                          0.0.28.post1                        49.96 MiB  pypi   https://pypi.org/simple
+xyzservices                       2026.9.1                             1.67 MiB  pypi   https://pypi.org/simple
+xz                                5.8.3         ha02ee65_1            23.06 KiB  conda  https://conda.anaconda.org/conda-forge
+xz-gpl-tools                      5.8.3         ha02ee65_1            39.18 KiB  conda  https://conda.anaconda.org/conda-forge
+xz-tools                          5.8.3         hb03c661_1            94.20 KiB  conda  https://conda.anaconda.org/conda-forge
+zarr                              3.1.5                                1.19 MiB  pypi   https://pypi.org/simple
+zipp                              4.1.0                               22.79 KiB  pypi   https://pypi.org/simple

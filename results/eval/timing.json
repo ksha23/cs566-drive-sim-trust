@@ -1,0 +1,50 @@
+{
+ "difix": {
+  "ms_per_img_median": 701.4322280883789,
+  "n": 545,
+  "peak_gib": 7.78963041305542
+ },
+ "difix_ref": {
+  "ms_per_img_median": 1422.1580028533936,
+  "n": 545,
+  "peak_gib": 10.719789505004883,
+  "ref_time_gap_s_median": 0.0
+ },
+ "ours": {
+  "ms_per_img_median": 1653.1327962875366,
+  "n": 325,
+  "peak_gib": null,
+  "device": "cpu"
+ },
+ "difix_ref_far": {
+  "ms_per_img_median": 1424.2483377456665,
+  "n": 545,
+  "peak_gib": 10.709794998168945,
+  "ref_time_gap_s_median": 2.0
+ },
+ "difix_ft": {
+  "ms_per_img_median": 687.3162984848022,
+  "n": 545,
+  "peak_gib": 9.714416980743408
+ },
+ "ours_base_s0": {
+  "ms_per_img_median": 84.0228796005249,
+  "n": 545,
+  "peak_gib": 0.7139096260070801
+ },
+ "ours_base_s1": {
+  "ms_per_img_median": 84.02323722839355,
+  "n": 545,
+  "peak_gib": 0.7139096260070801
+ },
+ "ours_hf_s0": {
+  "ms_per_img_median": 83.99689197540283,
+  "n": 545,
+  "peak_gib": 0.7139096260070801
+ },
+ "ours_hf_s1": {
+  "ms_per_img_median": 83.9853286743164,
+  "n": 545,
+  "peak_gib": 0.7139096260070801
+ }
+}

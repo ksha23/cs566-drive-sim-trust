@@ -1,0 +1,39 @@
+{
+ "zero_repro": {
+  "n_rows": 2506,
+  "methods": [
+   "difix",
+   "difix_ft",
+   "difix_ref",
+   "difix_reimpl_ref",
+   "nv_fixer",
+   "ours_hfgan_s0",
+   "raw"
+  ],
+  "psnr_max_abs_diff": 7.62939453125e-06,
+  "ssim_max_abs_diff": 0.0,
+  "lpips_max_abs_diff": 0.0,
+  "mark_f1_max_abs_diff": 0.0,
+  "mark_prec_max_abs_diff": 0.0,
+  "mark_rec_max_abs_diff": 0.0,
+  "yolo_halluc_veh_max_abs_diff": 0.0,
+  "yolo_static_f1_max_abs_diff": 0.0,
+  "tex_ratio_max_abs_diff": 0.0,
+  "ntl_iou_max_abs_diff": 0.0004464938607591229,
+  "lane_f1_max_abs_diff": 0.0
+ },
+ "resampling": {
+  "bilinear": {
+   "n": 152,
+   "psnr_render_vs_warped_real": 26.56738963880037,
+   "psnr_0deg_render_vs_real_same_content": 25.751176570591173,
+   "psnr_real_round_trip": 31.899359803450736
+  },
+  "lanczos4": {
+   "n": 152,
+   "psnr_render_vs_warped_real": 25.783971635918867,
+   "psnr_0deg_render_vs_real_same_content": 25.751176570591173,
+   "psnr_real_round_trip": 41.88855916575382
+  }
+ }
+}

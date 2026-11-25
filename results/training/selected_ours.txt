@@ -1,0 +1,4 @@
+# base: mean best val LPIPS 0.3405 over 2 seeds
+# hf: mean best val LPIPS 0.3580 over 2 seeds
+# hfgan: mean best val LPIPS 0.3340 over 2 seeds
+selected hfgan_s0

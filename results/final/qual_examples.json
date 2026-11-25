@@ -1,0 +1,64 @@
+[
+ {
+  "file": "qual_3m_typical.jpg",
+  "scene": "scene_16",
+  "src": "clip_1",
+  "dst": "clip_2",
+  "ts": "1722391992699614",
+  "offset_m": 3.03,
+  "annotations": {}
+ },
+ {
+  "file": "qual_6m_typical.jpg",
+  "scene": "scene_17",
+  "src": "clip_0",
+  "dst": "clip_2",
+  "ts": "1722396077999619",
+  "offset_m": 7.98,
+  "annotations": {}
+ },
+ {
+  "file": "qual_hallucination.jpg",
+  "scene": "scene_17",
+  "src": "clip_2",
+  "dst": "clip_1",
+  "ts": "1722310240699626",
+  "offset_m": 4.07,
+  "annotations": {
+   "raw": {
+    "inv": 0,
+    "era": 1,
+    "veh": 0
+   },
+   "difix": {
+    "inv": 3,
+    "era": 1,
+    "veh": 0
+   },
+   "nv_fixer": {
+    "inv": 0,
+    "era": 1,
+    "veh": 0
+   },
+   "difix_ft": {
+    "inv": 0,
+    "era": 1,
+    "veh": 0
+   },
+   "difix_reimpl_ref": {
+    "inv": 1,
+    "era": 1,
+    "veh": 0
+   }
+  }
+ },
+ {
+  "file": "qual_failure.jpg",
+  "scene": "scene_15",
+  "src": "clip_2",
+  "dst": "clip_0",
+  "ts": "1722235986399622",
+  "offset_m": 7.5,
+  "annotations": {}
+ }
+]

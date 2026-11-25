@@ -1,0 +1,48 @@
+check,bin,method,value,n,lo,hi,note
+paint_drop,~3m,difix,0.0027,2635,,,
+paint_drop,~3m,difix_ref,0.0151,2517,,,
+paint_drop,~3m,nv_fixer,0.0000,2501,,,
+paint_drop,~3m,difix_ft,0.0004,2543,,,
+paint_drop,~3m,difix_reimpl_ref,0.0113,2572,,,
+paint_drop,~3m,ours_hfgan_s0,0.0000,2556,,,
+paint_drop,~3m,prog_difix_reimpl,0.0185,2589,,,
+paint_drop,~3m,road_prior,0.0019,2609,,,
+vs_nv_fixer,~3m,difix_ft,0.0979,2687,0.0659,0.1331,8/8 roads > 0
+vs_nv_fixer,~3m,difix_reimpl_ref,0.0823,2686,0.0403,0.1263,7/8 roads > 0
+paint_drop,~6m,difix,0.0008,1309,,,
+paint_drop,~6m,difix_ref,0.0000,1272,,,
+paint_drop,~6m,nv_fixer,0.0008,1180,,,
+paint_drop,~6m,difix_ft,0.0008,1241,,,
+paint_drop,~6m,difix_reimpl_ref,0.0015,1298,,,
+paint_drop,~6m,ours_hfgan_s0,0.0000,1264,,,
+paint_drop,~6m,prog_difix_reimpl,0.0000,1304,,,
+paint_drop,~6m,road_prior,0.0008,1303,,,
+vs_nv_fixer,~6m,difix_ft,0.1113,1315,0.0212,0.1856,7/8 roads > 0
+vs_nv_fixer,~6m,difix_reimpl_ref,0.1189,1315,0.0545,0.1799,7/8 roads > 0
+lane_f1_no_traffic,0m,difix,0.9684,411,,,all frames 0.9678 (n=555)
+lane_f1_no_traffic,0m,difix_ft,0.9804,411,,,all frames 0.9768 (n=555)
+lane_f1_no_traffic,0m,difix_ref,0.9762,411,,,all frames 0.9728 (n=555)
+lane_f1_no_traffic,0m,difix_reimpl_ref,0.9780,411,,,all frames 0.9767 (n=555)
+lane_f1_no_traffic,0m,nv_fixer,0.9750,411,,,all frames 0.9708 (n=555)
+lane_f1_no_traffic,0m,ours_hfgan_s0,0.9680,411,,,all frames 0.9638 (n=555)
+lane_f1_no_traffic,0m,prog_difix_reimpl,0.9847,411,,,all frames 0.9783 (n=555)
+lane_f1_no_traffic,0m,raw,0.9816,411,,,all frames 0.9763 (n=555)
+lane_f1_no_traffic,0m,road_prior,0.9838,411,,,all frames 0.9757 (n=555)
+lane_f1_no_traffic,~3m,difix,0.6219,2127,,,all frames 0.5741 (n=2825)
+lane_f1_no_traffic,~3m,difix_ft,0.8356,2127,,,all frames 0.7852 (n=2825)
+lane_f1_no_traffic,~3m,difix_ref,0.7086,2127,,,all frames 0.6436 (n=2825)
+lane_f1_no_traffic,~3m,difix_reimpl_ref,0.8132,2127,,,all frames 0.7699 (n=2825)
+lane_f1_no_traffic,~3m,nv_fixer,0.7312,2127,,,all frames 0.6865 (n=2825)
+lane_f1_no_traffic,~3m,ours_hfgan_s0,0.2743,2127,,,all frames 0.2462 (n=2825)
+lane_f1_no_traffic,~3m,prog_difix_reimpl,0.5017,2127,,,all frames 0.4566 (n=2825)
+lane_f1_no_traffic,~3m,raw,0.1999,2127,,,all frames 0.1816 (n=2825)
+lane_f1_no_traffic,~3m,road_prior,0.3729,2127,,,all frames 0.3369 (n=2825)
+lane_f1_no_traffic,~6m,difix,0.2211,1009,,,all frames 0.2075 (n=1386)
+lane_f1_no_traffic,~6m,difix_ft,0.5814,1009,,,all frames 0.5176 (n=1386)
+lane_f1_no_traffic,~6m,difix_ref,0.3690,1009,,,all frames 0.3355 (n=1386)
+lane_f1_no_traffic,~6m,difix_reimpl_ref,0.5828,1009,,,all frames 0.5256 (n=1386)
+lane_f1_no_traffic,~6m,nv_fixer,0.4489,1009,,,all frames 0.4082 (n=1386)
+lane_f1_no_traffic,~6m,ours_hfgan_s0,0.0098,1009,,,all frames 0.0116 (n=1386)
+lane_f1_no_traffic,~6m,prog_difix_reimpl,0.1046,1009,,,all frames 0.0924 (n=1386)
+lane_f1_no_traffic,~6m,raw,0.0105,1009,,,all frames 0.0115 (n=1386)
+lane_f1_no_traffic,~6m,road_prior,0.0581,1009,,,all frames 0.0505 (n=1386)

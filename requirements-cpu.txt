@@ -1,0 +1,11 @@
+# Packages for scripts/quick_check.sh (no GPU, no datasets). The full pipeline needs the environments in README.md.
+# Tested 2026-11-24 on a clean Ubuntu 24.04 machine with Python 3.12.3, torch 2.15.0+cpu and torchvision 0.29.2+cpu.
+# Install the CPU build of torch first:  pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+numpy==2.5.4
+pandas==3.1.1
+matplotlib==3.11.2
+pillow==13.0.0
+opencv-python-headless==5.1.0.95
+lpips==0.1.4
+torchmetrics==1.9.0
+ultralytics==8.4.218

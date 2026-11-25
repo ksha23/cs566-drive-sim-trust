@@ -1,0 +1,23 @@
+{
+ "own_refit": {
+  "renderer": "own",
+  "splat": "/home/kyle/cs566/data/D/own_renderer/splats/scene_16/clip_0/splat.pt",
+  "n_gauss": 1353633,
+  "median_ms": 5.8521619939710945,
+  "n": 111
+ },
+ "gsplat_refit_s1": {
+  "renderer": "gsplat",
+  "splat": "/home/kyle/cs566/data/D/own_renderer/splats_gsplat_s1/scene_16/clip_0/splat.pt",
+  "n_gauss": 1362560,
+  "median_ms": 3.8953434850554913,
+  "n": 111
+ },
+ "own_render_orig": {
+  "renderer": "own",
+  "splat": "/home/kyle/cs566/data/D/splats/scene_16/clip_0/splat.pt",
+  "n_gauss": 1403395,
+  "median_ms": 5.939346010563895,
+  "n": 111
+ }
+}

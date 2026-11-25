@@ -1,0 +1,59 @@
+per policy step (pooled over runs): fixer,n_runs,n_steps,median_m,p90_m,p99_m,max_m,frac_steps_gt_1m,frac_steps_gt_2m,frac_steps_gt_3m,frac_steps_gt_4.5m
+none,75,2881,2.66,6.53,9.10,10.88,0.7254,0.5922,0.4575,0.2881
+difix,75,2736,2.50,6.30,8.56,10.72,0.6791,0.5629,0.4397,0.3001
+difix_ft,75,2636,2.09,5.81,8.57,10.91,0.6643,0.5114,0.3775,0.2094
+difix_reimpl,75,2724,2.42,6.39,9.03,10.78,0.7126,0.5525,0.4123,0.2706
+nv_fixer,75,2651,2.76,6.82,9.34,11.19,0.6971,0.5896,0.4674,0.3346
+ours,25,633,2.05,8.64,9.92,10.30,0.6240,0.5103,0.3728,0.2654
+ours_best,23,702,1.19,5.92,9.47,10.30,0.5328,0.3604,0.2422,0.1624
+
+per run: fixer,n_runs,max_m_median,max_m_ci_lo,max_m_ci_hi,frac_runs_max_gt_1m,frac_runs_max_gt_2m,frac_runs_max_gt_3m,frac_runs_max_gt_4.5m
+none,75,4.97,4.54,5.87,0.920,0.853,0.787,0.560
+difix,75,4.71,4.02,5.26,0.853,0.787,0.707,0.507
+difix_ft,75,4.33,4.00,5.51,0.840,0.733,0.627,0.480
+difix_reimpl,75,4.83,4.40,5.73,0.867,0.787,0.680,0.533
+nv_fixer,75,6.44,4.94,6.33,0.867,0.813,0.760,0.627
+ours,25,5.72,3.73,6.53,0.800,0.720,0.640,0.520
+ours_best,23,4.77,3.52,6.47,0.826,0.652,0.522,0.522
+
+max deviation by how the run ended: fixer,end,n_runs,max_m_median,max_m_max
+none,Collision with background,18,7.45,9.80
+none,Collision with foreground,28,2.80,8.07
+none,Complete,23,5.78,9.77
+none,Far from preset trajectory,6,10.25,10.89
+difix,Collision with background,14,6.33,9.14
+difix,Collision with foreground,33,2.03,6.92
+difix,Complete,24,6.22,9.67
+difix,Far from preset trajectory,4,10.58,10.72
+difix_ft,Collision with background,8,8.00,9.64
+difix_ft,Collision with foreground,35,1.27,7.14
+difix_ft,Complete,23,5.58,8.58
+difix_ft,Far from preset trajectory,9,10.51,10.91
+difix_reimpl,Collision with background,13,6.50,9.11
+difix_reimpl,Collision with foreground,30,1.88,4.83
+difix_reimpl,Complete,24,5.97,9.95
+difix_reimpl,Far from preset trajectory,8,10.26,10.78
+nv_fixer,Collision with background,20,7.03,9.74
+nv_fixer,Collision with foreground,31,2.52,7.18
+nv_fixer,Complete,13,6.56,8.81
+nv_fixer,Far from preset trajectory,11,10.30,11.19
+ours,Collision with background,7,6.56,7.60
+ours,Collision with foreground,12,1.14,4.29
+ours,Far from preset trajectory,6,10.22,10.30
+ours_best,Collision with background,8,6.85,9.47
+ours_best,Collision with foreground,11,1.75,4.77
+ours_best,Far from preset trajectory,4,10.17,10.30
+
+paired delta HD-Score vs none, split by the no-fixer run's max deviation: fixer,split,n_pairs,delta_mean,ci_lo,ci_hi
+difix,max<=3m,16,0.0380,-0.0440,0.1657
+difix,max>3m,59,-0.0299,-0.0830,0.0213
+difix_ft,max<=3m,16,0.0412,-0.0627,0.1761
+difix_ft,max>3m,59,-0.0171,-0.0728,0.0366
+difix_reimpl,max<=3m,16,0.0608,-0.0220,0.1838
+difix_reimpl,max>3m,59,-0.0451,-0.1027,0.0076
+nv_fixer,max<=3m,16,0.0780,0.0118,0.1604
+nv_fixer,max>3m,59,-0.0865,-0.1445,-0.0322
+ours,max<=3m,5,-0.0324,-0.0817,-0.0024
+ours,max>3m,20,-0.4207,-0.5658,-0.2646
+ours_best,max<=3m,4,0.1201,-0.0137,0.3740
+ours_best,max>3m,19,-0.2734,-0.4259,-0.1349

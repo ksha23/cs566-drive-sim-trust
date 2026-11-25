@@ -1,0 +1,4 @@
+bin,method,psnr,ssim,lpips,road_lpips,mark_f1,mark_prec,mark_rec,tex_ratio,yolo_static_f1,yolo_halluc_veh,n
+0m (on-path),road_prior,24.0765,0.7937,0.2861,0.4003,0.9493,0.958,0.9493,0.3589,0.6,0.0159,63
+~3.3m,road_prior,16.0739,0.5185,0.5249,0.6488,0.5167,0.5028,0.5482,0.3435,0.2692,0.0399,326
+~6.3m,road_prior,13.3894,0.4166,0.7158,0.8604,0.028,0.233,0.0162,0.1733,0.0769,0.2821,156

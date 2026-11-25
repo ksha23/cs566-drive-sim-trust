@@ -1,0 +1,27 @@
+# data, weights, checkpoints and bulk outputs never go in git
+logs/
+__pycache__/
+*.pyc
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.npz
+*.ply
+*.zip
+*.tar*
+data/
+checkpoints/
+.venv/
+*.pkl
+# dataset frames that must not be redistributed (MV2: academic research use only; DL3DV: terms of use)
+results/mv2/*.jpg
+results/mv2/*.png
+results/videos/mv2_*
+results/videos/dl3dv_*
+results/dl3dv/**/*.jpg
+results/dl3dv/**/*.png
+# large binaries
+*.mp4.tmp
+yolo11m.pt

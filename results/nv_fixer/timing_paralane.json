@@ -1,0 +1,9 @@
+{
+ "scene_16,scene_17": {
+  "ms_per_img_median": 148.80084991455078,
+  "n": 870,
+  "peak_gib": 1.8068952560424805,
+  "timestep": 250,
+  "resolution": "960x544 (resized back)"
+ }
+}

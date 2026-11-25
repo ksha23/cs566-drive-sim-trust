@@ -1,0 +1,9 @@
+{
+ "scene-0064,scene-0167,scene-0661,scene-0071,scene-0383": {
+  "ms_per_img_median": 150.6819725036621,
+  "n": 1050,
+  "peak_gib": 1.8068952560424805,
+  "timestep": 250,
+  "resolution": "960x544 (resized back)"
+ }
+}

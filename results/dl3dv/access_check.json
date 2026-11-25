@@ -1,0 +1,21 @@
+{
+ "date": "2026-09-28T13:52:55",
+ "user": "ksha23",
+ "repos": {
+  "DL3DV/DL3DV-10K-Sample": {
+   "probe_file": "5c3af581028068a3c402c7cbe16ecf9471ddf2897c34ab634b7b1b6cf81aba00/colmap/transforms.json",
+   "access": true,
+   "message": "downloaded"
+  },
+  "DL3DV/DL3DV-Benchmark": {
+   "probe_file": "032dee9fb0a8bc1b90871dc5fe950080d0bcd3caf166447f44e60ca50ac04ec7/nerfstudio/transforms.json",
+   "access": false,
+   "message": "Access to dataset DL3DV/DL3DV-Benchmark is restricted and you are not in the authorized list. Visit https://huggingface.co/datasets/DL3DV/DL3DV-Benchmark to ask for access."
+  },
+  "DL3DV/DL3DV-ALL-960P": {
+   "probe_file": "1K/001dccbc1f78146a9f03861026613d8e73f39f372b545b26118e37a23c740d5f.zip",
+   "access": false,
+   "message": "HTTP 403: Access to dataset DL3DV/DL3DV-ALL-960P is restricted and you are not in the authorized list. Visit https://huggingface.co/datasets/DL3DV/DL3DV-ALL-960P to ask for access."
+  }
+ }
+}
