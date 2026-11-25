@@ -31,11 +31,12 @@ Each fixer ran on the same 25 scenarios with the same 3 LTF checkpoints (seeds 0
 | fixer into the policy | seeds | runs | HD-Score [CI] | RC | NC | complete / collision / off-route | paired Δ HD-Score [CI] | fixer ms per step (3 cams) |
 |---|---|---|---|---|---|---|---|---|
 | none | 0,1,2 | 75 | 0.408 [0.326, 0.486] | 0.635 | 0.603 | 23 / 46 / 6 | – | – |
-| Difix, zero-shot | 0,1,2 | 75 | 0.392 [0.312, 0.474] | 0.619 | 0.567 | 24 / 47 / 4 | −0.015 [−0.064, +0.034] | 1411 |
-| Difix-FT (Para-Lane fine-tune) | 0,1,2 | 75 | 0.403 [0.319, 0.488] | 0.606 | 0.581 | 23 / 43 / 9 | −0.005 [−0.054, +0.048] | 1410 |
-| NVIDIA Fixer | 0,1,2 | 75 | 0.356 [0.287, 0.429] | 0.577 | 0.579 | 13 / 51 / 11 | −0.051 [−0.101, −0.004] | 472 |
-| our U-Net, selected `base_s0` | 0 | 23** | 0.254 [0.159, 0.365] | 0.464 | 0.464 | 0 / 19 / 4 | −0.205 [−0.353, −0.069] | 222 |
-| our U-Net v0 | 0 | 25 | 0.114 [0.055, 0.187] | 0.285 | 0.341 | 0 / 19 / 6 | −0.343 [−0.472, −0.212] | 191 |
+| Difix, zero-shot | 0,1,2 | 75 | 0.392 [0.312, 0.472] | 0.619 | 0.567 | 24 / 47 / 4 | −0.015 [−0.062, +0.034] | 1411 |
+| Difix-FT (Para-Lane fine-tune) | 0,1,2 | 75 | 0.403 [0.319, 0.484] | 0.606 | 0.581 | 23 / 43 / 9 | −0.005 [−0.054, +0.046] | 1410 |
+| NVIDIA Fixer | 0,1,2 | 75 | 0.356 [0.286, 0.427] | 0.577 | 0.579 | 13 / 51 / 11 | −0.051 [−0.099, −0.003] | 472 |
+| our Difix re-implementation (nearest recorded frame as reference) | 0,1,2 | 75 | 0.385 [0.302, 0.467] | 0.619 | 0.546 | 24 / 43 / 8 | −0.023 [−0.074, +0.028] | 1654 |
+| our U-Net, selected `base_s0` | 0 | 23** | 0.254 [0.159, 0.361] | 0.464 | 0.464 | 0 / 19 / 4 | −0.205 [−0.350, −0.065] | 222 |
+| our U-Net v0 | 0 | 25 | 0.114 [0.055, 0.186] | 0.285 | 0.341 | 0 / 19 / 6 | −0.343 [−0.481, −0.211] | 191 |
 
 Per LTF seed (HD-Score, 25 runs each): none 0.457 / 0.306 / 0.460; Difix 0.453 / 0.285 / 0.439; Difix-FT 0.504 / 0.317 /
 0.389; NVIDIA Fixer 0.306 / 0.316 / 0.447. The spread across LTF seeds is larger than any fixer effect. With seed 0
@@ -58,6 +59,7 @@ but it still halves HD-Score, and it never completes a route. **This is a negati
     an 11.x nvcc installed through pixi/conda-forge, which we did not attempt.
   * UniAD_SIM's launcher (`tools/e2e.sh`) also hard-codes zsh + conda + NAS paths.
   * The GPU was heavily contended by three projects, so we spent the time on LTF with 3 seeds × 25 scenarios instead.
-* **Difix-ref in closed loop: not run.** There is no real reference frame at the simulated ego pose. The only candidate would
-  be a render, so this is equivalent to Difix.
+* **Released Difix-ref in closed loop: not run.** A reference-view fixer was run with our Difix re-implementation instead
+  (final round, RESULTS §19): at each step the reference is the recorded frame nearest to the vehicle's ground position
+  (`src/hugsim/render_refs.py`); see the table above.
 * **Our U-Nets with seeds 1 and 2: not run** (they clearly break the policy with seed 0 already).

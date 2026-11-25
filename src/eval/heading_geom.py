@@ -3,9 +3,9 @@
 Conventions (Para-Lane COLMAP world frame; verified on scene_16/17: world z up, camera pitch 5.0-5.3 deg down,
 roll < 0.7 deg, camera 1.86-1.91 m above the LiDAR ground):
   * camera frame = OpenCV (x right, y down, z forward); c2w = [R | C] maps camera to world.
-  * yaw psi (deg): the camera is rotated about the WORLD z axis through its OWN centre, R' = Rz(psi) R, C' = C.
+  * yaw psi (deg): the camera is rotated about the WORLD z axis through its OWN center, R' = Rz(psi) R, C' = C.
     psi > 0 = turn LEFT (counter-clockwise seen from above; world y points left).
-  * dz (m): the camera centre is moved along world +z, R' = R, C' = C + dz e_z. dz > 0 = higher (truck-mounted),
+  * dz (m): the camera center is moved along world +z, R' = R, C' = C + dz e_z. dz > 0 = higher (truck-mounted),
     dz < 0 = lower. Nominal height h = C_z - ground_z (ground = 10th percentile of LiDAR z within 4 m, per frame).
   * condition name: 'y{psi:+d}_z{dz:+.1f}', e.g. y+10_z+0.0 or y+0_z-1.0; y+0_z+0.0 is the recorded pose.
   * "lateral + yaw": the real ADJACENT-lane pose (Para-Lane cross-lane pairs) with the same yaw rotation applied.
@@ -13,8 +13,8 @@ roll < 0.7 deg, camera 1.86-1.91 m above the LiDAR ground):
 Warps from the recorded pose 0 (real frame, 0-deviation render) to the deviated pose 1:
   H = K [ R1^T R0 - R1^T (C0 - C1) n0^T / h ] K^-1,   n0 = R0^T e_z (world up in camera-0 coordinates)
   * pure yaw (C1 = C0): H = K R1^T R0 K^-1. This is EXACT for every scene point, whatever its depth, because the
-    camera rotates about its optical centre (no parallax). Only pixels whose source falls outside the recorded frame are
-    unknown (invalid). A real vehicle turns about its rear axle, which adds a lateral shift of L sin(psi) (not modelled
+    camera rotates about its optical center (no parallax). Only pixels whose source falls outside the recorded frame are
+    unknown (invalid). A real vehicle turns about its rear axle, which adds a lateral shift of L sin(psi) (not modeled
     here; that is what the lateral + yaw condition probes).
   * height change: the plane-induced homography of the road plane z = ground (normal world z). Exact for points ON the
     road (lane paint, road texture), wrong for anything above it (cars, poles, buildings) -> only road-region
@@ -42,7 +42,7 @@ def deviate(c2w, yaw=0.0, dz=0.0):
 
 def homography(K, c2w0, c2w1, h=None):
     """Pixel map from the image at pose 0 to the image at pose 1 (see module doc). h = camera height above the road
-    plane at pose 0 (needed only if the centres differ)."""
+    plane at pose 0 (needed only if the centers differ)."""
     K = np.asarray(K, np.float64); c0, c1 = np.asarray(c2w0, np.float64), np.asarray(c2w1, np.float64)
     R0, R1, C0, C1 = c0[:3, :3], c1[:3, :3], c0[:3, 3], c1[:3, 3]
     M = R1.T @ R0

@@ -168,14 +168,14 @@ def main():
 
     k = typical("scene_16", 1.0, 4.5)
     ex.append(grid("qual_3m_typical", rows(k), f"One lane over ({abs(W.loc[k, ('offset_m', 'raw')]):.1f} m), Para-Lane scene_16: a typical frame",
-                   "Frame chosen so that the raw-splat and Difix-FT lane F1 are closest to their pooled means at ~3 m (not cherry-picked)."))
+                   "Frame chosen by a fixed rule: the raw-splat and Difix-FT lane F1 closest to their pooled means at ~3 m."))
     k = typical("scene_17", 4.5, 20)
     ex.append(grid("qual_6m_typical", rows(k), f"Two lanes over ({abs(W.loc[k, ('offset_m', 'raw')]):.1f} m), Para-Lane scene_17: a typical frame",
-                   "Frame chosen so that the raw-splat and Difix-FT lane F1 are closest to their pooled means at ~6 m (not cherry-picked)."))
+                   "Frame chosen by a fixed rule: the raw-splat and Difix-FT lane F1 closest to their pooled means at ~6 m."))
     # hallucination: top-30 frames per fixer by paint-precision drop vs raw (+ fake vehicles), then the frame whose
     # largest invented-paint region is biggest (a whole invented marking rather than speckle)
     # candidates from the original two test roads only: on the later roads hard shadows (scene_15) and bright kerb
-    # strips (scene_3/4/11) trigger the colour-threshold paint mask, so "invented paint" there is often not paint
+    # strips (scene_3/4/11) trigger the color-threshold paint mask, so "invented paint" there is often not paint
     c = W[(off > 1.0) & (off <= 4.5) & W.index.get_level_values(0).isin(["scene_16", "scene_17"])].dropna(subset=[("mark_prec", "raw")])
     best = None
     for me in ("difix", "difix_reimpl_ref"):
@@ -194,7 +194,7 @@ def main():
     fails = c[(c[[("lane_f1", me) for me in METHODS[1:]]].fillna(1) == 0).all(1)]
     k = (fails if len(fails) else c)[("lpips", "difix_ft")].idxmax()
     ex.append(grid("qual_failure", rows(k), f"Failure case: two lanes over ({abs(W.loc[k, ('offset_m', 'raw')]):.1f} m) under an elevated highway, Para-Lane scene_15",
-                   "Every fixer has lane F1 = 0 here: the real yellow centre line is missing in every output; "
+                   "Every fixer has lane F1 = 0 here: the real yellow center line is missing in every output; "
                    "they look like roads, but not like this road (not annotated: hard shadows break the paint mask)."))
     json.dump(ex, open(f"{OUT}/qual_examples.json", "w"), indent=1, default=str)
     print(json.dumps(ex, indent=1, default=str))

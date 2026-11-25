@@ -5,11 +5,11 @@ $CS566D_DATA/faithfusion/env by scripts/14_faithfusion.sh), whose backward pass 
 i.e. a diagonal Fisher approximation as in FisherRF. The procedure mirrors their code
 (models/trainers/base.py:render_uncertainly_gaussians and models/video_utils.py):
 
-  1. H_train: for every training view of the source lane, render with SH colours and back-propagate
+  1. H_train: for every training view of the source lane, render with SH colors and back-propagate
      grad = non_sky / hit_count (per pixel, all 3 channels); sum the squared gradients over the parameter groups
      (means, rotations, scales, opacities, SH) into one scalar per Gaussian.  I_train = 1 / (H_train + 1e-6).
   2. For a novel view: back-propagate ones -> H_view (per Gaussian); I_acq = H_view * I_train.
-  3. Render I_acq as a per-Gaussian colour (alpha-blended), mask pixels with depth <= 0.1, divide by the per-pixel
+  3. Render I_acq as a per-Gaussian color (alpha-blended), mask pixels with depth <= 0.1, divide by the per-pixel
      hit count and by 1000, then gain = log(1 + gain) (their render_novel_views_uncertainty); pixels the splat does
      not cover (alpha < 0.1) get gain = 100 ("fully generate").
 

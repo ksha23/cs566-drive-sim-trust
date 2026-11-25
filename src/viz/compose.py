@@ -1,4 +1,4 @@
-"""Side-by-side demo videos for the project webpage: a labelled grid of tiles (real | raw | fixers ...), a header with
+"""Side-by-side demo videos for the project webpage: a labeled grid of tiles (real | raw | fixers ...), a header with
 title and a per-frame status line (dataset, scenario, offset), a footer with the dataset attribution. H.264 (libx264,
 yuv420p, faststart), 1280 px wide, re-encoded at a higher CRF until the file is <= 9.5 MB.
 

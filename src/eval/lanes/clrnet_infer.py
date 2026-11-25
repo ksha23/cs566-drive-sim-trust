@@ -85,7 +85,7 @@ def main():
         for p, ls in zip(chunk, lanes):
             L, C = [], []
             for lane in ls:
-                pts = lane.points  # normalised (x in [0,1] of CULane width, y in [0,1] of CULane height)
+                pts = lane.points  # normalized (x in [0,1] of CULane width, y in [0,1] of CULane height)
                 xs = pts[:, 0] * cfg.ori_img_w / s; ys = y0 + pts[:, 1] * cfg.ori_img_h / s
                 ok = (xs >= 0) & (xs < W) & (ys >= 0) & (ys < H)
                 if ok.sum() >= 2:

@@ -47,7 +47,8 @@ Difix3D+: "after every 1.5k iterations, slightly perturb the ground-truth poses 
 with the diffusion model, add to the training set". Ours: target = lateral offsets (unknown to the procedure which side
 the other lanes are), steps of **3 m then 6 m** (every 3rd training pose, alternating left/right), each followed by a
 **2k-iteration** refinement on real views + all pseudo-views so far (pseudo-view probability 0.4, lower learning
-rates). The paper gives no step size; our steps are coarser than its "slightly" because of GPU time (2 rounds). Pseudo
+rates). The paper gives no step size; our steps are coarser than its "slightly" because of GPU time (2 rounds); a four-step schedule closer
+to the paper's, compared later on scene_16 (a test road), gave lower lane F1 (0.77 vs. 0.90, RESULTS §6). Pseudo
 view loss masked as in ReconDreamer's DriveRestorer: no sky (sky-colored or empty pixels in the upper half), no far
 region (rendered depth > 40 m); empty pixels in the lower half (road holes) are kept, since that is where the fixer's
 restoration should be distilled. A first version that also masked all alpha<0.5 pixels was discarded (it removed
@@ -59,7 +60,7 @@ exactly the restored road). Control: same loop with the raw render as pseudo vie
 * Hallucination: white/yellow paint masks (row-wise asphalt 25th percentile + margin, saturation/hue) in the road
   region, 3-px tolerant precision (low = invented paint), recall (low = erased paint), F1 — always all three; road
   texture ratio (mean |Laplacian| vs. real).
-* CLRNet (Turoad, CULane DLA34 weights): NTL-IoU = IoU of lanes rasterised 30 px thick at CULane scale; CULane-style
+* CLRNet (Turoad, CULane DLA34 weights): NTL-IoU = IoU of lanes rasterized 30 px thick at CULane scale; CULane-style
   lane F1 at IoU 0.5 (`src/eval/lanes/`).
 * YOLO11m: static-object F1 and fake-vehicle count (vehicle/person boxes where the real frame has no movable object).
 * 95% bootstrap CIs over frames and over lane-pair sequences (the latter reported; frames within a sequence are

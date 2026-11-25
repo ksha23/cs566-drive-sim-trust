@@ -1,8 +1,8 @@
 """Render a fitted street splat along its recorded lane, displaced sideways / turned / raised (command-line tool).
 
-Every recorded pose of <clip> (or every --every-th) is shifted by --lateral metres along the camera's horizontal
+Every recorded pose of <clip> (or every --every-th) is shifted by --lateral meters along the camera's horizontal
 right axis (+ = LEFT, the convention of the results), rotated by --yaw degrees about the world up axis through the
-camera centre (+ = left) and raised by --dz metres; the splat is rendered there at 960x540. No real image exists at
+camera center (+ = left) and raised by --dz meters; the splat is rendered there at 960x540. No real image exists at
 these poses unless another Para-Lane lane drove there (see src/pairs/render_pairs.py for the scored renders).
 
 usage: scripts/lib/py.sh src/tools/render_offpath.py <scene> <clip> <splat.pt> <out_dir> [--lateral 3.0] [--yaw 0]

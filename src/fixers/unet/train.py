@@ -27,7 +27,7 @@ class Pairs(torch.utils.data.Dataset):
         self.root, self.crop = root, crop
         self.items = [m for s in scenes for m in json.load(open(f"{root}/{s}/meta.json"))
                       if m["variant"] in variants and not m["onpath_test"]]
-        # per-variant weights normalised by count, so each variant contributes in proportion to VARIANT_WEIGHT
+        # per-variant weights normalized by count, so each variant contributes in proportion to VARIANT_WEIGHT
         from collections import Counter
         cnt = Counter(m["variant"] for m in self.items)
         self.weights = [VARIANT_WEIGHT[m["variant"]] / cnt[m["variant"]] for m in self.items]

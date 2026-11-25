@@ -153,8 +153,9 @@ finished outputs). Data products go to `$CS566D_DATA`; the small result files go
 | final | `CUDA_VISIBLE_DEVICES= scripts/lib/py.sh src/viz/qualitative.py` (qualitative grids) | minutes (CPU) | `results/final/` |
 
 Split: train = Para-Lane 0315 scene_20–24, val = scene_19 (checkpoint and config selection only), test = scene_16
-and scene_17, plus held-out test roads added later with the same pipeline (stage 18; `docs/more_scenes.md`). No test
-road was used for training or selection.
+and scene_17, plus held-out test roads added later with the same pipeline (stage 18; `docs/more_scenes.md`). No test road was used for training. One design choice was compared on a test road: the two-round progressive schedule,
+chosen for GPU time, also gave higher lane F1 on scene_16 than a four-step schedule closer to the paper's (0.90 vs.
+0.77; RESULTS §6), so scene_16's progressive result is not strictly held out.
 
 ## Executables (command-line entry points)
 All run in the project env through `scripts/lib/py.sh` (which puts `src/` on `PYTHONPATH`).

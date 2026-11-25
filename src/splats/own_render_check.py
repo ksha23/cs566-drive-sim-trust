@@ -146,7 +146,7 @@ def main():
             for k in gg:
                 r[f"cos_{k}"] = cos(go[k], gg[k]); r[f"normratio_{k}"] = ratio(go[k], gg[k])
             r["cos_means2d"] = cos(o_m2d, g_m2d); r["normratio_means2d"] = ratio(o_m2d, g_m2d)
-            # DefaultStrategy statistic: per-Gaussian |grad of 2D mean| (normalised screen space) where radius > 0
+            # DefaultStrategy statistic: per-Gaussian |grad of 2D mean| (normalized screen space) where radius > 0
             s = torch.tensor([W / 2.0, H / 2.0], device="cuda")
             sg, so = (g_m2d * s).norm(dim=-1) * (g_rad > 0), (o_m2d * s).norm(dim=-1) * (o_rad > 0)
             r["cos_grad2d_stat"] = cos(so, sg)

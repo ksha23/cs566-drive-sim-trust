@@ -5,11 +5,11 @@ HD-map lanes, but it has the REAL image of the adjacent lane at the same pose, s
 that real image (same detector, same settings, same crop).
 
 Definitions (per image pair; lanes from src/eval/lanes/clrnet_infer.py, in original-image pixels):
-  * rasterise every lane polyline with thickness t = 30 px at CULane scale (1640 px wide), i.e. 30*W/1640 px
+  * rasterize every lane polyline with thickness t = 30 px at CULane scale (1640 px wide), i.e. 30*W/1640 px
     (~17.6 px at W=960); only rows inside CLRNet's field of view (the band reported by clrnet_infer) exist for both.
   * NTL-IoU = |M_render AND M_real| / |M_render OR M_real| of the union-of-lanes masks.
     Both empty -> undefined (NaN, excluded from means); exactly one empty -> 0.
-  * Per-lane matching exactly like the CULane metric: IoU between individual rasterised lanes, Hungarian matching,
+  * Per-lane matching exactly like the CULane metric: IoU between individual rasterized lanes, Hungarian matching,
     a match with IoU >= 0.5 is a TP; unmatched render lanes are FP (hallucinated lanes), unmatched real lanes FN.
     lane_prec = TP/(TP+FP), lane_rec = TP/(TP+FN), lane_f1 per image (NaN if both have no lanes). The dataset-level
     CULane F1 (sum TP/FP/FN over images) is printed in the summary.

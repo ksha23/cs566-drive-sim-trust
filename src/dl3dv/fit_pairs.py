@@ -2,7 +2,7 @@
   * sparse reconstruction: a 3DGS splat fitted on every S-th frame of the video only (S = 30 or 60), rendered at all the other
     (held-out) frames -> (render, real) pairs ("sparse");
   * model underfitting: the same fit stopped early (25% of the schedule), rendered at ALL frames ("underfit").
-Reference view (for Difix-ref style models): the nearest TRAINING frame (centre distance + 0.1 x angle in degrees,
+Reference view (for Difix-ref style models): the nearest TRAINING frame (center distance + 0.1 x angle in degrees,
 distances in units of the median training-camera spacing), i.e. what the reconstruction was built from.
 
 Camera: COLMAP OPENCV model at 3840x2160 -> images_4 (960x540) are undistorted to a pinhole K (cv2, alpha 0 crop, same

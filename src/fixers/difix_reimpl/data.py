@@ -5,7 +5,7 @@ official Difix trainer also reads ({"train": {id: {image, target_image, ref_imag
 so both trainers see exactly the same (render, target, reference) triplets.
 Reference view: the REAL frame of the SOURCE lane (the pass the splat was built from, i.e. what a simulator has)
 nearest to the target pose; for on-path pairs (src == dst) the target frame itself is excluded, so the reference is
-the neighbouring recorded frame. `PairDataset` loads a triplet, resizes to a fixed size, returns tensors in [-1, 1].
+the neighboring recorded frame. `PairDataset` loads a triplet, resizes to a fixed size, returns tensors in [-1, 1].
 """
 import json, os, random, sys
 import numpy as np
@@ -19,7 +19,7 @@ PL_ROOTS = config.PARALANE_ROOTS
 
 
 def _cam_centers(scene, clip):
-    """{timestamp: camera centre} from the clip's COLMAP images.txt (world-to-camera quaternion + translation)."""
+    """{timestamp: camera center} from the clip's COLMAP images.txt (world-to-camera quaternion + translation)."""
     from scipy.spatial.transform import Rotation
     for r in PL_ROOTS:
         p = f"{r}/{scene}/{clip}/sparse/0/images.txt"

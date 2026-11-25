@@ -3,7 +3,7 @@
 Per image:
   psnr / ssim / lpips          full-frame vs real (movable-object pixels pasted from real)
   road_lpips                   LPIPS on the road crop (lower 40% of the frame)
-  mark_f1 / mark_prec / mark_rec   lane-marking agreement: white/yellow paint masks from a colour + local-contrast
+  mark_f1 / mark_prec / mark_rec   lane-marking agreement: white/yellow paint masks from a color + local-contrast
                                threshold in the road region, 3-px tolerant precision/recall vs the real image.
                                mark_prec low = paint that is not in the real image (hallucinated / misplaced markings)
   tex_ratio                    road texture energy (mean |Laplacian|) of output / real (1 = same "sharpness")

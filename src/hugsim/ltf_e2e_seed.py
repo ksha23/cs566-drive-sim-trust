@@ -1,7 +1,7 @@
 # Copyright (c) the NAVSIM / HUGSIM authors (https://github.com/hyzhou404/NAVSIM, file ltf_e2e.py @ ca0ca7e).
 # Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
 # Modified by Kyle Sha and Allen Xia (2026): the checkpoint is selected by the env variable LTF_SEED.
-# This file is NOT covered by the repository's MIT licence.
+# This file is NOT covered by the repository's MIT license.
 """Copy of hyzhou404/NAVSIM ltf_e2e.py (HUGSIM LTF client); only change: checkpoint chosen by env LTF_SEED (0/1/2).
 closed_loop_fix.py copies this file into the NAVSIM client folder (hydra config paths are relative to the script)."""
 from navsim.agents.abstract_agent import AbstractAgent

@@ -1,5 +1,5 @@
 """Gaussian-splat street model: gsplat Gaussians + a learnable sky environment map
-(direction -> colour), composited behind the splat with (1 - alpha)."""
+(direction -> color), composited behind the splat with (1 - alpha)."""
 import math
 import torch
 import torch.nn.functional as F
@@ -25,7 +25,7 @@ class SkyEnv(torch.nn.Module):
 def pixel_dirs(K, device="cuda"):
     v, u = torch.meshgrid(torch.arange(H, device=device) + 0.5, torch.arange(W, device=device) + 0.5, indexing="ij")
     d = torch.stack([(u - K[0, 2]) / K[0, 0], (v - K[1, 2]) / K[1, 1], torch.ones_like(u)], -1)
-    return d  # camera frame, not normalised
+    return d  # camera frame, not normalized
 
 
 def render(params, sky, c2w, K, sh_degree=3, cam_dirs=None, with_depth=False):

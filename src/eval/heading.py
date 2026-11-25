@@ -5,7 +5,7 @@ There is no real image at a deviated pose, so two kinds of reference are used, a
 
 (1) PSEUDO-GROUND TRUTH = the real recorded frame warped into the deviated camera (heading_geom.homography).
     * yaw (on-path, and lateral + yaw at the real adjacent-lane poses): exact for every point, since the camera rotates
-      about its optical centre; only pixels whose source lies outside the recorded frame are unknown ('valid' mask).
+      about its optical center; only pixels whose source lies outside the recorded frame are unknown ('valid' mask).
       This makes yaw a real-ground-truth axis on Para-Lane: PSNR (valid pixels), SSIM / LPIPS (on the largest fully
       valid column band), lane paint P/R/F1, CLRNet lanes (real-frame lanes warped by H), fake vehicles (warped
       movable-object mask), static-object YOLO F1 (warped boxes).
@@ -47,7 +47,7 @@ T_LANE = 30 * 960 / 1640  # CULane-scale lane thickness at W=960 (as src/eval/la
 
 
 def lane_compare(lr, lg, valid, y1, t=T_LANE, thr=0.5, min_px=40):
-    """ntl_iou.compare restricted to a validity mask: lanes are rasterised, cut to the valid pixels inside the CLRNet
+    """ntl_iou.compare restricted to a validity mask: lanes are rasterized, cut to the valid pixels inside the CLRNet
     band (rows < y1), and lanes with < min_px pixels left are dropped on both sides."""
     from scipy.optimize import linear_sum_assignment
     shape = (y1, valid.shape[1]); v = valid[:y1]

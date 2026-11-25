@@ -1,7 +1,7 @@
 """Difix training loss, from the paper: L = L2 + LPIPS(VGG-16) + 0.5 * L_Gram, where L_Gram compares
 auto-correlation (Gram) matrices of VGG-16 features of output and target.
-Our choices where the paper is silent: Gram on ImageNet-normalised images at relu1_2, relu2_2, relu3_3, relu4_3,
-relu5_3, each Gram normalised by C*H*W, squared Frobenius distance per layer (the Johnson et al. style loss),
+Our choices where the paper is silent: Gram on ImageNet-normalized images at relu1_2, relu2_2, relu3_3, relu4_3,
+relu5_3, each Gram normalized by C*H*W, squared Frobenius distance per layer (the Johnson et al. style loss),
 layers summed with equal weight; no warm-up, full image (no crop).
 Optional per-pixel validity mask (1 = supervise), used to ignore movable objects in driving pairs."""
 import torch

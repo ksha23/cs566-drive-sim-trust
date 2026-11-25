@@ -1,6 +1,6 @@
 """Summarise per-image eval rows (evaluate.py output, optionally merged with NTL-IoU rows) into a table of
 mean and 95% bootstrap CI per (offset bin, method). Two bootstraps: over frames (default), and over
-(scene, src->dst) sequences ("cluster" CI, more honest because neighbouring frames are correlated).
+(scene, src->dst) sequences ("cluster" CI, more honest because neighboring frames are correlated).
 
 usage: scripts/lib/py.sh src/eval/summarize.py <out_prefix> <eval_rows.json> [more.json ...]
 writes <out_prefix>.csv (long format) and <out_prefix>.md (compact table)

@@ -4,7 +4,7 @@ Improvements over the smoke-test fit:
   * LiDAR initialisation (merged per-clip cloud, voxelised, coloured from the nearest un-occluded view,
     points that ever land on a movable-object mask are dropped),
   * LiDAR depth supervision (min-z splatted into a 1/4-res grid),
-  * a learnable sky environment map + an alpha->0 penalty on a LiDAR-skyline/colour sky mask,
+  * a learnable sky environment map + an alpha->0 penalty on a LiDAR-skyline/color sky mask,
   * movable-object masking of the photometric loss, scale-anisotropy regulariser,
   * every 8th frame held out for on-path evaluation.
 
@@ -82,7 +82,7 @@ def init_from_lidar(clip, tr, voxel=0.08):
 
 
 def sky_mask(img, dgrid):
-    """Sky = above the topmost LiDAR return in each grid column AND sky-coloured (blue or bright/grey)."""
+    """Sky = above the topmost LiDAR return in each grid column AND sky-coloured (blue or bright/gray)."""
     gh, gw = dgrid.shape
     valid = dgrid > 0
     rows = torch.arange(gh, device=img.device)[:, None].expand(gh, gw)

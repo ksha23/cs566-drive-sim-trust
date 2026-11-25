@@ -4,7 +4,7 @@ kinds (frame i of the lane's N recorded poses; conventions of src/eval/heading_g
   lane    lateral offset toward the other two lanes: 0 m -> the middle lane's mean offset (~3.3 m) -> the far lane's
           (~6.2 m), with holds. Where the offset is within 0.4 m of a real lane, the NEAREST REAL FRAME of that lane is
           stored as a reference ("approximately the same place"); elsewhere there is no real frame.
-  yaw     heading 0 -> +15 -> 0 -> -15 -> 0 deg about the camera centre. Exact ground truth: the recorded real frame
+  yaw     heading 0 -> +15 -> 0 -> -15 -> 0 deg about the camera center. Exact ground truth: the recorded real frame
           warped by K R1^T R0 K^-1 (Lanczos); pixels the real camera never saw are black.
   height  camera height 0 -> -1 -> +1 -> 0 m. No real frame exists; the recorded frame is kept only as a reference.
 Also renders alternative splats of the same lane at the same poses (--alt name=path.pt, e.g. road prior, progressive).
@@ -47,7 +47,7 @@ def main():
         os.makedirs(f"{out}/{d}", exist_ok=True)
     d = clip_dir(a.scene, a.clip); K, ts, c2w = load_cameras(d)
     idx = list(range(0, len(ts), a.every)); N = len(idx)
-    # the other lanes: mean signed lateral offset (+ = camera right) of their camera centres
+    # the other lanes: mean signed lateral offset (+ = camera right) of their camera centers
     others = {}
     for c in ("clip_0", "clip_1", "clip_2"):
         if c == a.clip:

@@ -4,14 +4,14 @@ sequence, time-synchronised, in a METRIC, z-up world frame.
 What MV2 ships per view and frame k (checked on the data, see docs/mv2.md):
   images/<cam>_<k:06d>.jpg   1920x1080 (GoPro, 60 FPS video sampled at 2 FPS, 100 frames per sequence)
   poses/<cam>_<k:06d>.npy    4x4 WORLD-TO-CAMERA, OpenCV axes (x right, y down, z forward); one world frame for
-                             all vehicles of a sequence (COLMAP registration, nerfstudio-style normalised, z up)
+                             all vehicles of a sequence (COLMAP registration, nerfstudio-style normalized, z up)
   intrinsics/<cam>_<k>.npy   [fx, fy, cx, cy, W, H] for 960x540  -> we load images at 960x540 and use K as is
   scale_factor.npy / transform.npy  the normalisation from the COLMAP frame (NOT metric: COLMAP has no scale)
 Time sync: MV2 syncs all vehicles by wall clock and samples every sensor at 2 FPS, so frame k of the car and frame k
 of the scooter are simultaneous (the car->scooter offset is nearly constant over a sequence, std ~ 1-5 % of it).
 
 Metric scale (MV2 gives none): we triangulate points from the car's own views with the given poses, fit the road
-plane under the car, and set the scale so the car camera is CAR_CAM_H metres above the road (our assumption, see
+plane under the car, and set the scale so the car camera is CAR_CAM_H meters above the road (our assumption, see
 docs/mv2.md). Camera heights above the road (and so the car/scooter height ratio) are measured, not assumed.
 
 Masks: movable objects = YOLO11m-seg (as EUVS, src/euvs/data.py); ego = a fixed bottom band of the car
@@ -112,7 +112,7 @@ def load_mask(seq, v, k, ego):
 def triangulate(seq, v, ids, c2w, K, masks, gaps=(1, 2, 3), ratio=0.75, max_err=1.5, min_par=1.0):
     """SIFT matches between frames i and i+g of one camera, triangulated with the GIVEN poses (no pose estimation);
     kept if in front of both cameras, reprojection error < max_err px in both and parallax > min_par deg.
-    Returns (N,3) points in the frame of c2w and (N,3) uint8 colours."""
+    Returns (N,3) points in the frame of c2w and (N,3) uint8 colors."""
     sift = cv2.SIFT_create(nfeatures=6000)
     feats = []
     for j, k in enumerate(ids):
@@ -207,7 +207,7 @@ def prepare(seq, force=False):
         h = cam_heights(pts_u[v][0], R[v]["c2w"], up)
         info[f"h_{v}_units"] = float(np.nanmedian(h)); info[f"h_{v}_valid"] = int(np.isfinite(h).sum())
         info[f"h_{v}_iqr_units"] = [float(np.nanpercentile(h, 25)), float(np.nanpercentile(h, 75))]
-    s = CAR_CAM_H / info["h_car_units"]  # metres per MV2 unit
+    s = CAR_CAM_H / info["h_car_units"]  # meters per MV2 unit
     info["m_per_unit"] = float(s)
     # rotation that maps 'up' to +z (MV2 is already ~z up; this removes the residual tilt)
     z = np.array([0, 0, 1.0]); ax = np.cross(up, z); sa = np.linalg.norm(ax); ca = up @ z
@@ -217,7 +217,7 @@ def prepare(seq, force=False):
         p, c = pts_u[v]
         np.savez_compressed(f"{cache_dir(seq)}/pts_{v}.npz", xyz=(s * p @ Rz.T).astype(np.float32), rgb=c)
         info[f"n_pts_{v}"] = int(len(p))
-    # time-synchronised offsets scooter - car, in the car's heading frame (metres)
+    # time-synchronised offsets scooter - car, in the car's heading frame (meters)
     Cc = to_metric(R["car"]["c2w"], info)[:, :3, 3]; Cs = to_metric(R["scooty"]["c2w"], info)[:, :3, 3]
     ids_c, ids_s = R["car"]["ids"], R["scooty"]["ids"]; common = sorted(set(ids_c) & set(ids_s))
     Tc = to_metric(R["car"]["c2w"], info)

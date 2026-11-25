@@ -143,7 +143,7 @@ def load_dyn(sc, n):
 
 def rel_pose_stats(sc):
     """For every test view: distance (m, in the scene's metric frame) and rotation angle (deg) to the nearest TRAIN
-    camera centre, and the smallest rotation angle to any train camera within 5 m (how much 'heading' change)."""
+    camera center, and the smallest rotation angle to any train camera within 5 m (how much 'heading' change)."""
     tr = [n for n in sc["names"] if sc["split"][n] == "train"]; te = [n for n in sc["names"] if sc["split"][n] == "test"]
     Ct = np.stack([sc["c2w"][n][:3, 3] for n in tr]); Rt = np.stack([sc["c2w"][n][:3, :3] for n in tr])
     out = {}
@@ -161,7 +161,7 @@ def rel_pose_stats(sc):
 
 def align_metric(sc):
     """Similarity (Umeyama) from the COLMAP frame to the scene's geo_registration positions (metric, local frame with
-    constant height for MARS), applied in place to poses and points -> metres, and the ground plane horizontal.
+    constant height for MARS), applied in place to poses and points -> meters, and the ground plane horizontal.
     The up direction is then fixed so that cameras' -y axes point to +z. Returns the scale (m per SfM unit)."""
     g = {}
     for l in open(f"{sc['root']}/geo_registration/geo_registration.txt"):

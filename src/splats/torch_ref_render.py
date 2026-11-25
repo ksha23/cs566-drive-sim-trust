@@ -1,10 +1,10 @@
 """Pure-PyTorch reference rasterizer: no gsplat at all. Slow (Python loop over depth chunks), so it is only for
 correctness checks on small crops (e.g. 64x64); see src/splats/own_render_check.py and docs/own_renderer.md.
 
-Pipeline: our projection / SH colour from `splats.own_render` -> tile binning written here (same tile bounds as
+Pipeline: our projection / SH color from `splats.own_render` -> tile binning written here (same tile bounds as
 gsplat's isect_tiles) -> one global sort by (tile, depth) -> per-tile padded index table -> front-to-back alpha
 compositing in chunks of K Gaussians, all in autograd. Compositing follows gsplat's rasterize_to_pixels exactly:
-  sigma = 1/2 d^T Conic d (d = centre - pixel centre), alpha = min(0.999, o exp(-sigma)),
+  sigma = 1/2 d^T Conic d (d = center - pixel center), alpha = min(0.999, o exp(-sigma)),
   skip if sigma < 0 or alpha < 1/255, stop the pixel (exclusive) once T (1 - alpha) <= 1e-4.
 Ported from our proposal-C prototype (src/gslam/torchgs_ref.py), adapted to D's parameterisation and gsplat 1.4.
 """
@@ -52,7 +52,7 @@ def composite(mean2d, conic, feats, opac, table, count, tw, th, width, height, t
     py, px = torch.meshgrid(torch.arange(ts, device=dev), torch.arange(ts, device=dev), indexing="ij")
     tyi, txi = torch.arange(n_tiles, device=dev) // tw, torch.arange(n_tiles, device=dev) % tw
     pix = torch.stack([(txi[:, None] * ts + px.reshape(1, -1)).float() + 0.5,
-                       (tyi[:, None] * ts + py.reshape(1, -1)).float() + 0.5], -1)       # (tiles, P, 2) centres
+                       (tyi[:, None] * ts + py.reshape(1, -1)).float() + 0.5], -1)       # (tiles, P, 2) centers
     out = feats.new_zeros(n_tiles, P, D)
     T = feats.new_ones(n_tiles, P)                                   # transmittance so far
     done = torch.zeros(n_tiles, P, dtype=torch.bool, device=dev)     # pixel reached T <= 1e-4 (gsplat stops it)

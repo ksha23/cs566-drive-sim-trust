@@ -183,5 +183,5 @@ Reading:
   slower than gsplat's fused projection, and a full 12k fit takes 1.4× longer.
 * **NaN safety.** Gaussians behind the camera would give inf in x/z and NaN gradients (0·inf) in a dense
   formulation; we avoid it by culling on depth first and running the math only on Gaussians in front.
-* **Shared GPU.** All jobs ran through `~/cs566/gpujob.sh` alongside the other result-finalising jobs; timings are
+* **Shared GPU.** All jobs ran through `~/cs566/gpujob.sh` alongside the other result-finalizing jobs; timings are
   from runs with the GPU otherwise idle.

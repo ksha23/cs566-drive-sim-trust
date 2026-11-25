@@ -258,7 +258,7 @@ def sweep(kind, name, title, scenario, what, caption, note, fps=6):
                      ("road-prior splat (no fixer)", f"{V}/{m['path'].replace('/raw/', '/alt_road/')}"),
                      ("progressive (our Difix) splat", f"{V}/{m['path'].replace('/raw/', '/alt_prog/')}")]
         elif kind == "yaw":
-            status = f"Para-Lane scene_16, lane 0, camera turned {abs(m['yaw']):.0f} deg {'left' if m['yaw'] > 0 else 'right'} about its centre"
+            status = f"Para-Lane scene_16, lane 0, camera turned {abs(m['yaw']):.0f}° {'left' if m['yaw'] > 0 else 'right'} about its center"
             tiles = [("real frame rotated (exact GT)", f"{V}/{m['gt']}"), ("raw splat", f"{V}/{m['path']}"),
                      ("released Difix", f"{VF}/difix/{m['path']}"), ("our Difix (reimpl., ref)", f"{VF}/difix_reimpl_ref/{m['path']}"),
                      ("our small U-Net", f"{VF}/ours_hfgan_s0/{m['path']}"), ("NVIDIA Fixer", f"{VF}/nv_fixer/{m['path']}")]
@@ -290,12 +290,12 @@ def r_lane_sweep():
 
 
 def r_yaw_sweep():
-    sweep("yaw", "heading_sweep_pm15deg", "Para-Lane scene_16: heading sweep, -15 to +15 deg",
-          "heading (yaw) about the camera centre",
+    sweep("yaw", "heading_sweep_pm15deg", "Para-Lane scene_16: heading sweep, −15° to +15°",
+          "heading (yaw) about the camera center",
           "real frame rotated by the exact homography (black = never seen by the real camera) | raw | released Difix | our Difix (ref) | our U-Net | NVIDIA Fixer",
           "For a pure rotation the real frame can be warped exactly; black regions are parts of the scene the recorded "
-          "camera never saw. Inside the seen region every method stays close to the real frame (heading is not what "
-          "breaks the splat); the newly revealed regions at the image border are where splats and fixers improvise.", None)
+          "camera never saw. Inside the seen region every method stays close to the real frame, so heading alone does not "
+          "degrade the splat; the newly revealed regions at the image border are filled with invented content.", None)
 
 
 def r_height_sweep():

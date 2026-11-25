@@ -7,7 +7,7 @@ Ground truth: nuScenes vehicle annotations (all vehicles, parked and moving) fro
 (nusc_map_cache/<scene>/agent_data_dt0.10.feather + scene_metadata extents), mapped into HUGSIM's world with the
 scene's meta_data["inv_pose"] (checked: the moving actor's trajdata track lands within ~1 m of HUGSIM's own
 dynamic-actor pose). The 8 box corners are projected into each (offset) camera -> 2D box, clipped to the image.
-Kept: all corners in front of the camera (z > 0.5 m), centre depth < 60 m, clipped area >= 400 px^2 and >= 40% of the
+Kept: all corners in front of the camera (z > 0.5 m), center depth < 60 m, clipped area >= 400 px^2 and >= 40% of the
 unclipped box inside the image. Occlusion: "vis" = fraction of the box's central 60% where the simulator's own rendered
 depth is not in front of the object nearest corner by more than 1 m + 15% (expected-depth tolerance); NTA-IoU uses boxes with vis >= 0.5 (same for every method).
 

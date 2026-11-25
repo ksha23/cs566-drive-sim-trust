@@ -4,17 +4,17 @@ What is OURS (plain PyTorch, so autograd differentiates it and every line can be
   * camera chain: world -> camera transform (viewmat = inverse of the camera-to-world pose),
   * 3D covariance Sigma = R S S^T R^T from the wxyz quaternion and the log-scales (rotated to the camera),
   * EWA splatting: 2D covariance J W Sigma W^T J^T with the perspective Jacobian J (with gsplat's clamp of
-    off-screen centres), the low-pass dilation (+eps2d on the diagonal, gsplat's "classic" mode as D uses;
+    off-screen centers), the low-pass dilation (+eps2d on the diagonal, gsplat's "classic" mode as D uses;
     the "antialiased" opacity compensation is also written out), the conic (inverse 2D covariance),
   * culling: near/far plane, degenerate (non-positive-definite) 2D covariance, 3-sigma pixel radius, off-screen,
-  * view-dependent colour: degree-0..3 real spherical harmonics -> RGB (+0.5, clamped at 0, as gsplat),
-  * expected depth (alpha-normalised), and the learnable sky environment map composited behind the splat
+  * view-dependent color: degree-0..3 real spherical harmonics -> RGB (+0.5, clamped at 0, as gsplat),
+  * expected depth (alpha-normalized), and the learnable sky environment map composited behind the splat
     with (1 - alpha), exactly as `splats.gs.render` does.
 What is gsplat's (CUDA kernels, used as black boxes):
   * `isect_tiles` + `isect_offset_encode`: which 16x16 pixel tiles each projected Gaussian touches, and the
     sort of all (tile, depth) pairs,
   * `rasterize_to_pixels`: per-pixel front-to-back alpha compositing and its backward pass (returns gradients
-    w.r.t. our 2D means, conics, colours and opacities; autograd carries them back through our code).
+    w.r.t. our 2D means, conics, colors and opacities; autograd carries them back through our code).
 
 The output (rgb, alpha, depth, info) has the same meaning as `splats.gs.render`, and `info` carries the fields
 gsplat's DefaultStrategy reads for densification ("means2d" [1,N,2] with a retained gradient, "radii" [1,N],
@@ -41,7 +41,7 @@ SH_C3 = [-0.5900435899266435, 2.890611442640554, -0.4570457994644658, 0.37317633
 
 
 def quat_to_rotmat(q):
-    """(N,4) quaternions in (w, x, y, z) order -> (N,3,3) rotation matrices (normalised first)."""
+    """(N,4) quaternions in (w, x, y, z) order -> (N,3,3) rotation matrices (normalized first)."""
     w, x, y, z = F.normalize(q, dim=-1).unbind(-1)
     return torch.stack([1 - 2 * (y * y + z * z), 2 * (x * y - w * z), 2 * (x * z + w * y),
                         2 * (x * y + w * z), 1 - 2 * (x * x + z * z), 2 * (y * z - w * x),
@@ -56,7 +56,7 @@ def small_matmul(A, B):
 
 
 def eval_sh(degree, dirs, coeffs):
-    """View-dependent colour from real SH. dirs (N,3) viewing directions (camera -> Gaussian, any length),
+    """View-dependent color from real SH. dirs (N,3) viewing directions (camera -> Gaussian, any length),
     coeffs (N,16,3). Only the first (degree+1)^2 coefficients are used. Returns (N,3)."""
     x, y, z = F.normalize(dirs, dim=-1).unbind(-1)
     basis = [torch.full_like(x, SH_C0)]
@@ -79,12 +79,12 @@ def project(means, quats, log_scales, viewmat, K, width, height, eps2d=EPS2D, ne
     """EWA projection of the Gaussians in front of the camera, with gsplat's culling rules.
 
     Returns a dict over the M Gaussians that survive culling:
-      idx (M,) indices into the N input Gaussians, mean2d (M,2) pixel centres, conic (M,3) = upper triangle
+      idx (M,) indices into the N input Gaussians, mean2d (M,2) pixel centers, conic (M,3) = upper triangle
       (a, b, c) of the inverse 2D covariance, depth (M,) camera z, radius (M,) int32 pixel radius,
       comp (M,) opacity compensation (1 unless antialiased).
     """
     R, t = viewmat[:3, :3], viewmat[:3, 3]
-    # 1) world -> camera for the centres. Culling by depth first (no gradient needed for the decision), so the
+    # 1) world -> camera for the centers. Culling by depth first (no gradient needed for the decision), so the
     #    heavier covariance math below only runs on Gaussians between the near and far planes.
     z_all = means.detach() @ R.detach()[2] + t.detach()[2]
     idx = torch.nonzero((z_all > near) & (z_all < far)).squeeze(1)
@@ -97,9 +97,9 @@ def project(means, quats, log_scales, viewmat, K, width, height, eps2d=EPS2D, ne
     A = quat_to_rotmat(quats[idx]) * torch.exp(log_scales[idx])[:, None, :]  # (M,3,3): R_g @ diag(s)
     A_cam = small_matmul(R, A)                                       # (M,3,3)
 
-    # 3) EWA: linearise the perspective projection u = fx x/z + cx, v = fy y/z + cy at the centre.
+    # 3) EWA: linearize the perspective projection u = fx x/z + cx, v = fy y/z + cy at the center.
     #    Jacobian J = [[fx/z, 0, -fx x/z^2], [0, fy/z, -fy y/z^2]]. As in 3DGS/gsplat, x/z and y/z are clamped
-    #    to 1.3x the field of view so centres far off-screen do not get a huge, unstable Jacobian.
+    #    to 1.3x the field of view so centers far off-screen do not get a huge, unstable Jacobian.
     fx, fy, cx, cy = K[0, 0], K[1, 1], K[0, 2], K[1, 2]
     lim_x_pos = (width - cx) / fx + 0.3 * (0.5 * width / fx)
     lim_x_neg = cx / fx + 0.3 * (0.5 * width / fx)
@@ -140,7 +140,7 @@ def project(means, quats, log_scales, viewmat, K, width, height, eps2d=EPS2D, ne
 
 
 def camera_dirs(K, width=W, height=H):
-    """Camera-frame ray direction (not normalised) through each pixel centre (as splats.gs.pixel_dirs)."""
+    """Camera-frame ray direction (not normalized) through each pixel center (as splats.gs.pixel_dirs)."""
     v, u = torch.meshgrid(torch.arange(height, device=K.device) + 0.5, torch.arange(width, device=K.device) + 0.5,
                           indexing="ij")
     return torch.stack([(u - K[0, 2]) / K[0, 0], (v - K[1, 2]) / K[1, 1], torch.ones_like(u)], -1)
@@ -155,7 +155,7 @@ def render(params, sky, c2w, K, sh_degree=3, cam_dirs=None, with_depth=False, wi
                  antialiased=antialiased)
     idx = pr["idx"]
 
-    # colour of each visible Gaussian from its SH coefficients, seen from the camera centre
+    # color of each visible Gaussian from its SH coefficients, seen from the camera center
     nb = (sh_degree + 1) ** 2                                        # SH coefficients in use (1, 4, 9 or 16)
     coeffs = torch.cat([params["sh0"][idx], params["shN"][idx, :nb - 1]], 1)  # (M,nb,3)
     dirs = params["means"][idx] - c2w[:3, 3]

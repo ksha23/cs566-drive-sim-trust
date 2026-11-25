@@ -105,15 +105,16 @@ def fig_ff(path):
     ax.text(0.505, -0.5, "chance", color=FINK2, fontsize=13, ha="left")
     for i, m in enumerate(order):
         r = rows[m]; y = len(order) - 1 - i
-        ax.plot([r["cov"], r["rep"], r["eig"]], [y] * 3, color=FGRID, lw=2, zorder=2)
-        ax.plot(r["cov"], y, "o", color="#9a988f", ms=10, mec="#FAF9F6", mew=1.5, zorder=3, label="coverage" if i == 0 else None)
+        cv = max(r["cov"], 1 - r["cov"])   # coverage used in whichever direction predicts better
+        ax.plot([cv, r["rep"], r["eig"]], [y] * 3, color=FGRID, lw=2, zorder=2)
+        ax.plot(cv, y, "o", color="#9a988f", ms=10, mec="#FAF9F6", mew=1.5, zorder=3, label="coverage (better direction)" if i == 0 else None)
         ax.plot(r["rep"], y, "s", color=FINK2, ms=9, mec="#FAF9F6", mew=1.5, zorder=3, label="reprojection" if i == 0 else None)
         ax.errorbar(r["eig"], y, xerr=[[r["eig"] - r["lo"]], [r["hi"] - r["eig"]]], fmt="D", color="#d96c1e", ms=10, mec="#FAF9F6",
                     mew=1.5, capsize=3, lw=2, zorder=4, label="information gain" if i == 0 else None)
     ax.set_yticks(range(len(order)), [NAME[m] for m in reversed(order)], fontsize=15, color=FINK)
     ax.set_xlim(0.2, 0.85); ax.set_ylim(-0.6, len(order) - 0.1)
     ax.set_xlabel("AUROC for invented lane paint (one lane over)", fontsize=15, color=FINK2)
-    ax.legend(frameon=False, fontsize=14, ncol=3, loc="lower center", bbox_to_anchor=(0.42, 1.0), labelcolor=FINK,
+    ax.legend(frameon=False, fontsize=14, ncol=2, loc="lower center", bbox_to_anchor=(0.42, 1.0), labelcolor=FINK,
               handletextpad=0.3, columnspacing=1.2)
     style(ax); ax.yaxis.grid(False); ax.xaxis.grid(True, color=FGRID, lw=1)
     fig.tight_layout(); fig.savefig(path, facecolor=fig.get_facecolor()); plt.close(fig)
@@ -294,7 +295,7 @@ cols = [("Image fixers", ["Released Difix, Difix-ref and NVIDIA Fixer (trained o
                           "Small U-Net from scratch"]),
         ("Fix the 3D scene", ["Progressive update: repaired views added back into the splat (Difix3D+), with flat or FaithFusion weights",
                               "Road-surface prior from LiDAR (no generation)"]),
-        ("Built and validated", ["Our Difix trainer scores better than the official one at an equal short budget (DL3DV, 3 scenes, single view: LPIPS 0.218 vs. 0.237)",
+        ("Built and validated", ["Our Difix trainer vs. the official one at an equal short budget (DL3DV, 3 scenes): LPIPS 0.218 vs. 0.237; neither beats the raw render there",
                                  "Our own splat projection matches gsplat to 90.8 dB (results use gsplat)"])]
 cx, cw = int(0.6 * IN), int(3.95 * IN)
 for i, (h, items) in enumerate(cols):
@@ -337,7 +338,7 @@ text(s, int(0.6 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
 text(s, int(6.8 * IN), int(5.1 * IN), int(5.9 * IN), int(1.7 * IN), [
     f"Both fixers that copy from a reference view add vehicles on {spw} (mean per-road change: ours +{SP[0]:.3f}, "
     f"released Difix-ref +{SPR[0]:.3f} per image); Difix-FT does not.",
-    f"Repairing the 3D scene invents the fewest vehicles ({K['spurious_3m']['prog_difix_reimpl']:.2f} per image)."], size=16)
+    f"Repairing the 3D scene invents the fewest vehicles one lane over ({K['spurious_3m']['prog_difix_reimpl']:.2f} per image)."], size=16)
 footer(s, 6, credit=PARALANE)
 notes(s, "Lane agreement alone hides errors. Orange marks invented lane paint, blue erased paint. Our re-implementation "
          "restores the lanes but here paints a stripe that is not on the road; over all frames, both fixers that copy from a "
@@ -387,7 +388,7 @@ hci = lambda lv, best: (lambda r: f"[{r.lane_f1_clo:.2f}, {r.lane_f1_chi:.2f}]")
 hname = {lv: NAME[HS[(HS.level == lv) & (HS.method != "raw")].sort_values("lane_f1").method.iloc[-1]] for lv in (1.0, -1.0)}
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
     f"Turning ±15° ({nh} roads): raw lane F1 {K['heading_raw_lane_f1']['0']:.2f} → {K['heading_raw_lane_f1']['15']:.2f}.",
-    f"Raising it 1 m: raw {hraw[1.0]:.2f} {hci(1.0, False)}, best {hbest[1.0]:.2f} {hci(1.0, True)} ({hname[1.0][0].lower() + hname[1.0][1:]}): the intervals overlap.",
+    f"Raising it 1 m: raw {hraw[1.0]:.2f} {hci(1.0, False)}, best {hbest[1.0]:.2f} {hci(1.0, True)} ({hname[1.0][0].lower() + hname[1.0][1:]}).",
     [(f"Lowering it 1 m: raw {hraw[-1.0]:.2f}, best {hbest[-1.0]:.2f}; only a thin strip of road is comparable there.", {"color": ACC})]], size=19)
 footer(s, 9)
 notes(s, "Turning the camera by fifteen degrees barely changes lane agreement. Changing its height does, and fixers help "
@@ -398,16 +399,17 @@ notes(s, "Turning the camera by fifteen degrees barely changes lane agreement. C
 s = prs.slides.add_slide(BLANK); bg(s, BG)
 title(s, "FaithFusion: a modest map, unhelpful weights", "RESULT 5")
 picture(s, "img/talk_faithfusion.png", int(0.4 * IN), int(1.6 * IN), int(7.6 * IN), int(4.73 * IN))
-eig = [r["eig"] for r in AUC.values()]; cov = [r["cov"] for r in AUC.values()]; pos = [r["pos"] for r in AUC.values()]
+eig = [r["eig"] for r in AUC.values()]; cov = [max(r["cov"], 1 - r["cov"]) for r in AUC.values()]; pos = [r["pos"] for r in AUC.values()]
+n_better = sum(r["eig"] > max(r["cov"], 1 - r["cov"]) for r in AUC.values())
 text(s, int(8.3 * IN), int(1.9 * IN), int(4.4 * IN), int(4.9 * IN), [
-    f"Its information-gain map partly flags invented lane paint one lane over: AUROC {min(eig):.2f}–{max(eig):.2f} across five "
-    f"fixers, against {min(cov):.2f}–{max(cov):.2f} for splat coverage alone (invented paint: {min(pos):.0%}–{max(pos):.0%} of road pixels).",
+    f"Its information-gain map partly flags invented lane paint one lane over (1–2% of road pixels): AUROC {min(eig):.2f}–{max(eig):.2f}, "
+    f"above reprojection error and, for {n_better} of 5 fixers, above splat coverage ({min(cov):.2f}–{max(cov):.2f}).",
     [("Used as weights in the 3D update, it slightly lowers lane F1 one lane over: " + mn(f"{FF[0]:+.3f} [{FF[1]:+.3f}, {FF[2]:+.3f}]")
       + f" (mean over {FF[3]} roads).", {"color": ACC})],
     [(f"Precision stays low: AUPRC {min(r['auprc'] for r in AUC.values()):.3f}–{max(r['auprc'] for r in AUC.values()):.3f}.", {"color": SOFT})]], size=19)
 footer(s, 10)
 notes(s, "FaithFusion weights each repaired pixel by how much new information it adds to the splat. Its map does flag "
-         "where fixers invent lane paint, better than splat coverage alone, though far from reliably: its precision stays low. But used as weights in the 3D update, it "
+         "where fixers invent lane paint, mostly better than simpler maps, though far from reliably: its precision stays low. But used as weights in the 3D update, it "
          f"slightly lowers lane agreement one lane over, on {FF[3]} roads.")
 
 def table(s, rows, x, y, widths, rh, size=15):
@@ -428,20 +430,23 @@ def table(s, rows, x, y, widths, rh, size=15):
 s = prs.slides.add_slide(BLANK); bg(s, BG)
 title(s, "No fixer raises closed-loop driving scores", "RESULT 6")
 fx = [f for f in ("difix", "difix_ft", "nv_fixer", "difix_reimpl") if f in CL]
+T4 = {(r.fixer, str(r.seeds)): r for r in pd.read_csv(f"{RES}/table4_closed_loop.csv").itertuples()}
+U = T4[("ours_best", "0")]   # our small U-Net, seed 0 only (it already broke the policy there)
 rows = [("HUGSIM, closed loop", "HD-Score", "Change vs. no fixer")] + [("No fixer", f"{CL['none']['hdscore']:.3f}", "–")] + \
-       [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx]
-RH = int(0.5 * IN)
+       [(NAME[f], f"{CL[f]['hdscore']:.3f}", mn(f"{CL[f]['d']:+.3f} [{CL[f]['lo']:+.3f}, {CL[f]['hi']:+.3f}]")) for f in fx] + \
+       [("Our U-Net (1 seed)", f"{U.hdscore:.3f}", mn(f"{U.d_hd:+.3f} [{U.d_lo:+.3f}, {U.d_hi:+.3f}]"))]
+RH = int(0.46 * IN)
 table(s, rows, int(0.6 * IN), int(1.8 * IN), (2.8, 1.4, 3.3), RH, size=16)
 text(s, int(0.6 * IN), int(2.05 * IN) + RH * len(rows), int(7.5 * IN), int(0.9 * IN),
      f"Released LTF policy, {CL['none']['runs'] // 3} scenarios × 3 seeds on nuScenes scenes; paired 95% intervals.", size=16, color=SOFT)
 text(s, int(8.5 * IN), int(1.9 * IN), int(4.2 * IN), int(4.9 * IN), [
     "No fixer raises the driving score, our re-implementation included.",
-    "NVIDIA Fixer lowers it, mostly through one of the three policy seeds.",
-    [("The spread between seeds (0.31–0.46) exceeds every fixer effect.", {"color": ACC})]], size=19)
+    "NVIDIA Fixer lowers it, mostly through one of the three policy seeds; our U-Net, run with one seed, lowers it clearly.",
+    [("The spread between seeds (0.31–0.46) exceeds the effect of every fixer run with three seeds.", {"color": ACC})]], size=19)
 footer(s, 11)
 notes(s, f"In closed-loop driving in HUGSIM, with a released policy over {CL['none']['runs'] // 3} scenarios and three seeds, no "
-         "fixer raises the driving score, our re-implementation included; NVIDIA Fixer lowers it slightly, mostly through one "
-         "seed. The spread between seeds exceeds any fixer effect.")
+         "fixer raises the driving score; NVIDIA Fixer lowers it slightly, mostly through one seed, and our small U-Net clearly. "
+         "Otherwise the spread between seeds exceeds the fixer effects.")
 
 # 12. Other cities -------------------------------------------------------------------------------------------------
 s = prs.slides.add_slide(BLANK); bg(s, BG)
@@ -467,7 +472,7 @@ text(s, int(0.8 * IN), int(0.7 * IN), int(11.5 * IN), int(0.5 * IN), "TAKEAWAYS"
 text(s, int(0.8 * IN), int(1.3 * IN), int(11.7 * IN), int(5.0 * IN), [
     f"1. A splat simulator is trustworthy only near the recorded path: lane F1 falls from {L['raw']['0m']:.2f} to {L['raw']['~3m']:.2f} one lane over.",
     f"2. Fixers trained on matching data recover most of it at 3 m ({L['difix_reimpl_ref']['~3m']:.2f}–{L['difix_ft']['~3m']:.2f}), much less at 6 m (≈{L['difix_ft']['~6m']:.1f}).",
-    "3. Realism and correctness diverge: fixers invent lane paint and vehicles; repairing the 3D scene invents the fewest vehicles.",
+    "3. Realism and correctness diverge: fixers invent lane paint and vehicles; repairing the 3D scene invents the fewest vehicles one lane over.",
     "4. Gains depend on the road, shrink with camera height and other cities, and do not raise closed-loop driving scores."],
     size=24, color=BG)
 text(s, int(0.8 * IN), int(5.8 * IN), int(11.7 * IN), int(0.9 * IN), [f"Project page, videos and results: {URL}", f"Code: {CODE_URL}"], size=20, color=MUTED)
